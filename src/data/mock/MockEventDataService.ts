@@ -1,10 +1,11 @@
 import type { EventDataService } from '../EventDataService';
 import type {
-  Change, Notification, Person, Session, Venue,
+  Change, Notification, Person, Role, Session, Venue,
 } from '../../domain/types';
 import {
   people, sessions as seedSessions, sessionPeople, venues,
 } from './mockData';
+import { buildMessage } from '../../domain/messages';
 
 export class MockEventDataService implements EventDataService {
   private sessions: Session[] = [...seedSessions];
@@ -32,6 +33,11 @@ export class MockEventDataService implements EventDataService {
       createdAt: new Date().toISOString(),
     };
 
+    // Capture the session BEFORE mutation, so we can build accurate messages
+    const sessionBefore = this.sessions.find((s) => s.id === change.sessionId);
+    if (!sessionBefore) return fullChange;
+
+    // Mutate schedule
     if (change.type === 'session_moved') {
       this.sessions = this.sessions.map((s) =>
         s.id === change.sessionId
@@ -55,6 +61,7 @@ export class MockEventDataService implements EventDataService {
 
     this.changes.push(fullChange);
 
+    // Build role-specific notifications
     const affected = await this.getPeopleForSession(change.sessionId);
     const links = sessionPeople.filter(
       (sp) => sp.sessionId === change.sessionId
@@ -62,13 +69,23 @@ export class MockEventDataService implements EventDataService {
 
     const newNotifications: Notification[] = affected.map((person) => {
       const link = links.find((sp) => sp.personId === person.id);
+      const role: Role = link?.role ?? person.roles[0] ?? 'attendee';
+      const content = buildMessage({
+        change: fullChange,
+        sessionBefore,
+        role,
+        venues,
+      });
+
       return {
         id: crypto.randomUUID(),
         changeId: fullChange.id,
         personId: person.id,
         personName: person.name,
-        role: link?.role ?? person.roles[0] ?? 'attendee',
-        message: `${change.sessionTitle}: ${change.type.replace('_', ' ')}`,
+        role,
+        title: content.title,
+        body: content.body,
+        channel: content.channel,
         status: 'pending',
         createdAt: new Date().toISOString(),
       };
@@ -76,15 +93,12 @@ export class MockEventDataService implements EventDataService {
 
     this.notifications.push(...newNotifications);
     this.emit();
-
-    // Simulate async delivery + acknowledgment
     newNotifications.forEach((n) => this.scheduleDelivery(n.id));
 
     return fullChange;
   }
 
   private scheduleDelivery(notificationId: string) {
-    // delivered after 600ms
     setTimeout(() => {
       const n = this.notifications.find((x) => x.id === notificationId);
       if (!n || n.status === 'acknowledged') return;
@@ -92,7 +106,6 @@ export class MockEventDataService implements EventDataService {
       this.emit();
     }, 600);
 
-    // some auto-ack over the next 2–6 seconds (80% chance)
     setTimeout(() => {
       const n = this.notifications.find((x) => x.id === notificationId);
       if (!n || n.status === 'acknowledged') return;

@@ -3,6 +3,13 @@ import type {
   Change, Notification, NotificationStatus, Session, Venue,
 } from '../../domain/types';
 import { useDataService } from '../../app/DataProvider';
+import { NotificationDrawer } from './NotificationDrawer';
+import { ConflictPanel } from './ConflictPanel';
+import {
+  detectConflicts,
+  type Conflict,
+} from '../../domain/conflicts';
+import { people as allPeople, sessionPeople } from '../../data/mock/mockData';
 
 const CHANGE_LABEL: Record<Change['type'], string> = {
   session_moved: '🔀 Session moved',
@@ -33,12 +40,19 @@ function timeAgo(iso: string) {
   return new Date(iso).toLocaleTimeString();
 }
 
+interface PendingChange {
+  proposed: Omit<Change, 'id' | 'createdAt'>;
+  conflicts: Conflict[];
+}
+
 export function ChangeFeed() {
   const data = useDataService();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [venues, setVenues] = useState<Venue[]>([]);
   const [changes, setChanges] = useState<Change[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [pending, setPending] = useState<PendingChange | null>(null);
 
   const refresh = useCallback(async () => {
     setSessions(await data.getSessions());
@@ -55,27 +69,56 @@ export function ChangeFeed() {
     return unsubscribe;
   }, [data, refresh]);
 
-  // Re-render every second so "2s ago" and progress stay fresh
   const [, setTick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(id);
   }, []);
 
-  async function moveSession(sessionId: string, newVenueId: string) {
+  async function attemptChange(
+    sessionId: string,
+    newVenueId: string
+  ) {
     const session = sessions.find((s) => s.id === sessionId);
     if (!session) return;
-    await data.applyChange({
+
+    const proposed: Omit<Change, 'id' | 'createdAt'> = {
       type: 'session_moved',
       sessionId,
       sessionTitle: session.title,
       oldValue: session.venueId,
       newValue: newVenueId,
+    };
+
+    const conflicts = detectConflicts({
+      proposedChange: proposed,
+      sessions,
+      venues,
+      people: allPeople,
+      sessionPeople,
     });
+
+    if (conflicts.length > 0) {
+      setPending({ proposed, conflicts });
+      return;
+    }
+
+    await data.applyChange(proposed);
+  }
+
+  async function proceedAnyway() {
+    if (!pending) return;
+    await data.applyChange(pending.proposed);
+    setPending(null);
   }
 
   const venueName = (id: string) =>
     venues.find((v) => v.id === id)?.name ?? id;
+
+  const openNotification =
+    openId != null
+      ? notifications.find((n) => n.id === openId) ?? null
+      : null;
 
   return (
     <>
@@ -86,7 +129,7 @@ export function ChangeFeed() {
             <span className="label">{s.title}</span>
             <select
               value={s.venueId}
-              onChange={(e) => moveSession(s.id, e.target.value)}
+              onChange={(e) => attemptChange(s.id, e.target.value)}
             >
               {venues.map((v) => (
                 <option key={v.id} value={v.id}>{v.name}</option>
@@ -106,10 +149,14 @@ export function ChangeFeed() {
 
         {changes.map((c) => {
           const affected = notifications.filter((n) => n.changeId === c.id);
-          const acked = affected.filter((n) => n.status === 'acknowledged').length;
+          const acked = affected.filter(
+            (n) => n.status === 'acknowledged'
+          ).length;
           const total = affected.length;
           const pct = total === 0 ? 0 : Math.round((acked / total) * 100);
-          const pending = affected.filter((n) => n.status !== 'acknowledged');
+          const pendingList = affected.filter(
+            (n) => n.status !== 'acknowledged'
+          );
 
           return (
             <div key={c.id} className="change-card">
@@ -145,36 +192,38 @@ export function ChangeFeed() {
                 </div>
               </div>
 
-              <div className="affected-label">Reached</div>
+              <div className="affected-label">
+                Reached — click to preview message
+              </div>
               <div className="affected">
                 {affected.map((n) => (
                   <button
                     key={n.id}
                     type="button"
                     className={`person status-${n.status}`}
-                    onClick={() => data.acknowledgeNotification(n.id)}
-                    title={
-                      n.status === 'acknowledged'
-                        ? `Acknowledged ${n.acknowledgedAt ? timeAgo(n.acknowledgedAt) : ''}`
-                        : `Click to ack — ${STATUS_LABEL[n.status]}`
-                    }
+                    onClick={() => setOpenId(n.id)}
+                    title={`Preview what ${n.personName} received — ${STATUS_LABEL[n.status]}`}
                   >
                     <span className="avatar">{initials(n.personName)}</span>
                     {n.personName}
-                    <span className={`role-tag role-${n.role}`}>{n.role}</span>
+                    <span className={`role-tag role-${n.role}`}>
+                      {n.role}
+                    </span>
                     <span className={`dot dot-${n.status}`} />
                   </button>
                 ))}
               </div>
 
-              {pending.length > 0 && (
+              {pendingList.length > 0 && (
                 <div className="nudge-row">
                   <button
                     type="button"
                     className="nudge-btn"
-                    onClick={() => pending.forEach((n) => data.nudge(n.id))}
+                    onClick={() =>
+                      pendingList.forEach((n) => data.nudge(n.id))
+                    }
                   >
-                    Nudge {pending.length} pending
+                    Nudge {pendingList.length} pending
                   </button>
                 </div>
               )}
@@ -182,6 +231,20 @@ export function ChangeFeed() {
           );
         })}
       </div>
+
+      <NotificationDrawer
+        notification={openNotification}
+        onClose={() => setOpenId(null)}
+        onAcknowledge={(id) => data.acknowledgeNotification(id)}
+      />
+
+      {pending && (
+        <ConflictPanel
+          conflicts={pending.conflicts}
+          onProceed={proceedAnyway}
+          onCancel={() => setPending(null)}
+        />
+      )}
     </>
   );
 }

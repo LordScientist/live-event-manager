@@ -5,6 +5,8 @@ export type NotificationStatus =
   | 'delivered'
   | 'acknowledged';
 
+export type Channel = 'push' | 'sms' | 'email' | 'app';
+
 export interface Person {
   id: string;
   name: string;
@@ -55,7 +57,9 @@ export interface Notification {
   personId: string;
   personName: string;
   role: Role;
-  message: string;
+  title: string;
+  body: string;
+  channel: Channel;
   status: NotificationStatus;
   acknowledgedAt?: string;
   createdAt: string;
