@@ -1,25 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Session, Venue } from '../../domain/types';
 import { useDataService } from '../../app/DataProvider';
-
-function initials(name: string) {
-  return name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
-}
 
 export function ScheduleView() {
   const data = useDataService();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [venues, setVenues] = useState<Venue[]>([]);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     setSessions(await data.getSessions());
     setVenues(await data.getVenues());
-  }
+  }, [data]);
 
   useEffect(() => {
     refresh();
-    return data.subscribeToChanges(() => { refresh(); });
-  }, [data]);
+    const unsubscribe = data.subscribeToChanges(() => {
+      refresh();
+    });
+    return unsubscribe;
+  }, [data, refresh]);
 
   const venueName = (id: string) =>
     venues.find((v) => v.id === id)?.name ?? id;

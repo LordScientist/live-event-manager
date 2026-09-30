@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { Change, Notification, Session, Venue } from '../../domain/types';
 import { useDataService } from '../../app/DataProvider';
 
@@ -27,17 +27,20 @@ export function ChangeFeed() {
   const [changes, setChanges] = useState<Change[]>([]);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
-  async function refresh() {
+  const refresh = useCallback(async () => {
     setSessions(await data.getSessions());
     setVenues(await data.getVenues());
     setChanges(await data.getChanges());
     setNotifications(await data.getNotifications());
-  }
+  }, [data]);
 
   useEffect(() => {
     refresh();
-    return data.subscribeToChanges(() => { refresh(); });
-  }, [data]);
+    const unsubscribe = data.subscribeToChanges(() => {
+      refresh();
+    });
+    return unsubscribe;
+  }, [data, refresh]);
 
   async function moveSession(sessionId: string, newVenueId: string) {
     const session = sessions.find((s) => s.id === sessionId);
