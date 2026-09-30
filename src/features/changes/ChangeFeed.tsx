@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { Change, Notification, Session, Venue } from '../../domain/types';
+import type {
+  Change, Notification, NotificationStatus, Session, Venue,
+} from '../../domain/types';
 import { useDataService } from '../../app/DataProvider';
 
 const CHANGE_LABEL: Record<Change['type'], string> = {
@@ -8,8 +10,19 @@ const CHANGE_LABEL: Record<Change['type'], string> = {
   session_cancelled: '❌ Session cancelled',
 };
 
+const STATUS_LABEL: Record<NotificationStatus, string> = {
+  pending: 'Sending…',
+  delivered: 'Delivered',
+  acknowledged: 'Acknowledged',
+};
+
 function initials(name: string) {
-  return name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
+  return name
+    .split(' ')
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
 }
 
 function timeAgo(iso: string) {
@@ -41,6 +54,13 @@ export function ChangeFeed() {
     });
     return unsubscribe;
   }, [data, refresh]);
+
+  // Re-render every second so "2s ago" and progress stay fresh
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setTick((t) => t + 1), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   async function moveSession(sessionId: string, newVenueId: string) {
     const session = sessions.find((s) => s.id === sessionId);
@@ -86,6 +106,11 @@ export function ChangeFeed() {
 
         {changes.map((c) => {
           const affected = notifications.filter((n) => n.changeId === c.id);
+          const acked = affected.filter((n) => n.status === 'acknowledged').length;
+          const total = affected.length;
+          const pct = total === 0 ? 0 : Math.round((acked / total) * 100);
+          const pending = affected.filter((n) => n.status !== 'acknowledged');
+
           return (
             <div key={c.id} className="change-card">
               <div className="change-head">
@@ -105,20 +130,54 @@ export function ChangeFeed() {
                 </div>
               )}
 
-              <div className="affected-label">
-                Reached {affected.length}{' '}
-                {affected.length === 1 ? 'person' : 'people'}
+              <div className="progress">
+                <div className="progress-bar">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+                <div className="progress-label">
+                  <span>
+                    <strong>{acked}</strong> / {total} acknowledged
+                  </span>
+                  <span className="progress-pct">{pct}%</span>
+                </div>
               </div>
 
+              <div className="affected-label">Reached</div>
               <div className="affected">
                 {affected.map((n) => (
-                  <span key={n.id} className="person">
+                  <button
+                    key={n.id}
+                    type="button"
+                    className={`person status-${n.status}`}
+                    onClick={() => data.acknowledgeNotification(n.id)}
+                    title={
+                      n.status === 'acknowledged'
+                        ? `Acknowledged ${n.acknowledgedAt ? timeAgo(n.acknowledgedAt) : ''}`
+                        : `Click to ack — ${STATUS_LABEL[n.status]}`
+                    }
+                  >
                     <span className="avatar">{initials(n.personName)}</span>
                     {n.personName}
                     <span className={`role-tag role-${n.role}`}>{n.role}</span>
-                  </span>
+                    <span className={`dot dot-${n.status}`} />
+                  </button>
                 ))}
               </div>
+
+              {pending.length > 0 && (
+                <div className="nudge-row">
+                  <button
+                    type="button"
+                    className="nudge-btn"
+                    onClick={() => pending.forEach((n) => data.nudge(n.id))}
+                  >
+                    Nudge {pending.length} pending
+                  </button>
+                </div>
+              )}
             </div>
           );
         })}

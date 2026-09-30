@@ -10,7 +10,7 @@ export class MockEventDataService implements EventDataService {
   private sessions: Session[] = [...seedSessions];
   private changes: Change[] = [];
   private notifications: Notification[] = [];
-  private listeners = new Set<(change: Change) => void>();
+  private listeners = new Set<() => void>();
 
   async getSessions() { return [...this.sessions]; }
   async getVenues(): Promise<Venue[]> { return venues; }
@@ -32,7 +32,6 @@ export class MockEventDataService implements EventDataService {
       createdAt: new Date().toISOString(),
     };
 
-    // mutate schedule
     if (change.type === 'session_moved') {
       this.sessions = this.sessions.map((s) =>
         s.id === change.sessionId
@@ -56,14 +55,13 @@ export class MockEventDataService implements EventDataService {
 
     this.changes.push(fullChange);
 
-    // ripple: find affected people, generate notifications
     const affected = await this.getPeopleForSession(change.sessionId);
-    const enrichedAffected = sessionPeople.filter(
+    const links = sessionPeople.filter(
       (sp) => sp.sessionId === change.sessionId
     );
 
     const newNotifications: Notification[] = affected.map((person) => {
-      const link = enrichedAffected.find((sp) => sp.personId === person.id);
+      const link = links.find((sp) => sp.personId === person.id);
       return {
         id: crypto.randomUUID(),
         changeId: fullChange.id,
@@ -71,14 +69,56 @@ export class MockEventDataService implements EventDataService {
         personName: person.name,
         role: link?.role ?? person.roles[0] ?? 'attendee',
         message: `${change.sessionTitle}: ${change.type.replace('_', ' ')}`,
-        read: false,
+        status: 'pending',
         createdAt: new Date().toISOString(),
       };
     });
 
     this.notifications.push(...newNotifications);
-    this.listeners.forEach((cb) => cb(fullChange));
+    this.emit();
+
+    // Simulate async delivery + acknowledgment
+    newNotifications.forEach((n) => this.scheduleDelivery(n.id));
+
     return fullChange;
+  }
+
+  private scheduleDelivery(notificationId: string) {
+    // delivered after 600ms
+    setTimeout(() => {
+      const n = this.notifications.find((x) => x.id === notificationId);
+      if (!n || n.status === 'acknowledged') return;
+      n.status = 'delivered';
+      this.emit();
+    }, 600);
+
+    // some auto-ack over the next 2–6 seconds (80% chance)
+    setTimeout(() => {
+      const n = this.notifications.find((x) => x.id === notificationId);
+      if (!n || n.status === 'acknowledged') return;
+      if (Math.random() < 0.8) {
+        n.status = 'acknowledged';
+        n.acknowledgedAt = new Date().toISOString();
+        this.emit();
+      }
+    }, 2000 + Math.random() * 4000);
+  }
+
+  async acknowledgeNotification(notificationId: string): Promise<void> {
+    const n = this.notifications.find((x) => x.id === notificationId);
+    if (!n) return;
+    n.status = 'acknowledged';
+    n.acknowledgedAt = new Date().toISOString();
+    this.emit();
+  }
+
+  async nudge(notificationId: string): Promise<void> {
+    const n = this.notifications.find((x) => x.id === notificationId);
+    if (!n) return;
+    n.status = 'pending';
+    n.acknowledgedAt = undefined;
+    this.emit();
+    this.scheduleDelivery(notificationId);
   }
 
   async getNotifications(changeId?: string): Promise<Notification[]> {
@@ -86,8 +126,12 @@ export class MockEventDataService implements EventDataService {
     return this.notifications.filter((n) => n.changeId === changeId);
   }
 
-  subscribeToChanges(callback: (change: Change) => void): () => void {
+  subscribeToChanges(callback: () => void): () => void {
     this.listeners.add(callback);
     return () => { this.listeners.delete(callback); };
+  }
+
+  private emit() {
+    this.listeners.forEach((cb) => cb());
   }
 }

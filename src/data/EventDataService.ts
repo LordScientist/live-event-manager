@@ -14,5 +14,8 @@ export interface EventDataService {
   getChanges(): Promise<Change[]>;
   getNotifications(changeId?: string): Promise<Notification[]>;
 
-  subscribeToChanges(callback: (change: Change) => void): () => void;
+  acknowledgeNotification(notificationId: string): Promise<void>;
+  nudge(notificationId: string): Promise<void>;
+
+  subscribeToChanges(callback: () => void): () => void;
 }

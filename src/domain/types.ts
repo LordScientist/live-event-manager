@@ -1,5 +1,10 @@
 export type Role = 'attendee' | 'speaker' | 'volunteer' | 'staff' | 'venue';
 
+export type NotificationStatus =
+  | 'pending'
+  | 'delivered'
+  | 'acknowledged';
+
 export interface Person {
   id: string;
   name: string;
@@ -51,6 +56,7 @@ export interface Notification {
   personName: string;
   role: Role;
   message: string;
-  read: boolean;
+  status: NotificationStatus;
+  acknowledgedAt?: string;
   createdAt: string;
 }
