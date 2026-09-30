@@ -19,6 +19,7 @@ const STATUS_LABEL: Record<NotificationStatus, string> = {
   pending: 'Sending…',
   delivered: 'Delivered',
   acknowledged: 'Acknowledged',
+  retracted: 'Retracted',
 };
 
 function initials(name: string) {
@@ -39,7 +40,7 @@ function timeAgo(iso: string) {
 }
 
 interface PendingChange {
-  proposed: Omit<Change, 'id' | 'createdAt'>;
+  proposed: Omit<Change, 'id' | 'createdAt' | 'status'>;
   conflicts: Conflict[];
 }
 
@@ -53,6 +54,7 @@ export function ChangeFeed() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [openId, setOpenId] = useState<string | null>(null);
   const [pending, setPending] = useState<PendingChange | null>(null);
+  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
     setSessions(await data.getSessions());
@@ -79,7 +81,7 @@ export function ChangeFeed() {
     const session = sessions.find((s) => s.id === sessionId);
     if (!session) return;
 
-    const proposed: Omit<Change, 'id' | 'createdAt'> = {
+    const proposed: Omit<Change, 'id' | 'createdAt' | 'status'> = {
       type: 'session_moved',
       sessionId,
       sessionTitle: session.title,
@@ -109,15 +111,21 @@ export function ChangeFeed() {
     setPending(null);
   }
 
+  async function handleUndo(changeId: string) {
+    setUndoingId(changeId);
+    await data.undoChange(changeId);
+    setTimeout(() => setUndoingId(null), 400);
+  }
+
   const venueName = (id: string) =>
     venues.find((v) => v.id === id)?.name ?? id;
 
-  // ---- Filter by current view ----
   const visibleChanges = isOrganizer
     ? changes
     : changes.filter((c) =>
         notifications.some(
-          (n) => n.changeId === c.id && n.personId === currentPersonId
+          (n) =>
+            n.changeId === c.id && n.personId === currentPersonId
         )
       );
 
@@ -158,7 +166,7 @@ export function ChangeFeed() {
       )}
 
       <h2 className="section-title">
-        {isOrganizer ? 'Change feed' : 'Changes affecting you'}
+        {isOrganizer ? 'Change timeline' : 'Changes affecting you'}
       </h2>
 
       <div className="feed">
@@ -166,7 +174,7 @@ export function ChangeFeed() {
           <div className="empty">
             {isOrganizer
               ? 'No changes yet. Move a session above to see the ripple.'
-              : "No changes affect you yet."}
+              : 'No changes affect you yet.'}
           </div>
         )}
 
@@ -175,17 +183,41 @@ export function ChangeFeed() {
           const acked = affected.filter(
             (n) => n.status === 'acknowledged'
           ).length;
-          const total = affected.length;
+          const total = affected.filter(
+            (n) => n.status !== 'retracted'
+          ).length;
           const pct = total === 0 ? 0 : Math.round((acked / total) * 100);
           const pendingList = affected.filter(
-            (n) => n.status !== 'acknowledged'
+            (n) => n.status !== 'acknowledged' && n.status !== 'retracted'
           );
+          const isUndone = c.status === 'undone';
+          const isUndoing = undoingId === c.id;
 
           return (
-            <div key={c.id} className="change-card">
+            <div
+              key={c.id}
+              className={`change-card ${isUndone ? 'undone' : ''} ${
+                isUndoing ? 'undoing' : ''
+              }`}
+            >
               <div className="change-head">
                 <span className="change-badge">{CHANGE_LABEL[c.type]}</span>
-                <span className="change-time">{timeAgo(c.createdAt)}</span>
+                <div className="change-head-right">
+                  <span className="change-time">
+                    {isUndone && c.undoneAt
+                      ? `Undone ${timeAgo(c.undoneAt)}`
+                      : timeAgo(c.createdAt)}
+                  </span>
+                  {isOrganizer && !isUndone && (
+                    <button
+                      className="undo-btn"
+                      onClick={() => handleUndo(c.id)}
+                      title="Undo this change"
+                    >
+                      ↩ Undo
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="change-headline">
@@ -204,21 +236,29 @@ export function ChangeFeed() {
                 </div>
               )}
 
-              <div className="progress">
-                <div className="progress-bar">
-                  <div
-                    className="progress-fill"
-                    style={{ width: `${pct}%` }}
-                  />
+              {isUndone && (
+                <div className="undone-banner">
+                  ↩ Reverted — schedule restored, notifications retracted
                 </div>
-                <div className="progress-label">
-                  <span>
-                    <strong>{acked}</strong> / {total}{' '}
-                    {isOrganizer ? 'acknowledged' : 'your status'}
-                  </span>
-                  <span className="progress-pct">{pct}%</span>
+              )}
+
+              {!isUndone && (
+                <div className="progress">
+                  <div className="progress-bar">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <div className="progress-label">
+                    <span>
+                      <strong>{acked}</strong> / {total}{' '}
+                      {isOrganizer ? 'acknowledged' : 'your status'}
+                    </span>
+                    <span className="progress-pct">{pct}%</span>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="affected-label">
                 {isOrganizer
@@ -233,7 +273,8 @@ export function ChangeFeed() {
                     type="button"
                     className={`person status-${n.status}`}
                     onClick={() => setOpenId(n.id)}
-                    title={`${STATUS_LABEL[n.status]}`}
+                    title={STATUS_LABEL[n.status]}
+                    disabled={n.status === 'retracted'}
                   >
                     <span className="avatar">
                       {initials(n.personName)}
@@ -247,7 +288,7 @@ export function ChangeFeed() {
                 ))}
               </div>
 
-              {isOrganizer && pendingList.length > 0 && (
+              {isOrganizer && !isUndone && pendingList.length > 0 && (
                 <div className="nudge-row">
                   <button
                     type="button"

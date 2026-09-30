@@ -511,3 +511,80 @@ button, select { font: inherit; color: inherit; }
   background: var(--accent);
   color: #0b0d12;
 }
+
+/* ============ Undo + timeline ============ */
+.change-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.undo-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.undo-btn:hover {
+  color: #f87171;
+  border-color: rgba(248,113,113,0.4);
+  background: rgba(248,113,113,0.08);
+}
+
+.change-card.undone {
+  opacity: 0.55;
+  border-color: rgba(248,113,113,0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(248,113,113,0.03) 0%,
+    var(--surface) 60%
+  );
+}
+.change-card.undone .change-headline strong {
+  text-decoration: line-through;
+  text-decoration-color: rgba(248,113,113,0.6);
+  text-decoration-thickness: 1.5px;
+}
+.change-card.undone .change-detail .new {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.change-card.undoing {
+  animation: undoPulse 0.4s ease-out;
+}
+@keyframes undoPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.985); }
+  100% { transform: scale(1); }
+}
+
+.undone-banner {
+  background: rgba(248,113,113,0.08);
+  border: 1px dashed rgba(248,113,113,0.35);
+  color: #f87171;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin: 10px 0 12px;
+}
+
+/* Retracted person chip */
+.person.status-retracted {
+  opacity: 0.35;
+  text-decoration: line-through;
+  text-decoration-color: rgba(248,113,113,0.5);
+  cursor: default;
+}
+.person.status-retracted:hover {
+  border-color: var(--border);
+}
+.dot-retracted {
+  background: #f87171;
+  opacity: 0.5;
+}

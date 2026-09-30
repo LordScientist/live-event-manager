@@ -5,6 +5,7 @@ const STATUS_LABEL: Record<NotificationStatus, string> = {
   pending: 'Sending…',
   delivered: 'Delivered',
   acknowledged: 'Acknowledged',
+  retracted: 'Retracted',
 };
 
 const CHANNEL_ICON: Record<string, string> = {

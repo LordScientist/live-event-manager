@@ -25,17 +25,24 @@ export class MockEventDataService implements EventDataService {
   }
 
   async applyChange(
-    change: Omit<Change, 'id' | 'createdAt'>
+    change: Omit<Change, 'id' | 'createdAt' | 'status'>
   ): Promise<Change> {
     const fullChange: Change = {
       ...change,
       id: crypto.randomUUID(),
+      status: 'active',
       createdAt: new Date().toISOString(),
     };
 
-    // Capture the session BEFORE mutation, so we can build accurate messages
-    const sessionBefore = this.sessions.find((s) => s.id === change.sessionId);
+    const sessionBefore = this.sessions.find(
+      (s) => s.id === change.sessionId
+    );
     if (!sessionBefore) return fullChange;
+
+    // Snapshot for cancellation undo
+    if (change.type === 'session_cancelled') {
+      fullChange.sessionSnapshot = { ...sessionBefore };
+    }
 
     // Mutate schedule
     if (change.type === 'session_moved') {
@@ -56,7 +63,9 @@ export class MockEventDataService implements EventDataService {
     }
 
     if (change.type === 'session_cancelled') {
-      this.sessions = this.sessions.filter((s) => s.id !== change.sessionId);
+      this.sessions = this.sessions.filter(
+        (s) => s.id !== change.sessionId
+      );
     }
 
     this.changes.push(fullChange);
@@ -98,17 +107,62 @@ export class MockEventDataService implements EventDataService {
     return fullChange;
   }
 
+  async undoChange(changeId: string): Promise<void> {
+    const change = this.changes.find((c) => c.id === changeId);
+    if (!change || change.status === 'undone') return;
+
+    // Revert schedule mutation
+    if (change.type === 'session_moved') {
+      this.sessions = this.sessions.map((s) =>
+        s.id === change.sessionId
+          ? { ...s, venueId: String(change.oldValue) }
+          : s
+      );
+    }
+
+    if (change.type === 'time_changed') {
+      const old = change.oldValue as { start: string; end: string };
+      this.sessions = this.sessions.map((s) =>
+        s.id === change.sessionId
+          ? { ...s, start: old.start, end: old.end }
+          : s
+      );
+    }
+
+    if (
+      change.type === 'session_cancelled' &&
+      change.sessionSnapshot
+    ) {
+      if (!this.sessions.some((s) => s.id === change.sessionSnapshot!.id)) {
+        this.sessions.push({ ...change.sessionSnapshot });
+      }
+    }
+
+    change.status = 'undone';
+    change.undoneAt = new Date().toISOString();
+
+    // Retract all notifications belonging to this change
+    this.notifications
+      .filter((n) => n.changeId === changeId)
+      .forEach((n) => {
+        n.status = 'retracted';
+        n.acknowledgedAt = undefined;
+      });
+
+    this.emit();
+  }
+
   private scheduleDelivery(notificationId: string) {
     setTimeout(() => {
       const n = this.notifications.find((x) => x.id === notificationId);
-      if (!n || n.status === 'acknowledged') return;
+      if (!n || n.status !== 'pending') return;
       n.status = 'delivered';
       this.emit();
     }, 600);
 
     setTimeout(() => {
       const n = this.notifications.find((x) => x.id === notificationId);
-      if (!n || n.status === 'acknowledged') return;
+      if (!n || n.status !== 'delivered') return;
       if (Math.random() < 0.8) {
         n.status = 'acknowledged';
         n.acknowledgedAt = new Date().toISOString();
@@ -119,7 +173,7 @@ export class MockEventDataService implements EventDataService {
 
   async acknowledgeNotification(notificationId: string): Promise<void> {
     const n = this.notifications.find((x) => x.id === notificationId);
-    if (!n) return;
+    if (!n || n.status === 'retracted') return;
     n.status = 'acknowledged';
     n.acknowledgedAt = new Date().toISOString();
     this.emit();
@@ -127,7 +181,7 @@ export class MockEventDataService implements EventDataService {
 
   async nudge(notificationId: string): Promise<void> {
     const n = this.notifications.find((x) => x.id === notificationId);
-    if (!n) return;
+    if (!n || n.status === 'retracted') return;
     n.status = 'pending';
     n.acknowledgedAt = undefined;
     this.emit();

@@ -8,8 +8,10 @@ export interface EventDataService {
   getPeopleForSession(sessionId: string): Promise<Person[]>;
 
   applyChange(
-    change: Omit<Change, 'id' | 'createdAt'>
+    change: Omit<Change, 'id' | 'createdAt' | 'status'>
   ): Promise<Change>;
+
+  undoChange(changeId: string): Promise<void>;
 
   getChanges(): Promise<Change[]>;
   getNotifications(changeId?: string): Promise<Notification[]>;

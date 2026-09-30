@@ -3,7 +3,8 @@ export type Role = 'attendee' | 'speaker' | 'volunteer' | 'staff' | 'venue';
 export type NotificationStatus =
   | 'pending'
   | 'delivered'
-  | 'acknowledged';
+  | 'acknowledged'
+  | 'retracted';
 
 export type Channel = 'push' | 'sms' | 'email' | 'app';
 
@@ -41,6 +42,8 @@ export type ChangeType =
   | 'session_cancelled'
   | 'time_changed';
 
+export type ChangeStatus = 'active' | 'undone';
+
 export interface Change {
   id: string;
   type: ChangeType;
@@ -48,6 +51,9 @@ export interface Change {
   sessionTitle: string;
   oldValue?: unknown;
   newValue?: unknown;
+  sessionSnapshot?: Session;
+  status: ChangeStatus;
+  undoneAt?: string;
   createdAt: string;
 }
 
