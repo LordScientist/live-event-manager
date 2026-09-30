@@ -10,7 +10,7 @@ export interface Conflict {
 }
 
 export interface ConflictCheckInput {
-  proposedChange: Omit<Change, 'id' | 'createdAt'>;
+  proposedChange: Omit<Change, 'id' | 'createdAt'| 'status'>;
   sessions: Session[];
   venues: Venue[];
   people: Person[];
