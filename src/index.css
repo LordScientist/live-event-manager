@@ -369,7 +369,7 @@ button, select { font: inherit; color: inherit; }
 .btn-ghost:hover { color: var(--text); border-color: #3a4357; }
 
 
-/* ============ Conflict panel ============ */
+/* ------ Conflict panel ------- */
 .conflict-backdrop {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.7);
@@ -587,4 +587,279 @@ button, select { font: inherit; color: inherit; }
 .dot-retracted {
   background: #f87171;
   opacity: 0.5;
+}
+
+/* ============================================
+   MOBILE RESPONSIVENESS
+   ============================================ */
+
+/* Tablet: stack the two-column layout earlier than default */
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .app {
+    padding: 20px 14px 48px;
+  }
+
+  /* Header stacks vertically */
+  .header {
+    margin-bottom: 20px;
+  }
+  .header-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+  .header h1 {
+    font-size: 22px;
+  }
+  .header p {
+    font-size: 12px;
+  }
+
+  /* View switcher goes full width */
+  .view-switcher {
+    width: 100%;
+    justify-content: space-between;
+    padding: 10px 12px;
+  }
+  .view-switcher select {
+    flex: 1;
+    text-align: right;
+  }
+  .view-banner {
+    font-size: 11px;
+    padding: 4px 10px;
+    margin-top: 10px;
+  }
+
+  /* Section titles smaller */
+  .section-title {
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+
+  /* Session cards */
+  .session {
+    padding: 12px 14px;
+  }
+  .session .title {
+    font-size: 14px;
+  }
+  .session .time {
+    font-size: 11px;
+  }
+
+  /* Trigger panel: label above select */
+  .trigger {
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+  .trigger-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding: 12px 0;
+  }
+  .trigger-row .label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .trigger-row select {
+    width: 100%;
+  }
+
+  /* Change cards */
+  .change-card {
+    padding: 14px;
+  }
+  .change-headline {
+    font-size: 14px;
+  }
+  .change-detail {
+    font-size: 12px;
+  }
+  .change-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+  .change-head-right {
+    gap: 6px;
+  }
+  .undo-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  /* Progress */
+  .progress-label {
+    font-size: 11px;
+  }
+
+  /* Person chips tighter */
+  .affected {
+    gap: 6px;
+  }
+  .person {
+    padding: 4px 8px 4px 4px;
+    font-size: 11px;
+    gap: 6px;
+  }
+  .avatar {
+    width: 20px;
+    height: 20px;
+    font-size: 9px;
+  }
+  .role-tag {
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  /* Nudge button full width */
+  .nudge-row {
+    margin-top: 10px;
+  }
+  .nudge-btn {
+    width: 100%;
+    padding: 10px 12px;
+  }
+
+  /* Empty state */
+  .empty {
+    padding: 24px 14px;
+    font-size: 12px;
+  }
+
+  /* Notification drawer: full-screen from the right */
+  .drawer {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 18px 16px 22px;
+    border-left: none;
+    gap: 14px;
+  }
+  .drawer-title {
+    font-size: 15px;
+  }
+  .drawer-eyebrow {
+    font-size: 10px;
+  }
+  .drawer-close {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* Phone mockup inside drawer: slimmer frame */
+  .phone {
+    padding: 10px 8px;
+    border-radius: 24px;
+  }
+  .phone-screen {
+    padding: 36px 12px 14px;
+    border-radius: 18px;
+    min-height: 260px;
+  }
+  .push-notification {
+    padding: 10px 12px;
+    border-radius: 14px;
+    gap: 8px;
+  }
+  .push-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  .push-title {
+    font-size: 12px;
+  }
+  .push-body {
+    font-size: 11px;
+  }
+  .phone-line {
+    font-size: 10px;
+  }
+
+  /* Drawer action buttons stack */
+  .drawer-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .drawer-actions .btn {
+    width: 100%;
+    padding: 12px 14px;
+  }
+
+  /* Conflict panel: bottom sheet feel, full width */
+  .conflict-backdrop {
+    padding: 14px;
+    align-items: flex-end;
+  }
+  .conflict-panel {
+    padding: 18px;
+    border-radius: 14px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .conflict-eyebrow {
+    font-size: 10px;
+  }
+  .conflict-title {
+    font-size: 16px;
+  }
+  .conflict-meta {
+    flex-wrap: wrap;
+  }
+  .conflict-item {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .conflict-icon {
+    width: 30px;
+    height: 30px;
+    font-size: 14px;
+  }
+  .conflict-message {
+    font-size: 12px;
+  }
+  .conflict-detail {
+    font-size: 11px;
+  }
+
+  /* Conflict action buttons stack */
+  .conflict-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+  .conflict-actions .btn {
+    width: 100%;
+    padding: 12px 14px;
+  }
+}
+
+/* Very small phones (iPhone SE, etc.) */
+@media (max-width: 380px) {
+  .app {
+    padding: 16px 12px 40px;
+  }
+  .header h1 {
+    font-size: 20px;
+  }
+  .person {
+    font-size: 10px;
+    padding: 3px 7px 3px 3px;
+  }
+  .avatar {
+    width: 18px;
+    height: 18px;
+    font-size: 8px;
+  }
+  .change-headline {
+    font-size: 13px;
+  }
 }
