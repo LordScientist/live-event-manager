@@ -1,9 +1,5 @@
 import type {
-  Session,
-  Person,
-  Change,
-  Notification,
-  Venue,
+  Session, Person, Change, Notification, Venue,
 } from '../domain/types';
 
 export interface EventDataService {
@@ -15,9 +11,8 @@ export interface EventDataService {
     change: Omit<Change, 'id' | 'createdAt'>
   ): Promise<Change>;
 
-  getNotifications(personId?: string): Promise<Notification[]>;
+  getChanges(): Promise<Change[]>;
+  getNotifications(changeId?: string): Promise<Notification[]>;
 
-  subscribeToChanges(
-    callback: (change: Change) => void
-  ): () => void;
+  subscribeToChanges(callback: (change: Change) => void): () => void;
 }

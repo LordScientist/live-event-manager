@@ -13,21 +13,14 @@ export interface Venue {
   capacity: number;
 }
 
-export interface EventItem {
-  id: string;
-  name: string;
-  startDate: string;
-  endDate: string;
-}
-
 export interface Session {
   id: string;
   eventId: string;
   title: string;
   speakerId: string;
   venueId: string;
-  start: string; // ISO
-  end: string;   // ISO
+  start: string;
+  end: string;
 }
 
 export interface SessionPerson {
@@ -45,6 +38,7 @@ export interface Change {
   id: string;
   type: ChangeType;
   sessionId: string;
+  sessionTitle: string;
   oldValue?: unknown;
   newValue?: unknown;
   createdAt: string;
@@ -54,6 +48,8 @@ export interface Notification {
   id: string;
   changeId: string;
   personId: string;
+  personName: string;
+  role: Role;
   message: string;
   read: boolean;
   createdAt: string;
