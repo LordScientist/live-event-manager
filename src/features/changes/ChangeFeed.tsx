@@ -3,12 +3,10 @@ import type {
   Change, Notification, NotificationStatus, Session, Venue,
 } from '../../domain/types';
 import { useDataService } from '../../app/DataProvider';
+import { useView } from '../../app/ViewContext';
 import { NotificationDrawer } from './NotificationDrawer';
 import { ConflictPanel } from './ConflictPanel';
-import {
-  detectConflicts,
-  type Conflict,
-} from '../../domain/conflicts';
+import { detectConflicts, type Conflict } from '../../domain/conflicts';
 import { people as allPeople, sessionPeople } from '../../data/mock/mockData';
 
 const CHANGE_LABEL: Record<Change['type'], string> = {
@@ -47,6 +45,8 @@ interface PendingChange {
 
 export function ChangeFeed() {
   const data = useDataService();
+  const { isOrganizer, currentPersonId } = useView();
+
   const [sessions, setSessions] = useState<Session[]>([]);
   const [venues, setVenues] = useState<Venue[]>([]);
   const [changes, setChanges] = useState<Change[]>([]);
@@ -75,10 +75,7 @@ export function ChangeFeed() {
     return () => clearInterval(id);
   }, []);
 
-  async function attemptChange(
-    sessionId: string,
-    newVenueId: string
-  ) {
+  async function attemptChange(sessionId: string, newVenueId: string) {
     const session = sessions.find((s) => s.id === sessionId);
     if (!session) return;
 
@@ -115,6 +112,21 @@ export function ChangeFeed() {
   const venueName = (id: string) =>
     venues.find((v) => v.id === id)?.name ?? id;
 
+  // ---- Filter by current view ----
+  const visibleChanges = isOrganizer
+    ? changes
+    : changes.filter((c) =>
+        notifications.some(
+          (n) => n.changeId === c.id && n.personId === currentPersonId
+        )
+      );
+
+  const visibleNotificationsForChange = (changeId: string) => {
+    const all = notifications.filter((n) => n.changeId === changeId);
+    if (isOrganizer) return all;
+    return all.filter((n) => n.personId === currentPersonId);
+  };
+
   const openNotification =
     openId != null
       ? notifications.find((n) => n.id === openId) ?? null
@@ -122,33 +134,44 @@ export function ChangeFeed() {
 
   return (
     <>
-      <div className="trigger">
-        <h2 className="section-title">Simulate a last-minute change</h2>
-        {sessions.map((s) => (
-          <div key={s.id} className="trigger-row">
-            <span className="label">{s.title}</span>
-            <select
-              value={s.venueId}
-              onChange={(e) => attemptChange(s.id, e.target.value)}
-            >
-              {venues.map((v) => (
-                <option key={v.id} value={v.id}>{v.name}</option>
-              ))}
-            </select>
-          </div>
-        ))}
-      </div>
+      {isOrganizer && (
+        <div className="trigger">
+          <h2 className="section-title">
+            Simulate a last-minute change
+          </h2>
+          {sessions.map((s) => (
+            <div key={s.id} className="trigger-row">
+              <span className="label">{s.title}</span>
+              <select
+                value={s.venueId}
+                onChange={(e) => attemptChange(s.id, e.target.value)}
+              >
+                {venues.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <h2 className="section-title">Change feed</h2>
+      <h2 className="section-title">
+        {isOrganizer ? 'Change feed' : 'Changes affecting you'}
+      </h2>
+
       <div className="feed">
-        {changes.length === 0 && (
+        {visibleChanges.length === 0 && (
           <div className="empty">
-            No changes yet. Move a session above to see the ripple.
+            {isOrganizer
+              ? 'No changes yet. Move a session above to see the ripple.'
+              : "No changes affect you yet."}
           </div>
         )}
 
-        {changes.map((c) => {
-          const affected = notifications.filter((n) => n.changeId === c.id);
+        {visibleChanges.map((c) => {
+          const affected = visibleNotificationsForChange(c.id);
           const acked = affected.filter(
             (n) => n.status === 'acknowledged'
           ).length;
@@ -171,9 +194,13 @@ export function ChangeFeed() {
 
               {c.type === 'session_moved' && (
                 <div className="change-detail">
-                  <span className="old">{venueName(String(c.oldValue))}</span>
+                  <span className="old">
+                    {venueName(String(c.oldValue))}
+                  </span>
                   <span className="arrow">→</span>
-                  <span className="new">{venueName(String(c.newValue))}</span>
+                  <span className="new">
+                    {venueName(String(c.newValue))}
+                  </span>
                 </div>
               )}
 
@@ -186,15 +213,19 @@ export function ChangeFeed() {
                 </div>
                 <div className="progress-label">
                   <span>
-                    <strong>{acked}</strong> / {total} acknowledged
+                    <strong>{acked}</strong> / {total}{' '}
+                    {isOrganizer ? 'acknowledged' : 'your status'}
                   </span>
                   <span className="progress-pct">{pct}%</span>
                 </div>
               </div>
 
               <div className="affected-label">
-                Reached — click to preview message
+                {isOrganizer
+                  ? 'Reached — click to preview message'
+                  : 'Your notification — click to preview'}
               </div>
+
               <div className="affected">
                 {affected.map((n) => (
                   <button
@@ -202,9 +233,11 @@ export function ChangeFeed() {
                     type="button"
                     className={`person status-${n.status}`}
                     onClick={() => setOpenId(n.id)}
-                    title={`Preview what ${n.personName} received — ${STATUS_LABEL[n.status]}`}
+                    title={`${STATUS_LABEL[n.status]}`}
                   >
-                    <span className="avatar">{initials(n.personName)}</span>
+                    <span className="avatar">
+                      {initials(n.personName)}
+                    </span>
                     {n.personName}
                     <span className={`role-tag role-${n.role}`}>
                       {n.role}
@@ -214,7 +247,7 @@ export function ChangeFeed() {
                 ))}
               </div>
 
-              {pendingList.length > 0 && (
+              {isOrganizer && pendingList.length > 0 && (
                 <div className="nudge-row">
                   <button
                     type="button"
@@ -238,7 +271,7 @@ export function ChangeFeed() {
         onAcknowledge={(id) => data.acknowledgeNotification(id)}
       />
 
-      {pending && (
+      {isOrganizer && pending && (
         <ConflictPanel
           conflicts={pending.conflicts}
           onProceed={proceedAnyway}
