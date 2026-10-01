@@ -155,9 +155,9 @@ export const EventRegistrationPage: React.FC = () => {
 
           <div className="reg-success-message">
             {finalStatus === 'approved' ? (
-              <p>You are officially registered for this event as a <strong>{selectedRole}</strong>. You will receive live updates when session schedules or venues change.</p>
+              <p>You are registered for this event as a {selectedRole}.</p>
             ) : (
-              <p>Your registration as a <strong>{selectedRole}</strong> has been submitted and is waiting for organizer approval. You will receive a notification as soon as it is reviewed.</p>
+              <p>Your registration has been submitted and is waiting for organizer approval.</p>
             )}
           </div>
 
@@ -191,14 +191,14 @@ export const EventRegistrationPage: React.FC = () => {
           <p className="reg-event-name">{event.name}</p>
         </div>
 
-        {/* Steps Progress Indicator (1 to 6) */}
+        {/* Steps Progress Indicator (Dynamically skips Dietary if disabled by organizer) */}
         <div className="steps-progress" aria-label="Registration Steps">
           {[
             { num: 1, label: 'About You' },
             { num: 2, label: 'Participation' },
             { num: 3, label: 'Role Details' },
             { num: 4, label: 'Accessibility' },
-            { num: 5, label: 'Dietary' },
+            ...(event.collect_dietary !== false ? [{ num: 5, label: 'Dietary' }] : []),
             { num: 6, label: 'Review' }
           ].map((s) => (
             <div
@@ -557,8 +557,13 @@ export const EventRegistrationPage: React.FC = () => {
               <Button variant="outline" size="md" onClick={() => setStep(3)} leftIcon={<ArrowLeft size={16} />}>
                 Back
               </Button>
-              <Button variant="primary" size="md" onClick={() => setStep(5)} rightIcon={<ArrowRight size={16} />}>
-                Next: Dietary Requirements
+              <Button
+                variant="primary"
+                size="md"
+                onClick={() => setStep(event.collect_dietary !== false ? 5 : 6)}
+                rightIcon={<ArrowRight size={16} />}
+              >
+                {event.collect_dietary !== false ? 'Next: Dietary Requirements' : 'Next: Review Registration'}
               </Button>
             </div>
           </div>
@@ -567,7 +572,7 @@ export const EventRegistrationPage: React.FC = () => {
         {/* ====================================================================
             STEP 5: DIETARY REQUIREMENTS (Prompt Section 12)
             ==================================================================== */}
-        {step === 5 && (
+        {step === 5 && event.collect_dietary !== false && (
           <div className="wizard-step">
             <div className="wizard-step__header">
               <Utensils size={24} className="wizard-step__icon" />
@@ -674,7 +679,12 @@ export const EventRegistrationPage: React.FC = () => {
             </div>
 
             <div className="wizard-step__nav">
-              <Button variant="outline" size="md" onClick={() => setStep(5)} leftIcon={<ArrowLeft size={16} />}>
+              <Button
+                variant="outline"
+                size="md"
+                onClick={() => setStep(event.collect_dietary !== false ? 5 : 4)}
+                leftIcon={<ArrowLeft size={16} />}
+              >
                 Back
               </Button>
               <Button

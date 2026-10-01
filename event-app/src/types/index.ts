@@ -44,6 +44,7 @@ export interface Event {
   approval_mode: ApprovalMode;
   capacity?: number;
   accessibility_info?: string; // Venue accessibility summary
+  collect_dietary?: boolean; // Organizer toggle (Section 12)
   created_at: string;
 }
 

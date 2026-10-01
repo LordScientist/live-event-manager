@@ -23,6 +23,7 @@ export const MOCK_EVENTS: EventWithMeta[] = [
     approval_mode: 'manual',
     capacity: 450,
     accessibility_info: 'Ramp access at main entrance, sign language interpreter during keynotes, priority seating reserved in rows 1-3.',
+    collect_dietary: true,
     created_at: '2026-09-01T10:00:00Z',
     organizer_name: 'KNUST Engineering Society',
     registration_status: 'registered',
