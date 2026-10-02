@@ -5,11 +5,25 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   label?: string;
   helperText?: string;
   error?: string;
+  rightElement?: React.ReactNode;
 }
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ label, helperText, error, id, className = '', ...props }, ref) => {
+  ({ label, helperText, error, rightElement, id, className = '', ...props }, ref) => {
     const inputId = id || (label ? label.toLowerCase().replace(/\s+/g, '-') : undefined);
+
+    const inputNode = (
+      <input
+        ref={ref}
+        id={inputId}
+        className={`input ${error ? 'input--error' : ''} ${rightElement ? 'input--with-right' : ''} ${className}`.trim()}
+        aria-invalid={error ? 'true' : 'false'}
+        aria-describedby={
+          error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
+        }
+        {...props}
+      />
+    );
 
     return (
       <div className="form-field">
@@ -19,16 +33,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {props.required && <span className="form-field__required" aria-hidden="true">*</span>}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          className={`input ${error ? 'input--error' : ''} ${className}`.trim()}
-          aria-invalid={error ? 'true' : 'false'}
-          aria-describedby={
-            error ? `${inputId}-error` : helperText ? `${inputId}-helper` : undefined
-          }
-          {...props}
-        />
+        {rightElement ? (
+          <div className="form-field__control-wrap">
+            {inputNode}
+            <div className="form-field__right-element">{rightElement}</div>
+          </div>
+        ) : (
+          inputNode
+        )}
         {error && (
           <p id={`${inputId}-error`} className="form-field__error" role="alert">
             {error}

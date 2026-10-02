@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Sparkles, ArrowRight } from 'lucide-react';
-import { Card, CardContent } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/StatusBadge';
+import { Search, Sparkles } from 'lucide-react';
+import { EventCard } from '../../components/events/EventCard';
 import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
 import { eventService } from '../../services/eventService';
@@ -23,6 +22,7 @@ export const MyEventsPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [activeTab, setActiveTab] = useState<TabType>('Upcoming');
   const [items, setItems] = useState<EnrichedRegistration[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,7 +38,6 @@ export const MyEventsPage: React.FC = () => {
       for (const reg of regs) {
         const foundEvt = allEvents.find((e) => e.id === reg.event_id);
         if (foundEvt) {
-          // Derive readable role name
           let roleName = 'Participant';
           if (reg.event_role_id.includes('speaker')) roleName = 'Speaker';
           else if (reg.event_role_id.includes('volunteer')) roleName = 'Volunteer';
@@ -59,35 +58,67 @@ export const MyEventsPage: React.FC = () => {
     };
   }, [currentUser.id]);
 
-  // Tab Filtering
+  // Tab & Search Filtering
   const filteredItems = useMemo(() => {
     const now = new Date().toISOString();
 
-    if (activeTab === 'Pending') {
-      return items.filter((item) => item.registration.status === 'pending');
-    }
+    return items.filter((item) => {
+      // Tab check
+      let matchesTab = false;
+      if (activeTab === 'Pending') {
+        matchesTab = item.registration.status === 'pending';
+      } else if (activeTab === 'Past') {
+        matchesTab = item.registration.status === 'approved' && item.event.end_date < now;
+      } else {
+        // 'Upcoming'
+        matchesTab = item.registration.status === 'approved' && item.event.end_date >= now;
+      }
 
-    if (activeTab === 'Past') {
-      return items.filter(
-        (item) => item.registration.status === 'approved' && item.event.end_date < now
+      if (!matchesTab) return false;
+
+      // Search check
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        item.event.name.toLowerCase().includes(q) ||
+        item.event.venue.toLowerCase().includes(q) ||
+        item.event.category.toLowerCase().includes(q) ||
+        item.roleName.toLowerCase().includes(q)
       );
-    }
-
-    // 'Upcoming' default
-    return items.filter(
-      (item) => item.registration.status === 'approved' && item.event.end_date >= now
-    );
-  }, [items, activeTab]);
+    });
+  }, [items, activeTab, searchQuery]);
 
   return (
     <div className="container my-events-page">
-      {/* Header */}
+      {/* Header: Title only, no description */}
       <div className="my-events-header">
         <h1>My Events</h1>
-        <p>Personal event hub for schedules, attendee credentials, and live change notifications.</p>
       </div>
 
-      {/* Tabs (Prompt Section 15: Upcoming | Pending | Past) */}
+      {/* Search Bar */}
+      <div className="my-events-search">
+        <Search size={18} className="my-events-search__icon" aria-hidden="true" />
+        <input
+          type="search"
+          className="my-events-search__input"
+          placeholder="Search your registered events or venues..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          aria-label="Search your events"
+        />
+        {searchQuery && (
+          <button
+            type="button"
+            className="my-events-search__clear"
+            onClick={() => setSearchQuery('')}
+            aria-label="Clear search"
+          >
+            Clear
+          </button>
+        )}
+      </div>
+
+      {/* Tabs */}
       <div className="my-events-tabs" role="tablist">
         {(['Upcoming', 'Pending', 'Past'] as const).map((tab) => {
           const count =
@@ -113,7 +144,7 @@ export const MyEventsPage: React.FC = () => {
         })}
       </div>
 
-      {/* Content Area */}
+      {/* Content Area with EventCard */}
       {isLoading ? (
         <div style={{ textAlign: 'center', padding: 'var(--space-12) 0' }}>
           <p style={{ color: 'var(--color-text-muted)' }}>Loading your events...</p>
@@ -121,48 +152,18 @@ export const MyEventsPage: React.FC = () => {
       ) : filteredItems.length > 0 ? (
         <div className="my-events-grid">
           {filteredItems.map(({ registration, event, roleName }) => {
-            // Formatted date: "October 18"
-            const formattedDate = new Date(event.start_date).toLocaleDateString('en-US', {
-              month: 'long',
-              day: 'numeric'
-            });
-
+            const isApproved = registration.status === 'approved';
             return (
-              <Card key={registration.id} variant="interactive" className="my-event-card">
-                <CardContent className="my-event-card__content">
-                  <div className="my-event-card__header">
-                    <h3 className="my-event-card__title">{event.name}</h3>
-                    <StatusBadge
-                      status={registration.status === 'approved' ? 'approved' : 'pending'}
-                      label={registration.status === 'approved' ? 'Approved' : 'Pending Review'}
-                    />
-                  </div>
-
-                  <div className="my-event-card__details">
-                    <div className="detail-row">
-                      <Calendar size={15} />
-                      <span>{formattedDate}</span>
-                    </div>
-                    <div className="detail-row">
-                      <MapPin size={15} />
-                      <span>{event.venue}</span>
-                    </div>
-                  </div>
-
-                  <div className="my-event-card__role-tag">
-                    <strong>Role:</strong> {roleName}
-                  </div>
-
-                  {/* Button: Open Event (Prompt Section 15) */}
-                  <div className="my-event-card__action">
-                    <Link to={`/my-events/${event.id}`} style={{ width: '100%' }}>
-                      <Button variant="primary" size="md" style={{ width: '100%' }} rightIcon={<ArrowRight size={16} />}>
-                        Open Event
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
+              <EventCard
+                key={registration.id}
+                event={{
+                  ...event,
+                  registration_status: isApproved ? 'registered' : 'pending',
+                  user_role_name: roleName
+                }}
+                actionUrl={isApproved ? `/my-events/${event.id}` : `/events/${event.id}`}
+                actionLabel={isApproved ? 'Open Event' : 'View Application'}
+              />
             );
           })}
         </div>
@@ -174,9 +175,13 @@ export const MyEventsPage: React.FC = () => {
           </div>
           <h3>No {activeTab.toLowerCase()} events</h3>
           <p>
-            {activeTab === 'Upcoming' && 'You have no confirmed upcoming events on your schedule.'}
-            {activeTab === 'Pending' && 'You currently have no registrations pending organizer review.'}
-            {activeTab === 'Past' && 'You do not have any past event records yet.'}
+            {searchQuery
+              ? `No ${activeTab.toLowerCase()} events match "${searchQuery}".`
+              : activeTab === 'Upcoming'
+              ? 'You have no confirmed upcoming events on your schedule.'
+              : activeTab === 'Pending'
+              ? 'You currently have no registrations pending organizer review.'
+              : 'You do not have any past event records yet.'}
           </p>
           {activeTab !== 'Past' && (
             <Link to="/events">

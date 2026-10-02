@@ -4,8 +4,9 @@ import {
   Bell,
   Lock,
   LogOut,
-  Edit2,
+  Pencil,
   Check,
+  X,
   Camera
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
@@ -13,26 +14,31 @@ import { Input } from '../../components/ui/Input';
 import { Card, CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
+import type { UserProfile } from '../../types';
 import './UserProfilePage.css';
+
+const GENDER_OPTIONS = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
+const DIETARY_OPTIONS = ['None', 'Vegetarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Nut Allergy'];
+const ACCESSIBILITY_OPTIONS = [
+  'None',
+  'Wheelchair access',
+  'Sign language / CART',
+  'Front row priority seating',
+  'Sensory quiet space'
+];
 
 export const UserProfilePage: React.FC = () => {
   const navigate = useNavigate();
   const { currentUser, updateProfile, logout } = useAuth();
 
-  const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Form State
-  const [formData, setFormData] = useState({
-    firstName: currentUser.first_name,
-    lastName: currentUser.last_name,
-    email: currentUser.email,
-    phone: currentUser.phone || '',
-    organization: currentUser.organization || '',
-    jobTitle: currentUser.job_title || ''
-  });
+  // Track which field is currently being edited inline
+  const [editingField, setEditingField] = useState<string | null>(null);
+  const [fieldValue, setFieldValue] = useState<string>('');
 
-  // Preferences State (Prompt Section 20)
+  // Preferences State
   const [preferences, setPreferences] = useState({
     emailNotifications: true,
     eventUpdateNotifications: true,
@@ -48,26 +54,28 @@ export const UserProfilePage: React.FC = () => {
   });
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
-  const handleProfileSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    updateProfile({
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      email: formData.email,
-      phone: formData.phone,
-      organization: formData.organization,
-      job_title: formData.jobTitle
-    });
-    setIsEditing(false);
-    setSuccessMessage('Profile updated successfully.');
-    setTimeout(() => setSuccessMessage(null), 3000);
+  const startEditing = (fieldKey: string, initialVal: string) => {
+    setEditingField(fieldKey);
+    setFieldValue(initialVal);
+  };
+
+  const cancelEditing = () => {
+    setEditingField(null);
+    setFieldValue('');
+  };
+
+  const saveEditing = (fieldKey: keyof UserProfile) => {
+    updateProfile({ [fieldKey]: fieldValue.trim() || undefined });
+    setEditingField(null);
+    setSuccessMessage('Field updated successfully.');
+    setTimeout(() => setSuccessMessage(null), 2500);
   };
 
   const handlePreferencesToggle = (key: keyof typeof preferences) => {
     setPreferences((prev) => {
       const updated = { ...prev, [key]: !prev[key] };
-      setSuccessMessage('Notification preferences saved.');
-      setTimeout(() => setSuccessMessage(null), 2500);
+      setSuccessMessage('Notification preference updated.');
+      setTimeout(() => setSuccessMessage(null), 2000);
       return updated;
     });
   };
@@ -96,12 +104,92 @@ export const UserProfilePage: React.FC = () => {
     navigate('/login');
   };
 
+  // Helper renderer for an inline editable field
+  const renderEditableField = (
+    label: string,
+    fieldKey: keyof UserProfile,
+    currentVal?: string,
+    options?: string[]
+  ) => {
+    const isThisFieldEditing = editingField === fieldKey;
+    const displayVal = currentVal || 'Not specified';
+
+    return (
+      <div className="profile-editable-item" key={fieldKey}>
+        <div className="profile-editable-item__header">
+          <span className="profile-editable-item__label">{label}</span>
+          {!isThisFieldEditing && (
+            <button
+              type="button"
+              className="profile-editable-item__pen-btn"
+              onClick={() => startEditing(fieldKey, currentVal || '')}
+              aria-label={`Edit ${label}`}
+              title={`Edit ${label}`}
+            >
+              <Pencil size={14} />
+            </button>
+          )}
+        </div>
+
+        {isThisFieldEditing ? (
+          <div className="profile-inline-form">
+            {options ? (
+              <select
+                className="profile-inline-select"
+                value={fieldValue}
+                onChange={(e) => setFieldValue(e.target.value)}
+                autoFocus
+              >
+                {options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type={fieldKey === 'email' ? 'email' : fieldKey === 'phone' ? 'tel' : 'text'}
+                className="profile-inline-input"
+                value={fieldValue}
+                onChange={(e) => setFieldValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') saveEditing(fieldKey);
+                  if (e.key === 'Escape') cancelEditing();
+                }}
+                autoFocus
+              />
+            )}
+            <button
+              type="button"
+              className="profile-inline-btn profile-inline-btn--save"
+              onClick={() => saveEditing(fieldKey)}
+              aria-label="Save"
+              title="Save"
+            >
+              <Check size={14} />
+            </button>
+            <button
+              type="button"
+              className="profile-inline-btn profile-inline-btn--cancel"
+              onClick={cancelEditing}
+              aria-label="Cancel"
+              title="Cancel"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        ) : (
+          <span className="profile-editable-item__val">{displayVal}</span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="container user-profile-page">
-      {/* Page Title */}
+      {/* Page Title: No description as requested */}
       <div className="profile-page-header">
         <h1>Profile & Preferences</h1>
-        <p>Manage your personal contact details, organizational affiliations, and update notifications.</p>
       </div>
 
       {successMessage && (
@@ -111,25 +199,12 @@ export const UserProfilePage: React.FC = () => {
       )}
 
       <div className="profile-layout-grid">
-        {/* Left Column: Personal & Academic Cards */}
+        {/* Left Column: Personal, Event Accommodations & Academic Cards */}
         <div className="profile-main-col">
-          {/* PERSONAL INFORMATION (Prompt Section 20) */}
+          {/* PERSONAL INFORMATION */}
           <Card className="profile-section-card">
-            <CardHeader className="profile-card-header">
-              <div className="header-title-row">
-                <CardTitle>Personal Information</CardTitle>
-                {!isEditing && (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsEditing(true)}
-                    leftIcon={<Edit2 size={14} />}
-                  >
-                    Edit Profile
-                  </Button>
-                )}
-              </div>
+            <CardHeader>
+              <CardTitle>Personal Information</CardTitle>
             </CardHeader>
             <CardContent>
               {/* Profile Photo */}
@@ -141,111 +216,58 @@ export const UserProfilePage: React.FC = () => {
                   </button>
                 </div>
                 <div className="profile-photo-info">
-                  <h3 className="profile-display-name">{currentUser.first_name} {currentUser.last_name}</h3>
-                  <span className="profile-account-tag">Registered Account (Participant & Attendee)</span>
+                  <h3 className="profile-display-name">
+                    {currentUser.first_name} {currentUser.last_name}
+                  </h3>
+                  <span className="profile-account-tag">
+                    {currentUser.account_type === 'manager'
+                      ? 'Event Manager & Operations'
+                      : 'Participant & Attendee'}
+                  </span>
                 </div>
               </div>
 
-              {!isEditing ? (
-                <div className="profile-info-fields">
-                  <div className="info-field-item">
-                    <span className="info-field-label">First Name</span>
-                    <span className="info-field-val">{currentUser.first_name}</span>
-                  </div>
-                  <div className="info-field-item">
-                    <span className="info-field-label">Last Name</span>
-                    <span className="info-field-val">{currentUser.last_name}</span>
-                  </div>
-                  <div className="info-field-item">
-                    <span className="info-field-label">Email Address</span>
-                    <span className="info-field-val">{currentUser.email}</span>
-                  </div>
-                  <div className="info-field-item">
-                    <span className="info-field-label">Phone Number</span>
-                    <span className="info-field-val">{currentUser.phone || 'Not specified'}</span>
-                  </div>
-                </div>
-              ) : (
-                <form onSubmit={handleProfileSave} className="profile-edit-form">
-                  <div className="edit-form-grid">
-                    <Input
-                      label="First name"
-                      value={formData.firstName}
-                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                      required
-                    />
-                    <Input
-                      label="Last name"
-                      value={formData.lastName}
-                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                      required
-                    />
-                  </div>
-                  <Input
-                    label="Email address"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    required
-                  />
-                  <Input
-                    label="Phone number"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    helperText="Used for SMS and urgent live updates"
-                  />
-                  <div className="form-action-buttons">
-                    <Button type="submit" variant="primary" size="sm" leftIcon={<Check size={14} />}>
-                      Save Changes
-                    </Button>
-                    <Button type="button" variant="ghost" size="sm" onClick={() => setIsEditing(false)}>
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              )}
+              {/* Editable items with pen icons beside each item */}
+              <div className="profile-editable-grid">
+                {renderEditableField('First Name', 'first_name', currentUser.first_name)}
+                {renderEditableField('Last Name', 'last_name', currentUser.last_name)}
+                {renderEditableField('Email Address', 'email', currentUser.email)}
+                {renderEditableField('Phone Number', 'phone', currentUser.phone)}
+                {renderEditableField('Gender', 'gender', currentUser.gender, GENDER_OPTIONS)}
+              </div>
             </CardContent>
           </Card>
 
-          {/* PROFESSIONAL / ACADEMIC INFORMATION (Prompt Section 20) */}
+          {/* PROFESSIONAL & ACADEMIC INFORMATION */}
           <Card className="profile-section-card">
             <CardHeader>
               <CardTitle>Professional & Academic Information</CardTitle>
             </CardHeader>
             <CardContent>
-              {!isEditing ? (
-                <div className="profile-info-fields">
-                  <div className="info-field-item">
-                    <span className="info-field-label">Organization / Institution</span>
-                    <span className="info-field-val">{currentUser.organization || 'Not provided'}</span>
-                  </div>
-                  <div className="info-field-item">
-                    <span className="info-field-label">Job Title / Programme</span>
-                    <span className="info-field-val">{currentUser.job_title || 'Not provided'}</span>
-                  </div>
-                </div>
-              ) : (
-                <div className="edit-form-grid">
-                  <Input
-                    label="Organization"
-                    value={formData.organization}
-                    onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                  />
-                  <Input
-                    label="Job title / Programme"
-                    value={formData.jobTitle}
-                    onChange={(e) => setFormData({ ...formData, jobTitle: e.target.value })}
-                  />
-                </div>
-              )}
+              <div className="profile-editable-grid">
+                {renderEditableField('Organization / Institution', 'organization', currentUser.organization)}
+                {renderEditableField('Job Title / Programme', 'job_title', currentUser.job_title)}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* EVENT REQUIREMENTS & PREFERENCES */}
+          <Card className="profile-section-card">
+            <CardHeader>
+              <CardTitle>Event Coordination & Accommodations</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="profile-editable-grid">
+                {renderEditableField('Dietary Requirement', 'dietary', currentUser.dietary, DIETARY_OPTIONS)}
+                {renderEditableField('Accessibility Accommodation', 'accessibility', currentUser.accessibility, ACCESSIBILITY_OPTIONS)}
+              </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Right Column: Preferences & Security Actions */}
         <div className="profile-side-col">
-          {/* PREFERENCES (Prompt Section 20) */}
+          {/* PREFERENCES WITH COLOR-CHANGING TOGGLE BUTTONS */}
           <Card className="profile-section-card">
             <CardHeader>
               <CardTitle style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
@@ -255,49 +277,75 @@ export const UserProfilePage: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="preferences-list">
-                <label className="preference-item">
+                <div className="preference-item">
+                  <div className="preference-item__text">
+                    <span className="preference-title">Theme appearance</span>
+                    <span className="preference-desc">Switch between clean light mode and deep dark mode.</span>
+                  </div>
+                  <ThemeToggle size="sm" />
+                </div>
+
+                <div className="preference-item">
                   <div className="preference-item__text">
                     <span className="preference-title">Email notifications</span>
-                    <span className="preference-desc">Receive registration confirmations and event tickets via email.</span>
+                    <span className="preference-desc">Receive registration confirmations and attendee credentials via email.</span>
                   </div>
-                  <input
-                    type="checkbox"
-                    checked={preferences.emailNotifications}
-                    onChange={() => handlePreferencesToggle('emailNotifications')}
-                    className="preference-toggle"
-                  />
-                </label>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.emailNotifications}
+                    className={`toggle-switch-btn ${
+                      preferences.emailNotifications ? 'toggle-switch-btn--active' : ''
+                    }`}
+                    onClick={() => handlePreferencesToggle('emailNotifications')}
+                    aria-label="Toggle email notifications"
+                  >
+                    <span className="toggle-switch-thumb" />
+                  </button>
+                </div>
 
-                <label className="preference-item">
+                <div className="preference-item">
                   <div className="preference-item__text">
                     <span className="preference-title">Event update notifications</span>
                     <span className="preference-desc">Real-time alerts when schedules or room locations change.</span>
                   </div>
-                  <input
-                    type="checkbox"
-                    checked={preferences.eventUpdateNotifications}
-                    onChange={() => handlePreferencesToggle('eventUpdateNotifications')}
-                    className="preference-toggle"
-                  />
-                </label>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.eventUpdateNotifications}
+                    className={`toggle-switch-btn ${
+                      preferences.eventUpdateNotifications ? 'toggle-switch-btn--active' : ''
+                    }`}
+                    onClick={() => handlePreferencesToggle('eventUpdateNotifications')}
+                    aria-label="Toggle event update notifications"
+                  >
+                    <span className="toggle-switch-thumb" />
+                  </button>
+                </div>
 
-                <label className="preference-item">
+                <div className="preference-item">
                   <div className="preference-item__text">
                     <span className="preference-title">Reminder notifications</span>
                     <span className="preference-desc">Notifications 1 hour before booked sessions begin.</span>
                   </div>
-                  <input
-                    type="checkbox"
-                    checked={preferences.reminderNotifications}
-                    onChange={() => handlePreferencesToggle('reminderNotifications')}
-                    className="preference-toggle"
-                  />
-                </label>
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={preferences.reminderNotifications}
+                    className={`toggle-switch-btn ${
+                      preferences.reminderNotifications ? 'toggle-switch-btn--active' : ''
+                    }`}
+                    onClick={() => handlePreferencesToggle('reminderNotifications')}
+                    aria-label="Toggle reminder notifications"
+                  >
+                    <span className="toggle-switch-thumb" />
+                  </button>
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* ACTIONS CARD (Prompt Section 20) */}
+          {/* ACTIONS CARD */}
           <Card className="profile-section-card">
             <CardHeader>
               <CardTitle>Account Actions</CardTitle>

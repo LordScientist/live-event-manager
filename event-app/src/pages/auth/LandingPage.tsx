@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { StatusBadge } from '../../components/ui/StatusBadge';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import {
   Calendar,
   Search,
@@ -29,6 +30,7 @@ export const LandingPage: React.FC = () => {
             </div>
           </div>
           <div className="landing-header__auth">
+            <ThemeToggle size="sm" />
             <Link to="/login">
               <Button variant="ghost" size="sm">
                 Login

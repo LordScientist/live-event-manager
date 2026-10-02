@@ -15,8 +15,11 @@ export interface UserProfile {
   first_name: string;
   last_name: string;
   phone?: string;
+  gender?: string;
   organization?: string;
   job_title?: string;
+  dietary?: string;
+  accessibility?: string;
   profile_photo?: string;
   account_type: AccountType;
   created_at: string; // ISO 8601

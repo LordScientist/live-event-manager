@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff, Check, X } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import './AuthPages.css';
 
 export const SignUpPage: React.FC = () => {
@@ -11,20 +13,50 @@ export const SignUpPage: React.FC = () => {
   const { signup } = useAuth();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: '',
-    organization: '',
-    jobTitle: '',
     agreeTerms: false
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
+
+  // Requirements checks
+  const requirements = useMemo(() => {
+    const pwd = formData.password;
+    const hasMinLength = pwd.length >= 6;
+    const hasNumber = /\d/.test(pwd);
+    const hasSymbol = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pwd);
+    const passwordsMatch = pwd.length > 0 && pwd === formData.confirmPassword;
+
+    return {
+      hasMinLength,
+      hasNumber,
+      hasSymbol,
+      passwordsMatch
+    };
+  }, [formData.password, formData.confirmPassword]);
+
+  // Password strength calculation
+  const strength = useMemo(() => {
+    const { hasMinLength, hasNumber, hasSymbol, passwordsMatch } = requirements;
+    let score = 0;
+    if (formData.password.length > 0) {
+      if (hasMinLength) score += 1;
+      if (hasNumber) score += 1;
+      if (hasSymbol) score += 1;
+      if (formData.password.length >= 10 || (score === 3 && passwordsMatch)) score += 1;
+    }
+
+    if (score <= 1) return { score, grade: 'weak', label: 'Weak' };
+    if (score === 2) return { score, grade: 'fair', label: 'Fair' };
+    if (score === 3) return { score, grade: 'good', label: 'Good' };
+    return { score, grade: 'strong', label: 'Strong' };
+  }, [formData.password, requirements]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -32,7 +64,7 @@ export const SignUpPage: React.FC = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    // Clear individual error
+
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -40,25 +72,28 @@ export const SignUpPage: React.FC = () => {
 
   const validate = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
-    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
-    if (formData.password !== formData.confirmPassword) {
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Confirm your password';
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
+
     if (!formData.agreeTerms) {
-      newErrors.agreeTerms = 'You must agree to the terms and conditions';
+      newErrors.agreeTerms = 'You must agree to the terms and privacy policy';
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -71,32 +106,32 @@ export const SignUpPage: React.FC = () => {
 
     setIsSubmitting(true);
 
-    // Account registration with persistent session activation
     setTimeout(() => {
       setIsSubmitting(false);
+      // Register account and immediately proceed to the independent onboarding screen
       signup({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
         email: formData.email,
-        phone: formData.phone,
-        organization: formData.organization || undefined,
-        job_title: formData.jobTitle || undefined,
         account_type: 'user'
       });
-      navigate('/');
-    }, 600);
+      navigate('/onboarding');
+    }, 400);
   };
 
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <div className="auth-card__theme-toggle">
+          <ThemeToggle size="sm" />
+        </div>
+
+        {/* Header with App Logo and Description */}
         <div className="auth-header">
-          <Link to="/welcome" className="auth-brand">
+          <Link to="/welcome" className="auth-brand" aria-label="EventCoord Home">
             <span className="brand-logo" aria-hidden="true">📡</span>
             <span className="brand-title">EventCoord</span>
           </Link>
-          <h1>Create an account</h1>
-          <p>Join to access event updates, schedules, and personalized coordination.</p>
+          <h1>Create account</h1>
+          <p className="auth-header__desc">Get started in managing your events.</p>
         </div>
 
         {generalError && (
@@ -106,32 +141,12 @@ export const SignUpPage: React.FC = () => {
         )}
 
         <form onSubmit={handleSubmit} noValidate>
-          {/* Required Fields (Prompt Section 5) */}
-          <div className="auth-grid-2">
-            <Input
-              label="First name"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              error={errors.firstName}
-              required
-              autoComplete="given-name"
-            />
-            <Input
-              label="Last name"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              error={errors.lastName}
-              required
-              autoComplete="family-name"
-            />
-          </div>
-
+          {/* Email Address */}
           <Input
-            label="Email"
+            label="Email address"
             type="email"
             name="email"
+            placeholder="you@domain.com"
             value={formData.email}
             onChange={handleChange}
             error={errors.email}
@@ -139,58 +154,131 @@ export const SignUpPage: React.FC = () => {
             autoComplete="email"
           />
 
+          {/* Password with View Toggle */}
           <Input
-            label="Phone number"
-            type="tel"
-            name="phone"
-            value={formData.phone}
+            label="Password"
+            type={showPassword ? 'text' : 'password'}
+            name="password"
+            placeholder="Create a password"
+            value={formData.password}
             onChange={handleChange}
-            error={errors.phone}
-            helperText="Used for urgent last-minute schedule and venue updates"
+            error={errors.password}
             required
-            autoComplete="tel"
+            autoComplete="new-password"
+            rightElement={
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            }
           />
 
-          <div className="auth-grid-2">
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              error={errors.password}
-              required
-              autoComplete="new-password"
-            />
-            <Input
-              label="Confirm password"
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={errors.confirmPassword}
-              required
-              autoComplete="new-password"
-            />
-          </div>
+          {/* Confirm Password with View Toggle */}
+          <Input
+            label="Confirm password"
+            type={showConfirmPassword ? 'text' : 'password'}
+            name="confirmPassword"
+            placeholder="Confirm your password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            error={errors.confirmPassword}
+            required
+            autoComplete="new-password"
+            rightElement={
+              <button
+                type="button"
+                className="password-toggle-btn"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            }
+          />
 
-          {/* Optional Fields (Prompt Section 5) */}
-          <div className="auth-grid-2">
-            <Input
-              label="Organization / School"
-              name="organization"
-              value={formData.organization}
-              onChange={handleChange}
-              helperText="Optional"
-              autoComplete="organization"
-            />
-            <Input
-              label="Job title / Programme"
-              name="jobTitle"
-              value={formData.jobTitle}
-              onChange={handleChange}
-              helperText="Optional"
-            />
+          {/* Visual Password Strength Meter */}
+          {formData.password.length > 0 && (
+            <div className="password-strength-meter" aria-live="polite">
+              <div className="password-strength-header">
+                <span className="password-strength-title">Password Strength</span>
+                <span className={`password-strength-grade password-strength-grade--${strength.grade}`}>
+                  {strength.label}
+                </span>
+              </div>
+              <div className="password-strength-track">
+                <div
+                  className={`password-strength-segment ${
+                    strength.score >= 1 ? `password-strength-segment--active-${strength.grade}` : ''
+                  }`}
+                />
+                <div
+                  className={`password-strength-segment ${
+                    strength.score >= 2 ? `password-strength-segment--active-${strength.grade}` : ''
+                  }`}
+                />
+                <div
+                  className={`password-strength-segment ${
+                    strength.score >= 3 ? `password-strength-segment--active-${strength.grade}` : ''
+                  }`}
+                />
+                <div
+                  className={`password-strength-segment ${
+                    strength.score >= 4 ? `password-strength-segment--active-${strength.grade}` : ''
+                  }`}
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Password Dynamic Requirements Checklist with Strikethrough */}
+          <div className="password-checklist" aria-label="Password requirements">
+            <div
+              className={`checklist-item ${requirements.hasMinLength ? 'checklist-item--met' : ''}`}
+            >
+              {requirements.hasMinLength ? (
+                <Check size={14} className="checklist-item__icon" />
+              ) : (
+                <X size={14} className="checklist-item__icon" />
+              )}
+              <span>6+ characters</span>
+            </div>
+
+            <div
+              className={`checklist-item ${requirements.hasNumber ? 'checklist-item--met' : ''}`}
+            >
+              {requirements.hasNumber ? (
+                <Check size={14} className="checklist-item__icon" />
+              ) : (
+                <X size={14} className="checklist-item__icon" />
+              )}
+              <span>Add a number</span>
+            </div>
+
+            <div
+              className={`checklist-item ${requirements.hasSymbol ? 'checklist-item--met' : ''}`}
+            >
+              {requirements.hasSymbol ? (
+                <Check size={14} className="checklist-item__icon" />
+              ) : (
+                <X size={14} className="checklist-item__icon" />
+              )}
+              <span>Add a symbol</span>
+            </div>
+
+            <div
+              className={`checklist-item ${requirements.passwordsMatch ? 'checklist-item--met' : ''}`}
+            >
+              {requirements.passwordsMatch ? (
+                <Check size={14} className="checklist-item__icon" />
+              ) : (
+                <X size={14} className="checklist-item__icon" />
+              )}
+              <span>Passwords match</span>
+            </div>
           </div>
 
           {/* Terms and Conditions Checkbox */}
@@ -204,11 +292,11 @@ export const SignUpPage: React.FC = () => {
               aria-invalid={errors.agreeTerms ? 'true' : 'false'}
             />
             <label htmlFor="agreeTerms" className="auth-checkbox-label">
-              I agree to the terms and conditions and privacy policy for event coordination.
+              I agree to the terms and privacy policy for event coordination.
             </label>
           </div>
           {errors.agreeTerms && (
-            <p className="form-field__error" style={{ marginTop: '-16px', marginBottom: '16px' }} role="alert">
+            <p className="form-field__error" style={{ marginTop: '-12px', marginBottom: '16px' }} role="alert">
               {errors.agreeTerms}
             </p>
           )}

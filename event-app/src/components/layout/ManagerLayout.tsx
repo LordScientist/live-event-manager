@@ -9,6 +9,7 @@ import {
   ArrowRightLeft
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from '../ui/ThemeToggle';
 import './ManagerLayout.css';
 
 export const ManagerLayout: React.FC = () => {
@@ -64,6 +65,7 @@ export const ManagerLayout: React.FC = () => {
 
           {/* Actions & Role Switcher */}
           <div className="manager-header__actions">
+            <ThemeToggle size="sm" />
             <button
               type="button"
               onClick={handleSwitchToUser}

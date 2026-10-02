@@ -7,7 +7,8 @@ import {
   MapPin,
   Clock,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  Trash2
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { notificationService } from '../../services/notificationService';
@@ -15,9 +16,12 @@ import { useAuth } from '../../context/AuthContext';
 import type { Notification } from '../../types';
 import './NotificationsPage.css';
 
+type FilterType = 'all' | 'unread' | 'urgent';
+
 export const NotificationsPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [activeFilter, setActiveFilter] = useState<FilterType>('all');
   const [isLoading, setIsLoading] = useState(true);
 
   // Load user notifications
@@ -46,7 +50,33 @@ export const NotificationsPage: React.FC = () => {
     setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
   };
 
-  // Group notifications into Today and Earlier (Prompt Section 19)
+  const handleDeleteNotification = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    await notificationService.deleteNotification(id);
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const handleClearAll = async () => {
+    if (window.confirm('Are you sure you want to clear all notifications?')) {
+      await notificationService.clearAllNotifications(currentUser.id);
+      setNotifications([]);
+    }
+  };
+
+  // Filtered list based on activeFilter
+  const filteredNotifications = useMemo(() => {
+    if (activeFilter === 'unread') {
+      return notifications.filter((n) => !n.read);
+    }
+    if (activeFilter === 'urgent') {
+      return notifications.filter(
+        (n) => n.type === 'venue_change' || n.type === 'schedule_change'
+      );
+    }
+    return notifications;
+  }, [notifications, activeFilter]);
+
+  // Group notifications into Today and Earlier
   const { todayList, earlierList, unreadCount } = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -57,6 +87,9 @@ export const NotificationsPage: React.FC = () => {
 
     notifications.forEach((item) => {
       if (!item.read) count++;
+    });
+
+    filteredNotifications.forEach((item) => {
       const itemDate = new Date(item.created_at);
       if (itemDate >= today) {
         todayItems.push(item);
@@ -66,21 +99,32 @@ export const NotificationsPage: React.FC = () => {
     });
 
     return { todayList: todayItems, earlierList: earlierItems, unreadCount: count };
-  }, [notifications]);
+  }, [notifications, filteredNotifications]);
 
-  // Icon mapping according to Prompt examples
+  // Priority queue tag and styling
+  const getPriorityBadge = (title: string, type: string) => {
+    const lower = title.toLowerCase();
+    if (type === 'venue_change' || lower.includes('venue')) {
+      return <span className="notif-priority-pill notif-priority-pill--venue">Venue Shift</span>;
+    }
+    if (type === 'schedule_change' || lower.includes('schedule') || lower.includes('time')) {
+      return <span className="notif-priority-pill notif-priority-pill--schedule">Schedule Update</span>;
+    }
+    return <span className="notif-priority-pill notif-priority-pill--status">Official Notice</span>;
+  };
+
   const getNotificationIcon = (title: string, type: string) => {
-    const lowerTitle = title.toLowerCase();
-    if (lowerTitle.includes('venue') || type === 'venue_change') {
-      return <MapPin size={18} className="notif-icon notif-icon--venue" />;
+    const lower = title.toLowerCase();
+    if (lower.includes('venue') || type === 'venue_change') {
+      return <MapPin size={20} className="notif-icon notif-icon--venue" />;
     }
-    if (lowerTitle.includes('schedule') || type === 'schedule_change') {
-      return <Clock size={18} className="notif-icon notif-icon--schedule" />;
+    if (lower.includes('schedule') || type === 'schedule_change') {
+      return <Clock size={20} className="notif-icon notif-icon--schedule" />;
     }
-    if (lowerTitle.includes('approved') || lowerTitle.includes('registration')) {
-      return <Bell size={18} className="notif-icon notif-icon--approved" />;
+    if (lower.includes('approved') || lower.includes('registration')) {
+      return <Bell size={20} className="notif-icon notif-icon--approved" />;
     }
-    return <Bell size={18} className="notif-icon notif-icon--default" />;
+    return <Bell size={20} className="notif-icon notif-icon--default" />;
   };
 
   const renderNotificationCard = (item: Notification) => {
@@ -96,38 +140,54 @@ export const NotificationsPage: React.FC = () => {
         </div>
 
         <div className="notif-card__content">
-          <div className="notif-card__header">
-            <h3 className="notif-card__title">
-              {item.title}
+          <div className="notif-card__top">
+            <div className="notif-card__title-row">
+              <h3 className="notif-card__title">{item.title}</h3>
+              {getPriorityBadge(item.title, item.type)}
+            </div>
+
+            <div className="notif-card__meta-info">
               {isUnread && <span className="unread-dot" aria-label="Unread notification" />}
-            </h3>
-            <span className="notif-card__time">
-              {new Date(item.created_at).toLocaleTimeString('en-US', {
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
-            </span>
+              <span className="notif-card__time">
+                {new Date(item.created_at).toLocaleTimeString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </span>
+            </div>
           </div>
 
           <p className="notif-card__message">{item.message}</p>
 
-          <div className="notif-card__actions">
+          <div className="notif-card__footer">
             <Link to={`/my-events/${item.event_id}`} className="notif-link">
-              <span>View details</span>
+              <span>View event details</span>
               <ArrowRight size={13} />
             </Link>
 
-            {isUnread && (
+            <div className="notif-card__footer-actions">
+              {isUnread && (
+                <button
+                  type="button"
+                  className="mark-read-btn"
+                  onClick={(e) => handleMarkAsRead(item.id, e)}
+                  title="Mark as read"
+                >
+                  <Check size={14} />
+                  <span>Mark as read</span>
+                </button>
+              )}
+
               <button
                 type="button"
-                className="mark-read-btn"
-                onClick={(e) => handleMarkAsRead(item.id, e)}
-                title="Mark as read"
+                className="delete-notif-btn"
+                onClick={(e) => handleDeleteNotification(item.id, e)}
+                title="Delete notification"
+                aria-label="Delete notification"
               >
-                <Check size={13} />
-                <span>Mark as read</span>
+                <Trash2 size={16} />
               </button>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -138,7 +198,7 @@ export const NotificationsPage: React.FC = () => {
     <div className="container notifications-page">
       {/* Header */}
       <div className="notifications-header">
-        <div>
+        <div className="notifications-header__main">
           <div className="header-badge-row">
             <h1>Notifications</h1>
             {unreadCount > 0 && (
@@ -152,38 +212,78 @@ export const NotificationsPage: React.FC = () => {
           </p>
         </div>
 
-        {unreadCount > 0 && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleMarkAllAsRead}
-            leftIcon={<CheckCheck size={16} />}
-          >
-            Mark all as read
-          </Button>
-        )}
+        <div className="notifications-header__actions">
+          {unreadCount > 0 && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleMarkAllAsRead}
+              leftIcon={<CheckCheck size={16} />}
+            >
+              Mark all read
+            </Button>
+          )}
+
+          {notifications.length > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleClearAll}
+              leftIcon={<Trash2 size={15} />}
+            >
+              Clear all
+            </Button>
+          )}
+        </div>
       </div>
+
+      {/* Queue Filter Bar */}
+      {notifications.length > 0 && (
+        <div className="notifications-queue-filter" role="tablist" aria-label="Notification queue filters">
+          <button
+            type="button"
+            className={`queue-filter-pill ${activeFilter === 'all' ? 'queue-filter-pill--active' : ''}`}
+            onClick={() => setActiveFilter('all')}
+          >
+            All Updates ({notifications.length})
+          </button>
+          <button
+            type="button"
+            className={`queue-filter-pill ${activeFilter === 'unread' ? 'queue-filter-pill--active' : ''}`}
+            onClick={() => setActiveFilter('unread')}
+          >
+            Unread ({unreadCount})
+          </button>
+          <button
+            type="button"
+            className={`queue-filter-pill ${activeFilter === 'urgent' ? 'queue-filter-pill--active' : ''}`}
+            onClick={() => setActiveFilter('urgent')}
+          >
+            Urgent Shifts & Times
+          </button>
+        </div>
+      )}
 
       {isLoading ? (
         <div style={{ textAlign: 'center', padding: 'var(--space-12) 0' }}>
           <p style={{ color: 'var(--color-text-muted)' }}>Loading notifications...</p>
         </div>
-      ) : notifications.length > 0 ? (
+      ) : filteredNotifications.length > 0 ? (
         <div className="notifications-groups">
-          {/* TODAY GROUP (Prompt Section 19) */}
+          {/* TODAY GROUP */}
           {todayList.length > 0 && (
             <section className="notifications-section">
-              <h2 className="group-heading">Today</h2>
+              <h2 className="group-heading">Today's Queue ({todayList.length})</h2>
               <div className="notif-list">
                 {todayList.map((item) => renderNotificationCard(item))}
               </div>
             </section>
           )}
 
-          {/* EARLIER GROUP (Prompt Section 19) */}
+          {/* EARLIER GROUP */}
           {earlierList.length > 0 && (
             <section className="notifications-section">
-              <h2 className="group-heading">Earlier</h2>
+              <h2 className="group-heading">Earlier History ({earlierList.length})</h2>
               <div className="notif-list">
                 {earlierList.map((item) => renderNotificationCard(item))}
               </div>
@@ -197,7 +297,11 @@ export const NotificationsPage: React.FC = () => {
             <CheckCircle2 size={36} />
           </div>
           <h3>You're all caught up!</h3>
-          <p>You have no notifications or urgent schedule changes at this time.</p>
+          <p>
+            {activeFilter !== 'all'
+              ? `No notifications found matching the "${activeFilter}" filter.`
+              : 'You have no notifications or urgent schedule changes at this time.'}
+          </p>
         </div>
       )}
     </div>

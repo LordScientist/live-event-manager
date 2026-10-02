@@ -89,5 +89,30 @@ export const notificationService = {
         resolve();
       }, 100);
     });
+  },
+
+  deleteNotification: async (notifId: string): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const index = MOCK_NOTIFICATIONS.findIndex((n) => n.id === notifId);
+        if (index !== -1) {
+          MOCK_NOTIFICATIONS.splice(index, 1);
+        }
+        resolve();
+      }, 80);
+    });
+  },
+
+  clearAllNotifications: async (userId: string): Promise<void> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        for (let i = MOCK_NOTIFICATIONS.length - 1; i >= 0; i--) {
+          if (MOCK_NOTIFICATIONS[i].user_id === userId) {
+            MOCK_NOTIFICATIONS.splice(i, 1);
+          }
+        }
+        resolve();
+      }, 100);
+    });
   }
 };
