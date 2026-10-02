@@ -15,8 +15,13 @@
 
 .auth-page--signup {
   justify-content: flex-start;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0;
+  background-color: #FAF9F9;
+  min-height: 100vh;
+}
+
+:root[data-theme="dark"] .auth-page--signup {
+  background-color: var(--color-bg-canvas);
 }
 
 /* ── Auth card (login / general) ──────────────────────────────────────────── */
@@ -31,16 +36,21 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Signup card — wider, no border/shadow, full-height feel like Figma */
+/* Signup card — 440px mobile frame matching Figma Frame 1:3 */
 .auth-card--signup {
-  max-width: 460px;
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  margin: 0 auto;
   border: none;
   border-radius: 0;
   box-shadow: none;
-  padding: 40px 28px 32px;
-  min-height: 100vh;
+  background-color: transparent;
+  padding: 36px 32px 36px;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .auth-card__theme-toggle {
@@ -293,79 +303,56 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
 
 .signup-logo__icon-img {
-  width: 36px;
+  width: 44px;
   height: auto;
   object-fit: contain;
-  margin-bottom: 4px;
-}
-
-.signup-logo__icon {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  font-weight: 900;
-  line-height: 1;
-}
-
-.lc-mark-l {
-  font-size: 36px;
-  color: #1B2559;
-  font-family: 'Georgia', serif;
-}
-
-:root[data-theme="dark"] .lc-mark-l {
-  color: #93a3f8;
-}
-
-.lc-mark-c {
-  font-size: 32px;
-  color: #E8720C;
-  font-family: 'Georgia', serif;
-  position: relative;
-  top: -2px;
+  margin-bottom: 6px;
+  display: block;
 }
 
 .signup-logo__text {
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   line-height: 1;
 }
 
 .signup-logo__live {
-  color: #1B2559;
+  color: #0C139D;
 }
 
 :root[data-theme="dark"] .signup-logo__live {
-  color: #93a3f8;
+  color: #818cf8;
 }
 
 .signup-logo__connect {
-  color: #E8720C;
+  color: #F36F12;
 }
 
 /* ── Signup Header ────────────────────────────────────────────────────────── */
 .signup-header {
   text-align: left;
-  margin-bottom: 48px;
+  margin-bottom: 36px;
 }
 
 .signup-header__title {
   font-size: 28px;
-  font-weight: 700;
-  color: var(--color-text-main);
+  font-weight: 800;
+  color: var(--color-text-main, #000000);
   line-height: 1.2;
   margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 
 .signup-header__subtitle {
   font-size: 14px;
-  color: var(--color-text-muted);
-  line-height: 1.5;
+  font-weight: 500;
+  color: var(--color-text-secondary, #475569);
+  line-height: 1.45;
   white-space: pre-line;
 }
 
@@ -373,109 +360,154 @@
 .signup-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 20px;
-  margin-bottom: 4px;
+  gap: 0 16px;
+  margin-bottom: 2px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 380px) {
   .signup-grid {
     grid-template-columns: 1fr;
     gap: 0;
   }
 }
 
-/* Tighter field spacing inside the signup form */
+/* Field spacing inside the signup form */
 .auth-card--signup .form-field {
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
-/* Labels match Figma: medium weight, dark */
+/* Labels match Figma: bold, dark, no asterisk */
 .auth-card--signup .form-field__label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--color-text-main);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-main, #000000);
   margin-bottom: 6px;
 }
 
-/* Inputs match Figma: thin 1px border, rounded, consistent height */
+.auth-card--signup .form-field__required {
+  display: none;
+}
+
+/* Inputs match Figma: solid 1.5px border, rounded, consistent height */
 .auth-card--signup .input {
-  height: 42px;
-  border: 1px solid var(--color-text-muted);
-  border-radius: var(--radius-md);
+  height: 44px;
+  border: 1.5px solid #111827;
+  border-radius: 8px;
   font-size: 14px;
-  padding: 0 12px;
-  background-color: var(--color-bg-surface);
+  padding: 0 14px;
+  background-color: var(--color-bg-surface, #ffffff);
   color: var(--color-text-main);
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+:root[data-theme="dark"] .auth-card--signup .input {
+  border-color: var(--color-border, #334155);
+  background-color: var(--color-bg-surface, #131b2e);
 }
 
 .auth-card--signup .input:focus {
-  border-color: #E8720C;
-  box-shadow: 0 0 0 2px rgba(232, 114, 12, 0.18);
+  border-color: #F36F12;
+  box-shadow: 0 0 0 2px rgba(243, 111, 18, 0.2);
+  outline: none;
 }
 
 /* ── Password hint ────────────────────────────────────────────────────────── */
 .signup-password-hint {
   font-size: 12px;
-  color: var(--color-text-muted);
-  margin-top: 0;
+  font-weight: 500;
+  color: var(--color-text-muted, #64748b);
+  margin-top: -4px;
   margin-bottom: 20px;
 }
 
 /* ── Optional section label ───────────────────────────────────────────────── */
 .signup-optional-header {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--color-text-main);
-  margin-bottom: 4px;
+  color: var(--color-text-main, #000000);
+  margin-bottom: 8px;
   margin-top: 4px;
 }
 
-/* ── Checkbox ─────────────────────────────────────────────────────────────── */
+/* ── Checkbox (Figma green box with white checkmark) ───────────────────────── */
 .signup-checkbox-group {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 12px;
+  margin-top: 18px;
   margin-bottom: 16px;
 }
 
 .signup-checkbox-group input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
   width: 22px;
   height: 22px;
-  accent-color: #E8720C;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
+  border: 2px solid #16a34a;
+  background-color: transparent;
   cursor: pointer;
+  display: inline-grid;
+  place-content: center;
   flex-shrink: 0;
+  transition: all 0.15s ease-in-out;
+}
+
+.signup-checkbox-group input[type="checkbox"]:checked {
+  background-color: #16a34a;
+  border-color: #16a34a;
+}
+
+.signup-checkbox-group input[type="checkbox"]:checked::before {
+  content: "";
+  width: 6px;
+  height: 10px;
+  border: solid #ffffff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.signup-checkbox-group input[type="checkbox"]:focus-visible {
+  outline: 2px solid #16a34a;
+  outline-offset: 2px;
 }
 
 .signup-checkbox-label {
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  line-height: 1.3;
+  font-size: 13.5px;
+  color: var(--color-text-main, #000000);
+  line-height: 1.35;
   cursor: pointer;
+}
+
+.signup-checkbox-label strong {
+  font-weight: 700;
+  color: var(--color-text-main, #000000);
 }
 
 /* ── Orange pill submit button ────────────────────────────────────────────── */
 .signup-submit-btn {
   width: 100%;
   height: 52px;
-  border-radius: var(--radius-full) !important;
-  background-color: #E8720C !important;
+  border-radius: 9999px !important;
+  background-color: #F36F12 !important;
   border: none !important;
   color: #ffffff !important;
   font-size: 16px !important;
-  font-weight: 600 !important;
-  margin-top: 56px;
-  transition: background-color 0.2s ease, transform 0.15s ease;
+  font-weight: 700 !important;
+  margin-top: 48px;
+  box-shadow: 0 2px 8px rgba(243, 111, 18, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .signup-submit-btn:hover:not(:disabled) {
-  background-color: #d0650a !important;
+  background-color: #dc5f0a !important;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(243, 111, 18, 0.35);
 }
 
 .signup-submit-btn:active:not(:disabled) {
-  background-color: #b85809 !important;
+  background-color: #b84f08 !important;
   transform: translateY(0);
 }
 
@@ -484,18 +516,20 @@
   text-align: center;
   margin-top: 20px;
   font-size: 14px;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary, #475569);
   padding-bottom: var(--space-6);
 }
 
 .signup-footer a {
-  color: var(--color-text-main);
+  color: var(--color-text-main, #000000);
   text-decoration: none;
   font-weight: 700;
+  margin-left: 3px;
 }
 
 .signup-footer a:hover {
   text-decoration: underline;
+  color: #F36F12;
 }
 
 /* ==========================================================================
