@@ -29,7 +29,7 @@ import { scheduleService } from '../../services/scheduleService';
 import { updateService } from '../../services/updateService';
 import type { EventWithMeta } from '../../services/eventService';
 import type { RegistrationDetailItem } from '../../services/registrationService';
-import type { ScheduleItem, EventUpdate, UpdateType } from '../../types';
+import type { ScheduleItem, EventUpdate, UpdateType, UpdateAudience } from '../../types';
 import './EventManagementHubPage.css';
 
 type TabKey = 'overview' | 'registrations' | 'schedule' | 'updates' | 'settings';
@@ -216,7 +216,7 @@ export const EventManagementHubPage: React.FC = () => {
         title: `Schedule Updated: ${pendingSchedulePayload.title}`,
         message: `The schedule for "${pendingSchedulePayload.title}" has been updated. Location: ${pendingSchedulePayload.venue}.`,
         type: 'schedule_change',
-        audience: (pendingSchedulePayload.audience as any) || 'all',
+        audience: (pendingSchedulePayload.audience as UpdateAudience) || 'all',
         created_by: 'usr-202-manager'
       });
       const latestUpdates = await updateService.getEventUpdates(eventId);
@@ -1037,7 +1037,7 @@ export const EventManagementHubPage: React.FC = () => {
                   <div
                     key={aud.id}
                     className={`audience-btn ${composerAudience === aud.id ? 'audience-btn--active' : ''}`}
-                    onClick={() => setComposerAudience(aud.id as any)}
+                    onClick={() => setComposerAudience(aud.id as 'all' | 'participants' | 'speakers' | 'volunteers')}
                   >
                     {aud.label}
                   </div>

@@ -20,6 +20,23 @@ import { eventService } from '../../services/eventService';
 import type { ManagerDashboardStats } from '../../services/eventService';
 import './ManagerDashboardPage.css';
 
+const formatEventDate = (dateStr: string) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+const formatActivityTime = (timestamp: string) => {
+  const diffMs = Date.now() - new Date(timestamp).getTime();
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return 'yesterday';
+};
+
 export const ManagerDashboardPage: React.FC = () => {
   const { currentUser } = useAuth();
   const [stats, setStats] = useState<ManagerDashboardStats | null>(null);
@@ -46,23 +63,6 @@ export const ManagerDashboardPage: React.FC = () => {
     if (hour < 12) return 'Good morning';
     if (hour < 17) return 'Good afternoon';
     return 'Good evening';
-  };
-
-  const formatEventDate = (dateStr: string) => {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const formatActivityTime = (timestamp: string) => {
-    const diffMs = Date.now() - new Date(timestamp).getTime();
-    const diffMins = Math.floor(diffMs / (1000 * 60));
-    if (diffMins < 60) return `${diffMins}m ago`;
-    const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours}h ago`;
-    return 'yesterday';
   };
 
   const getActivityIcon = (type: string) => {
