@@ -63,7 +63,7 @@ export const UserHomePage: React.FC = () => {
           <div className="user-home-greeting">
             <h1 className="user-home-greeting__title">{greeting}</h1>
             <p className="user-home-greeting__subtitle">
-              Discover upcoming events and stay coordinated with real-time updates.
+              Find your events and see what is happening next.
             </p>
           </div>
           <div className="user-home-header__quick-actions">

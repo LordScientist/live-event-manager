@@ -260,9 +260,9 @@ export const CreateEventPage: React.FC = () => {
       {currentStep === 1 && (
         <div className="wizard-step-card">
           <div>
-            <h2 className="wizard-step-title">Step 1 — Basic Information</h2>
+            <h2 className="wizard-step-title">Step 1: Basic Information</h2>
             <p className="wizard-step-desc">
-              Provide the core identity and summary for your event.
+              Enter the main details about your event.
             </p>
           </div>
 
@@ -362,7 +362,7 @@ export const CreateEventPage: React.FC = () => {
       {currentStep === 2 && (
         <div className="wizard-step-card">
           <div>
-            <h2 className="wizard-step-title">Step 2 — Date & Location</h2>
+            <h2 className="wizard-step-title">Step 2: Date & Location</h2>
             <p className="wizard-step-desc">
               When and where will this event take place?
             </p>
@@ -475,9 +475,9 @@ export const CreateEventPage: React.FC = () => {
       {currentStep === 3 && (
         <div className="wizard-step-card">
           <div>
-            <h2 className="wizard-step-title">Step 3 — Registration Settings</h2>
+            <h2 className="wizard-step-title">Step 3: Registration Settings</h2>
             <p className="wizard-step-desc">
-              Control registration status, approval workflows, capacity, and participating roles.
+              Set registration status, capacity limits, and attendee roles.
             </p>
           </div>
 
@@ -625,9 +625,9 @@ export const CreateEventPage: React.FC = () => {
       {currentStep === 4 && (
         <div className="wizard-step-card">
           <div>
-            <h2 className="wizard-step-title">Step 4 — Accessibility & Information to Collect</h2>
+            <h2 className="wizard-step-title">Step 4: Accessibility & Questions to Ask</h2>
             <p className="wizard-step-desc">
-              Specify what your venue supports and choose which questions to ask attendees.
+              List the venue accessibility features and pick what questions to ask attendees.
             </p>
           </div>
 
@@ -706,9 +706,9 @@ export const CreateEventPage: React.FC = () => {
       {currentStep === 5 && (
         <div className="wizard-step-card">
           <div>
-            <h2 className="wizard-step-title">Step 5 — Review & Publish</h2>
+            <h2 className="wizard-step-title">Step 5: Review & Publish</h2>
             <p className="wizard-step-desc">
-              Review your event configuration before publishing or saving as draft.
+              Check everything over before publishing or saving as draft.
             </p>
           </div>
 

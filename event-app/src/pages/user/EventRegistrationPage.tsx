@@ -221,7 +221,7 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <User size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 1 — About You</h2>
+                <h2>Step 1: About You</h2>
                 <p>We pre-filled this from your profile so you don't have to retype information.</p>
               </div>
             </div>
@@ -327,8 +327,8 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <Users size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 2 — How Are You Participating?</h2>
-                <p>Select your intended role for {event.name}. Role belongs to this event registration.</p>
+                <h2>Step 2: How Are You Participating?</h2>
+                <p>Choose how you want to participate in {event.name}.</p>
               </div>
             </div>
 
@@ -389,7 +389,7 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <Briefcase size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 3 — Role-Specific Information</h2>
+                <h2>Step 3: Role-Specific Details</h2>
                 <p>Questions tailored specifically for <strong>{selectedRole}s</strong>.</p>
               </div>
             </div>
@@ -486,7 +486,7 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <ShieldCheck size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 4 — Accessibility & Accommodations</h2>
+                <h2>Step 4: Accessibility & Support</h2>
                 <p>We ensure everyone can participate fully. This information is kept private and confidential.</p>
               </div>
             </div>
@@ -577,7 +577,7 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <Utensils size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 5 — Dietary Requirements</h2>
+                <h2>Step 5: Dietary Needs</h2>
                 <p>Food and refreshments are provided during breaks.</p>
               </div>
             </div>
@@ -629,7 +629,7 @@ export const EventRegistrationPage: React.FC = () => {
             <div className="wizard-step__header">
               <ClipboardCheck size={24} className="wizard-step__icon" />
               <div>
-                <h2>Step 6 — Review & Submit</h2>
+                <h2>Step 6: Review & Submit</h2>
                 <p>Please confirm your details before completing registration.</p>
               </div>
             </div>

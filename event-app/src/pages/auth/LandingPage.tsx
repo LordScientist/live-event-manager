@@ -49,7 +49,7 @@ export const LandingPage: React.FC = () => {
           <div className="landing-hero__content">
             <div className="landing-pill">
               <span className="landing-pill__dot" />
-              <span>Real-time event synchronization</span>
+              <span>Live updates when details change</span>
             </div>
             <h1 className="landing-hero__title">
               Stay informed. <br />
