@@ -22,6 +22,7 @@ import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { OnboardingPage } from './pages/auth/OnboardingPage';
 import { SplashScreen } from './pages/auth/SplashScreen';
+import { PresentationPage } from './pages/presentation/PresentationPage';
 
 /**
  * Route protection: Unauthenticated visitors are routed to /signup
@@ -125,6 +126,24 @@ export const App: React.FC = () => {
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="profile" element={<UserProfilePage />} />
           </Route>
+
+          {/* Product Story / Presentation Deck (Protected) */}
+          <Route
+            path="/presentation"
+            element={
+              <ProtectedRoute>
+                <PresentationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/story"
+            element={
+              <ProtectedRoute>
+                <PresentationPage />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

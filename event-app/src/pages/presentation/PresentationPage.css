@@ -1,0 +1,1090 @@
+/* ==========================================================================
+   LIVE CONNECT: PRODUCT STORY & PRESENTATION DECK
+   PowerPoint-style interactive deck explaining why Live Connect exists
+   ========================================================================== */
+
+.presentation-viewport {
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--color-bg-canvas, #fafafb);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  color: var(--color-text-main, #0f172a);
+}
+
+:root[data-theme="dark"] .presentation-viewport {
+  background-color: #0b0f19;
+}
+
+/* ── Decorative Background Graphics (Aligned with Frame 1:11) ────────────── */
+.pres-decor-top {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 180px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.9;
+}
+
+.pres-decor-bottom {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.8;
+}
+
+/* ── Presentation Deck Header Bar ────────────────────────────────────────── */
+.presentation-header {
+  position: relative;
+  z-index: 10;
+  height: 64px;
+  background-color: var(--color-bg-surface, #ffffff);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  gap: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="dark"] .presentation-header {
+  background-color: #131b2e;
+  border-bottom-color: #1e293b;
+}
+
+.presentation-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.pres-logo {
+  width: 32px;
+  height: auto;
+  display: block;
+}
+
+.pres-brand-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.pres-brand-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #0C139D;
+  line-height: 1.1;
+}
+
+:root[data-theme="dark"] .pres-brand-title {
+  color: #818cf8;
+}
+
+.pres-brand-deck {
+  font-size: 11px;
+  color: #EA580C;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ── Slide Index Tabs ────────────────────────────────────────────────────── */
+.presentation-tabs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 4px 0;
+}
+
+.presentation-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.pres-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted, #64748b);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease-in-out;
+}
+
+.pres-tab:hover {
+  background-color: #fff7ed;
+  border-color: #fdba74;
+  color: #c2410c;
+}
+
+:root[data-theme="dark"] .pres-tab:hover {
+  background-color: rgba(249, 115, 22, 0.12);
+  border-color: #f97316;
+  color: #fb923c;
+}
+
+.pres-tab--active {
+  background-color: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+}
+
+:root[data-theme="dark"] .pres-tab--active {
+  background-color: #EA580C !important;
+  border-color: #EA580C !important;
+}
+
+.pres-tab__num {
+  font-weight: 800;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.presentation-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pres-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--color-bg-surface, #ffffff);
+  color: var(--color-text-secondary, #475569);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+:root[data-theme="dark"] .pres-action-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.pres-action-btn:hover {
+  background-color: #fff7ed;
+  border-color: #f97316;
+  color: #EA580C;
+}
+
+.pres-action-btn--close {
+  background-color: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.pres-action-btn--close:hover {
+  background-color: #EA580C;
+  border-color: #EA580C;
+  color: #ffffff;
+}
+
+/* ── Stage & Slide Container ─────────────────────────────────────────────── */
+.presentation-stage {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.slide-card-container {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+
+.slide-card {
+  box-sizing: border-box;
+  background-color: var(--color-bg-surface, #ffffff);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: 20px;
+  padding: 36px 40px 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+:root[data-theme="dark"] .slide-card {
+  background-color: #131b2e;
+  border-color: #1e293b;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.slide-top-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.slide-tag-pill {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: rgba(234, 88, 12, 0.12);
+  color: #EA580C;
+}
+
+.slide-counter-chip {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted, #64748b);
+  letter-spacing: 0.04em;
+}
+
+.slide-header-block {
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+}
+
+:root[data-theme="dark"] .slide-header-block {
+  border-bottom-color: #1e293b;
+}
+
+.slide-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text-main, #0f172a);
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.slide-subtitle {
+  font-size: 15px;
+  color: var(--color-text-secondary, #475569);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.slide-body-viewport {
+  flex: 1;
+}
+
+/* ── 2-Column Slide Content Layout ───────────────────────────────────────── */
+.slide-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 36px;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .slide-layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+.lead-punch {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0C139D;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+:root[data-theme="dark"] .lead-punch {
+  color: #93a3f8;
+}
+
+.narrative-p {
+  font-size: 14.5px;
+  color: var(--color-text-secondary, #334155);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+:root[data-theme="dark"] .narrative-p {
+  color: #cbd5e1;
+}
+
+.voice-pullquote {
+  box-sizing: border-box;
+  background-color: #fff8f5;
+  border-left: 4px solid #EA580C;
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  margin: 18px 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #9a3412;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+:root[data-theme="dark"] .voice-pullquote {
+  background-color: rgba(234, 88, 12, 0.12);
+  color: #fdba74;
+  border-left-color: #f97316;
+}
+
+/* ── Slide 1 Visual: Comparison Boxes ────────────────────────────────────── */
+.comparison-box {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .comparison-box {
+  background-color: #172136;
+}
+
+.comparison-box:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .comparison-box:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.comparison-box__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.comparison-box--old .comparison-box__header {
+  color: #dc2626;
+}
+
+.comparison-box--new .comparison-box__header {
+  color: #16a34a;
+}
+
+.comparison-box__list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--color-text-secondary, #475569);
+  line-height: 1.5;
+}
+
+:root[data-theme="dark"] .comparison-box__list {
+  color: #cbd5e1;
+}
+
+.comparison-box__list li {
+  margin-bottom: 4px;
+}
+
+/* ── Slide 2 Visual: Scope Matrix ────────────────────────────────────────── */
+.scope-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.scope-card {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  padding: 16px 18px;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .scope-card {
+  background-color: #172136;
+}
+
+.scope-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .scope-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.scope-card h4 {
+  font-size: 14.5px;
+  font-weight: 800;
+  margin: 8px 0;
+  color: var(--color-text-main);
+}
+
+.scope-card__badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.scope-card__badge--out {
+  background-color: rgba(220, 38, 38, 0.12);
+  color: #dc2626;
+}
+
+.scope-card__badge--in {
+  background-color: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.scope-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.scope-pill {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 9px;
+  border-radius: 6px;
+}
+
+.scope-pill--cut {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+}
+
+:root[data-theme="dark"] .scope-pill--cut {
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.scope-pill--keep {
+  background-color: #ffffff;
+  color: #0f172a;
+  border: 1px solid var(--color-border);
+}
+
+:root[data-theme="dark"] .scope-pill--keep {
+  background-color: #1e293b;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.scope-note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 0;
+  font-style: italic;
+}
+
+/* ── Slide 3 Visual: Decoupling Pipeline ─────────────────────────────────── */
+.pipeline-card {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .pipeline-card {
+  background-color: #172136;
+}
+
+.pipeline-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .pipeline-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.user-box {
+  background-color: #ffffff;
+  border: 1.5px solid #0C139D;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+:root[data-theme="dark"] .user-box {
+  background-color: #1e293b;
+  border-color: #818cf8;
+}
+
+.user-box__title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.user-box__meta {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.arrow-down {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #EA580C;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.arrow-line {
+  width: 2px;
+  height: 18px;
+  background-color: #EA580C;
+}
+
+.event-roles-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-role-chip {
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+
+:root[data-theme="dark"] .event-role-chip {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.event-role-chip strong {
+  display: block;
+  font-size: 13px;
+  color: var(--color-text-main);
+  margin-top: 4px;
+}
+
+.event-role-chip p {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin: 2px 0 0 0;
+}
+
+.chip-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+
+.event-role-chip--speaker .chip-badge {
+  background-color: rgba(12, 19, 157, 0.12);
+  color: #0C139D;
+}
+
+.event-role-chip--volunteer .chip-badge {
+  background-color: rgba(22, 163, 74, 0.12);
+  color: #16a34a;
+}
+
+.event-role-chip--attendee .chip-badge {
+  background-color: rgba(234, 88, 12, 0.12);
+  color: #EA580C;
+}
+
+/* ── Slide 4 Visual: Flow Steps ──────────────────────────────────────────── */
+.flow-steps-card {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .flow-steps-card {
+  background-color: #172136;
+}
+
+.flow-steps-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .flow-steps-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+:root[data-theme="dark"] .flow-step {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+.flow-step--highlight {
+  border-color: #EA580C;
+  background-color: #fff8f5;
+}
+
+:root[data-theme="dark"] .flow-step--highlight {
+  background-color: rgba(234, 88, 12, 0.15);
+  border-color: #f97316;
+}
+
+.flow-step__number {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: #0f172a;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.flow-step--highlight .flow-step__number {
+  background-color: #EA580C;
+}
+
+.flow-step__content {
+  flex: 1;
+}
+
+.flow-step__title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: var(--color-text-main);
+}
+
+.flow-step__desc {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.flow-connector {
+  width: 2px;
+  height: 12px;
+  background-color: #EA580C;
+  margin-left: 26px;
+}
+
+/* ── Slide 5 Visual: Accessibility Duo ───────────────────────────────────── */
+.access-duo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.access-card {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  padding: 18px;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .access-card {
+  background-color: #172136;
+}
+
+.access-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .access-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.access-card__top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.access-card__top h4 {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin: 0;
+}
+
+.access-icon-pub {
+  color: #0C139D;
+}
+
+.access-icon-priv {
+  color: #16a34a;
+}
+
+.access-card__desc {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  margin: 0 0 10px 0;
+}
+
+.access-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.access-tag {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background-color: #ffffff;
+  color: var(--color-text-main);
+  border: 1px solid var(--color-border);
+}
+
+:root[data-theme="dark"] .access-tag {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* ── Slide 6: Closing Hero ───────────────────────────────────────────────── */
+.slide-layout--closing {
+  display: block;
+}
+
+.closing-hero-wrap {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 12px 0 20px;
+}
+
+.closing-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background-color: rgba(234, 88, 12, 0.14);
+  color: #EA580C;
+  margin-bottom: 16px;
+}
+
+.closing-heading {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+
+.closing-sub {
+  font-size: 16px;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 32px;
+}
+
+.outcome-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+@media (max-width: 680px) {
+  .outcome-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.outcome-card {
+  box-sizing: border-box;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  padding: 24px 18px;
+  text-align: center;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .outcome-card {
+  background-color: #172136;
+}
+
+.outcome-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .outcome-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+}
+
+.outcome-card__num {
+  font-size: 36px;
+  font-weight: 900;
+  color: #EA580C;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.outcome-card__label {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin-bottom: 6px;
+}
+
+.outcome-card p {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.closing-action-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.closing-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  background-color: #EA580C;
+  border: none;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3);
+  transition: all 0.2s ease;
+}
+
+.closing-back-btn:hover {
+  background-color: #c2410c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
+}
+
+.closing-tagline {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* ── Running Footer ──────────────────────────────────────────────────────── */
+.presentation-footer {
+  position: relative;
+  z-index: 10;
+  height: 64px;
+  background-color: var(--color-bg-surface, #ffffff);
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  gap: 16px;
+}
+
+:root[data-theme="dark"] .presentation-footer {
+  background-color: #131b2e;
+  border-top-color: #1e293b;
+}
+
+.pres-running-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.pres-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pres-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: none;
+  background-color: var(--color-border, #e2e8f0);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+
+:root[data-theme="dark"] .pres-dot {
+  background-color: #334155;
+}
+
+.pres-dot--active {
+  background-color: #EA580C !important;
+  width: 24px;
+  border-radius: 9999px;
+}
+
+.pres-footer__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pres-nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--color-bg-surface, #ffffff);
+  color: var(--color-text-main);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+:root[data-theme="dark"] .pres-nav-btn {
+  background-color: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.pres-nav-btn:hover:not(:disabled) {
+  background-color: #fff7ed;
+  border-color: #f97316;
+  color: #EA580C;
+}
+
+.pres-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pres-nav-btn--next {
+  background-color: #EA580C;
+  border-color: #EA580C;
+  color: #ffffff;
+}
+
+.pres-nav-btn--next:hover:not(:disabled) {
+  background-color: #c2410c;
+  border-color: #c2410c;
+  color: #ffffff;
+}
+
+/* ── Mobile presentation adjustments ─────────────────────────────────────── */
+@media (max-width: 640px) {
+  .presentation-header {
+    padding: 0 14px;
+  }
+  .presentation-tabs {
+    display: none;
+  }
+  .slide-card {
+    padding: 24px 20px 28px;
+    border-radius: 16px;
+  }
+  .slide-title {
+    font-size: 22px;
+  }
+  .presentation-footer {
+    padding: 0 14px;
+  }
+  .pres-running-title {
+    display: none;
+  }
+  .close-text {
+    display: none;
+  }
+}

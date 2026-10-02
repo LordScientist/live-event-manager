@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Home, CalendarCheck, Bell, User, ArrowRightLeft } from 'lucide-react';
+import { Home, CalendarCheck, Bell, User, ArrowRightLeft, Presentation } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import lcIcon from '../../assets/lc-icon.png';
 import './UserLayout.css';
 
 export const UserLayout: React.FC = () => {
-  const { currentUser, switchAccountType } = useAuth();
+  const { currentUser, switchAccountType, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleSwitchToManager = () => {
@@ -64,6 +64,17 @@ export const UserLayout: React.FC = () => {
 
           {/* Actions & Role Switcher */}
           <div className="user-header__actions">
+            {(isAuthenticated || Boolean(currentUser?.id)) && (
+              <Link
+                to="/presentation"
+                className="header-pres-btn"
+                title="Why Live Connect? Product Story and Presentation Deck"
+                aria-label="Why Live Connect? Product Story and Presentation Deck"
+              >
+                <Presentation size={17} aria-hidden="true" />
+                <span className="header-pres-btn__label">Why Live Connect?</span>
+              </Link>
+            )}
             <ThemeToggle size="sm" />
             <button
               type="button"

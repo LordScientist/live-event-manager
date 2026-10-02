@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import lcIcon from '../../assets/lc-icon.png';
 import splashDecorTL from '../../assets/splash-decor-top-left.png';
@@ -21,7 +21,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
   const navigate = useNavigate();
   const [isExiting, setIsExiting] = useState(false);
 
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     if (isExiting) return;
     setIsExiting(true);
     setTimeout(() => {
@@ -31,7 +31,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
         navigate('/signup');
       }
     }, 420);
-  };
+  }, [isExiting, onComplete, standalone, navigate]);
 
   useEffect(() => {
     if (!autoAdvance) return;
@@ -40,7 +40,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [autoAdvance, duration]);
+  }, [autoAdvance, duration, handleFinish]);
 
   return (
     <div

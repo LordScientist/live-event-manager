@@ -6,7 +6,8 @@ import {
   PlusCircle,
   Bell,
   User,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Presentation
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -14,7 +15,7 @@ import lcIcon from '../../assets/lc-icon.png';
 import './ManagerLayout.css';
 
 export const ManagerLayout: React.FC = () => {
-  const { currentUser, switchAccountType } = useAuth();
+  const { currentUser, switchAccountType, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
   const handleSwitchToUser = () => {
@@ -66,6 +67,17 @@ export const ManagerLayout: React.FC = () => {
 
           {/* Actions & Role Switcher */}
           <div className="manager-header__actions">
+            {(isAuthenticated || Boolean(currentUser?.id)) && (
+              <Link
+                to="/presentation"
+                className="header-pres-btn header-pres-btn--manager"
+                title="Why Live Connect? Product Story and Presentation Deck"
+                aria-label="Why Live Connect? Product Story and Presentation Deck"
+              >
+                <Presentation size={17} aria-hidden="true" />
+                <span className="header-pres-btn__label">Why Live Connect?</span>
+              </Link>
+            )}
             <ThemeToggle size="sm" />
             <button
               type="button"

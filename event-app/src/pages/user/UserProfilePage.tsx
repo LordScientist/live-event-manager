@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   Bell,
   Lock,
@@ -7,7 +7,8 @@ import {
   Pencil,
   Check,
   X,
-  Camera
+  Camera,
+  Presentation
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Input } from '../../components/ui/Input';
@@ -368,6 +369,15 @@ export const UserProfilePage: React.FC = () => {
               <CardTitle>Account Actions</CardTitle>
             </CardHeader>
             <CardContent className="account-actions-content">
+              <Link
+                to="/presentation"
+                className="profile-deck-btn"
+                title="Why Live Connect? Product Story and Presentation Deck"
+              >
+                <Presentation size={17} aria-hidden="true" style={{ flexShrink: 0 }} />
+                <span>Why Live Connect?</span>
+              </Link>
+
               <Button
                 variant="outline"
                 size="md"

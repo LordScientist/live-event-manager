@@ -56,8 +56,52 @@
 .user-home-header__quick-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   flex-shrink: 0;
+}
+
+/* On desktop, hide .user-home-header__quick-actions completely to eliminate the duplicate row with the desktop navbar */
+@media (min-width: 768px) {
+  .user-home-header__quick-actions {
+    display: none !important;
+  }
+}
+
+/* Unique mobile presentation deck button */
+.user-home-pres-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background-color: rgba(234, 88, 12, 0.12);
+  border: 1.5px solid #f97316;
+  color: #ea580c;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.18s ease-in-out;
+  flex-shrink: 0;
+}
+
+.user-home-pres-btn:hover,
+.user-home-pres-btn:focus-visible {
+  background-color: #f97316;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.28);
+}
+
+:root[data-theme="dark"] .user-home-pres-btn {
+  background-color: rgba(249, 115, 22, 0.18);
+  border-color: #fb923c;
+  color: #fb923c;
+}
+
+:root[data-theme="dark"] .user-home-pres-btn:hover,
+:root[data-theme="dark"] .user-home-pres-btn:focus-visible {
+  background-color: #f97316;
+  color: #ffffff;
 }
 
 .user-home-bell-btn {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Bell, Sparkles, Calendar, MapPin, ArrowRight, Radio } from 'lucide-react';
+import { Search, Bell, Sparkles, Calendar, MapPin, ArrowRight, Radio, Presentation } from 'lucide-react';
 import { EventCard } from '../../components/events/EventCard';
 import { Button } from '../../components/ui/Button';
 import { StatusBadge } from '../../components/ui/StatusBadge';
@@ -16,7 +16,7 @@ const CATEGORIES = ['All', 'Conference', 'Workshop', 'Seminar', 'Career', 'Commu
 type Category = typeof CATEGORIES[number];
 
 export const UserHomePage: React.FC = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, isAuthenticated } = useAuth();
   const [events, setEvents] = useState<EventWithMeta[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -96,6 +96,16 @@ export const UserHomePage: React.FC = () => {
             </h1>
           </div>
           <div className="user-home-header__quick-actions">
+            {(isAuthenticated || Boolean(currentUser?.id)) && (
+              <Link
+                to="/presentation"
+                className="user-home-pres-btn"
+                title="Why Live Connect? Product Story and Presentation Deck"
+                aria-label="Why Live Connect? Product Story and Presentation Deck"
+              >
+                <Presentation size={19} aria-hidden="true" />
+              </Link>
+            )}
             <ThemeToggle size="sm" />
             <Link to="/notifications" className="user-home-bell-btn" aria-label="View notifications">
               <Bell size={22} />

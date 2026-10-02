@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 export type Theme = 'light' | 'dark';
@@ -75,7 +76,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Initial mount application (without transition to avoid initial flash)
   useEffect(() => {
     applyTheme(theme, false);
-  }, []);
+  }, [applyTheme, theme]);
 
   // Listen for system theme changes if user hasn't explicitly set preference
   useEffect(() => {
