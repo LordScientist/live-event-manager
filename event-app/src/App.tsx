@@ -10,6 +10,7 @@ import { EventUpdatesPage } from './pages/user/EventUpdatesPage';
 import { EventRegistrationPage } from './pages/user/EventRegistrationPage';
 import { MyEventsPage } from './pages/user/MyEventsPage';
 import { MyEventExperiencePage } from './pages/user/MyEventExperiencePage';
+import { NotificationsPage } from './pages/user/NotificationsPage';
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
@@ -37,7 +38,7 @@ export const App: React.FC = () => {
             <Route path="events/:id/register" element={<EventRegistrationPage />} />
             <Route path="my-events" element={<MyEventsPage />} />
             <Route path="my-events/:id" element={<MyEventExperiencePage />} />
-            <Route path="notifications" element={<div className="container" style={{ padding: 'var(--space-6)' }}><h2>Notifications & Live Updates</h2></div>} />
+            <Route path="notifications" element={<NotificationsPage />} />
             <Route path="profile" element={<div className="container" style={{ padding: 'var(--space-6)' }}><h2>User Profile</h2></div>} />
           </Route>
 
