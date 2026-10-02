@@ -68,8 +68,57 @@ export const scheduleService = {
   getEventSchedule: async (eventId: string): Promise<ScheduleItem[]> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(MOCK_SCHEDULE[eventId] || []);
+        resolve(MOCK_SCHEDULE[eventId] ? [...MOCK_SCHEDULE[eventId]] : []);
       }, 100);
+    });
+  },
+
+  addScheduleItem: async (eventId: string, item: Omit<ScheduleItem, 'id' | 'event_id'>): Promise<ScheduleItem> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newItem: ScheduleItem = {
+          ...item,
+          id: `sch-${Date.now().toString(36)}`,
+          event_id: eventId
+        };
+        if (!MOCK_SCHEDULE[eventId]) {
+          MOCK_SCHEDULE[eventId] = [];
+        }
+        MOCK_SCHEDULE[eventId].push(newItem);
+        resolve(newItem);
+      }, 150);
+    });
+  },
+
+  updateScheduleItem: async (
+    eventId: string,
+    itemId: string,
+    updates: Partial<ScheduleItem>
+  ): Promise<ScheduleItem | null> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const items = MOCK_SCHEDULE[eventId] || [];
+        const index = items.findIndex((i) => i.id === itemId);
+        if (index !== -1) {
+          items[index] = { ...items[index], ...updates };
+          resolve(items[index]);
+        } else {
+          resolve(null);
+        }
+      }, 150);
+    });
+  },
+
+  deleteScheduleItem: async (eventId: string, itemId: string): Promise<boolean> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (MOCK_SCHEDULE[eventId]) {
+          MOCK_SCHEDULE[eventId] = MOCK_SCHEDULE[eventId].filter((i) => i.id !== itemId);
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      }, 150);
     });
   }
 };

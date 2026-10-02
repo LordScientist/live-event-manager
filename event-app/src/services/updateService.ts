@@ -1,4 +1,5 @@
 import type { EventUpdate } from '../types';
+import { MOCK_NOTIFICATIONS } from './notificationService';
 
 export const MOCK_UPDATES: Record<string, EventUpdate[]> = {
   'evt-knust-2026': [
@@ -51,8 +52,42 @@ export const updateService = {
   getEventUpdates: async (eventId: string): Promise<EventUpdate[]> => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        resolve(MOCK_UPDATES[eventId] || []);
+        resolve(MOCK_UPDATES[eventId] ? [...MOCK_UPDATES[eventId]] : []);
       }, 100);
+    });
+  },
+
+  createEventUpdate: async (
+    update: Omit<EventUpdate, 'id' | 'created_at'>
+  ): Promise<EventUpdate> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const newUpdate: EventUpdate = {
+          ...update,
+          id: `upd-${Date.now().toString(36)}`,
+          created_at: new Date().toISOString()
+        };
+
+        if (!MOCK_UPDATES[update.event_id]) {
+          MOCK_UPDATES[update.event_id] = [];
+        }
+        MOCK_UPDATES[update.event_id].unshift(newUpdate);
+
+        // Also push a live notification for participants (Prompt Section 33)
+        MOCK_NOTIFICATIONS.unshift({
+          id: `notif-${Date.now().toString(36)}`,
+          user_id: 'usr-101-regular',
+          event_id: update.event_id,
+          update_id: newUpdate.id,
+          title: newUpdate.title,
+          message: newUpdate.message,
+          type: newUpdate.type,
+          read: false,
+          created_at: newUpdate.created_at
+        });
+
+        resolve(newUpdate);
+      }, 200);
     });
   }
 };

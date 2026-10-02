@@ -15,6 +15,7 @@ import { UserProfilePage } from './pages/user/UserProfilePage';
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerEventsPage } from './pages/manager/ManagerEventsPage';
 import { CreateEventPage } from './pages/manager/CreateEventPage';
+import { EventManagementHubPage } from './pages/manager/EventManagementHubPage';
 import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
@@ -49,9 +50,11 @@ export const App: React.FC = () => {
           <Route path="/manager" element={<ManagerLayout />}>
             <Route index element={<ManagerDashboardPage />} />
             <Route path="events" element={<ManagerEventsPage />} />
+            <Route path="events/:id" element={<EventManagementHubPage />} />
+            <Route path="events/:id/settings" element={<EventManagementHubPage />} />
             <Route path="create-event" element={<CreateEventPage />} />
-            <Route path="notifications" element={<div style={{ padding: 'var(--space-4)' }}><h2>Manager Notifications</h2></div>} />
-            <Route path="profile" element={<div style={{ padding: 'var(--space-4)' }}><h2>Organizer Profile</h2></div>} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="profile" element={<UserProfilePage />} />
           </Route>
 
           {/* Fallback */}

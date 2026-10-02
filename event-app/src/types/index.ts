@@ -101,6 +101,7 @@ export interface ScheduleItem {
   venue: string; // Room / Hall
   speaker_id?: string;
   speaker_name?: string;
+  audience?: string;
 }
 
 /**
@@ -112,7 +113,7 @@ export type UpdateType =
   | 'speaker_change'
   | 'general_announcement'
   | 'emergency';
-export type UpdateAudience = 'all' | 'speakers' | 'volunteers' | 'attendees' | 'approved';
+export type UpdateAudience = 'all' | 'speakers' | 'volunteers' | 'attendees' | 'participants' | 'approved';
 
 export interface EventUpdate {
   id: string; // UUID
