@@ -163,13 +163,34 @@
 }
 
 .overview-stat-card {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  box-sizing: border-box;
+  background-color: var(--color-surface, #ffffff);
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .overview-stat-card {
+  background-color: #172136;
+  border-color: #1e293b;
+}
+
+.overview-stat-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .overview-stat-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
 }
 
 .overview-stat-card__label {
@@ -495,6 +516,17 @@
   gap: var(--space-4);
 }
 
+@media (max-width: 640px) {
+  .schedule-mgmt-card {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .schedule-mgmt-card__time {
+    min-width: auto;
+    align-self: flex-start;
+  }
+}
+
 .schedule-mgmt-card__time {
   min-width: 140px;
   font-size: var(--text-xs);
@@ -504,10 +536,12 @@
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   text-align: center;
+  flex-shrink: 0;
 }
 
 .schedule-mgmt-card__content {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
@@ -517,6 +551,7 @@
   font-size: var(--text-base);
   font-weight: 700;
   color: var(--color-text-main);
+  word-break: break-word;
 }
 
 .schedule-mgmt-card__desc {

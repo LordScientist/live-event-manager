@@ -9,6 +9,7 @@ import { EventDetailsPage } from './pages/user/EventDetailsPage';
 import { EventSchedulePage } from './pages/user/EventSchedulePage';
 import { EventUpdatesPage } from './pages/user/EventUpdatesPage';
 import { EventRegistrationPage } from './pages/user/EventRegistrationPage';
+import { EventAccessibilityPage } from './pages/user/EventAccessibilityPage';
 import { MyEventsPage } from './pages/user/MyEventsPage';
 import { MyEventExperiencePage } from './pages/user/MyEventExperiencePage';
 import { NotificationsPage } from './pages/user/NotificationsPage';
@@ -17,10 +18,10 @@ import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerEventsPage } from './pages/manager/ManagerEventsPage';
 import { CreateEventPage } from './pages/manager/CreateEventPage';
 import { EventManagementHubPage } from './pages/manager/EventManagementHubPage';
-import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { OnboardingPage } from './pages/auth/OnboardingPage';
+import { SplashScreen } from './pages/auth/SplashScreen';
 
 /**
  * Route protection: Unauthenticated visitors are routed to /signup
@@ -55,8 +56,9 @@ export const App: React.FC = () => {
       <AuthProvider>
         <BrowserRouter>
         <Routes>
-          {/* Welcome / Landing Screen (Public) */}
-          <Route path="/welcome" element={<LandingPage />} />
+          {/* Welcome / Splash Screen (Public) */}
+          <Route path="/welcome" element={<SplashScreen standalone />} />
+          <Route path="/splash" element={<SplashScreen standalone />} />
 
           {/* Authentication Screens (Public only) */}
           <Route
@@ -96,6 +98,7 @@ export const App: React.FC = () => {
             <Route index element={<UserHomePage />} />
             <Route path="events" element={<UserHomePage />} />
             <Route path="events/:id" element={<EventDetailsPage />} />
+            <Route path="events/:id/accessibility" element={<EventAccessibilityPage />} />
             <Route path="events/:id/schedule" element={<EventSchedulePage />} />
             <Route path="events/:id/updates" element={<EventUpdatesPage />} />
             <Route path="events/:id/register" element={<EventRegistrationPage />} />

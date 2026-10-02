@@ -84,9 +84,11 @@ export const ManagerDashboardPage: React.FC = () => {
     <div className="manager-dashboard">
       {/* Header & Quick Action (Prompt Section 21) */}
       <div className="manager-dashboard__header">
-        <div>
+        <div className="manager-dashboard__greeting-block">
+          <span className="manager-dashboard__salutation">{getGreeting()},</span>
           <h1 className="manager-dashboard__greeting">
-            {getGreeting()}, {currentUser.first_name}
+            {currentUser.first_name || 'Organizer'}
+            <span className="greeting-wave" aria-hidden="true">👋</span>
           </h1>
           <p className="manager-dashboard__subtitle">
             Coordinate schedules, track registrations, and publish live event updates.

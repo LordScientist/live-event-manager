@@ -19,6 +19,8 @@ import { updateService } from '../../services/updateService';
 import { registrationService } from '../../services/registrationService';
 import { useAuth } from '../../context/AuthContext';
 import type { ScheduleItem, EventUpdate, Registration } from '../../types';
+import decorTopRight from '../../assets/updates-decor-top-right.png';
+import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './MyEventExperiencePage.css';
 
 export const MyEventExperiencePage: React.FC = () => {
@@ -97,14 +99,29 @@ export const MyEventExperiencePage: React.FC = () => {
   };
 
   return (
-    <div className="container experience-page">
-      {/* Top Back Navigation */}
-      <div className="experience-back">
-        <button type="button" onClick={() => navigate('/my-events')} className="back-btn">
-          <ArrowLeft size={16} />
-          <span>Back to My Events</span>
-        </button>
-      </div>
+    <div className="experience-page">
+      {/* Decorative background shapes */}
+      <img
+        src={decorTopRight}
+        alt=""
+        className="experience-decor-top-right"
+        aria-hidden="true"
+      />
+      <img
+        src={decorBottomRight}
+        alt=""
+        className="experience-decor-bottom-right"
+        aria-hidden="true"
+      />
+
+      <div className="experience-content-wrap">
+        {/* Top Back Navigation */}
+        <div className="experience-back">
+          <button type="button" onClick={() => navigate('/my-events')} className="experience-back-btn">
+            <ArrowLeft size={18} />
+            <span>Back to My Events</span>
+          </button>
+        </div>
 
       {/* Header (Prompt Section 16: Event Name + Role: You are attending as a Volunteer) */}
       <header className="experience-header">
@@ -295,6 +312,7 @@ export const MyEventExperiencePage: React.FC = () => {
             </CardContent>
           </Card>
         </aside>
+      </div>
       </div>
     </div>
   );

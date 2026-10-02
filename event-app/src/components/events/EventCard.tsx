@@ -65,7 +65,9 @@ export const EventCard: React.FC<EventCardProps> = ({ event, actionUrl, actionLa
         />
         <div className="event-card__badges">
           <span className="event-card__category">{event.category}</span>
-          <StatusBadge status={badgeConfig.status} label={badgeConfig.label} />
+          <div className="event-card__status-wrap">
+            <StatusBadge status={badgeConfig.status} label={badgeConfig.label} />
+          </div>
         </div>
       </div>
 

@@ -1,0 +1,212 @@
+/* ==========================================================================
+   FIGMA — SPLASH / INTRO SCREEN (Node 1:2)
+   Mobile-first design: 414 × 896 viewport
+   Palette: Orange #F36F12, Cobalt Blue #0C139D, Black #000000, White #FFFFFF
+   ========================================================================== */
+
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+:root[data-theme="dark"] .splash-screen {
+  background-color: var(--color-bg-canvas);
+}
+
+.splash-screen--exiting {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+/* ── Top-Left Decorative Shapes ─────────────────────────────────────────── */
+.splash-decor-tl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 175px;
+  max-width: 44vw;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  animation: splashDecorFadeIn 0.8s ease-out both;
+}
+
+/* ── Bottom-Right Decorative Shapes ─────────────────────────────────────── */
+.splash-decor-br {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 210px;
+  max-width: 52vw;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  animation: splashDecorFadeIn 0.8s ease-out both;
+}
+
+:root[data-theme="dark"] .splash-decor-tl,
+:root[data-theme="dark"] .splash-decor-br {
+  opacity: 0.85;
+}
+
+/* ── Center Content Container ────────────────────────────────────────────── */
+.splash-center-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 24px;
+  z-index: 2;
+  position: relative;
+}
+
+/* ── LC Mark Icon ────────────────────────────────────────────────────────── */
+.splash-logo-mark {
+  width: 136px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 24px;
+  animation: splashLogoScale 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (max-width: 380px) {
+  .splash-logo-mark {
+    width: 118px;
+    margin-bottom: 18px;
+  }
+}
+
+/* ── Brand Title: LIVE CONNECT ───────────────────────────────────────────── */
+.splash-brand-title {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1.15;
+  margin-bottom: 30px;
+  font-family: var(--font-sans);
+  animation: splashTextSlideUp 0.75s 0.15s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.splash-brand-live {
+  color: #0C139D;
+}
+
+:root[data-theme="dark"] .splash-brand-live {
+  color: #818cf8;
+}
+
+.splash-brand-connect {
+  color: #F36F12;
+}
+
+/* ── Tagline: Where Events Come to life. ─────────────────────────────────── */
+.splash-tagline {
+  font-size: 19px;
+  font-weight: 800;
+  font-style: italic;
+  color: #000000;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
+  margin: 0;
+  font-family: var(--font-sans);
+  animation: splashTextSlideUp 0.75s 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+:root[data-theme="dark"] .splash-tagline {
+  color: #ffffff;
+}
+
+@media (max-width: 380px) {
+  .splash-brand-title {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+  .splash-tagline {
+    font-size: 17px;
+  }
+}
+
+/* ── Bottom Subtle Pulse Indicator / Skip Prompt ─────────────────────────── */
+.splash-loader-bar {
+  position: absolute;
+  bottom: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+  opacity: 0.6;
+  animation: splashPulse 1.8s ease-in-out infinite;
+}
+
+.splash-loader-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #F36F12;
+  border-radius: 50%;
+}
+
+.splash-loader-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* ── Keyframe Animations ─────────────────────────────────────────────────── */
+@keyframes splashLogoScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes splashTextSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes splashDecorFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes splashPulse {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}

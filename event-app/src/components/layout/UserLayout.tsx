@@ -1,8 +1,9 @@
 import React from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Home, CalendarCheck, Bell, User, ArrowRightLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import lcIcon from '../../assets/lc-icon.png';
 import './UserLayout.css';
 
 export const UserLayout: React.FC = () => {
@@ -19,13 +20,13 @@ export const UserLayout: React.FC = () => {
       {/* Top Header */}
       <header className="user-header">
         <div className="container user-header__inner">
-          <div className="user-header__brand">
-            <span className="brand-logo" aria-hidden="true">📡</span>
+          <Link to="/" className="user-header__brand" aria-label="Live Connect Home">
+            <img src={lcIcon} alt="Live Connect" className="brand-logo-img" />
             <div className="brand-text">
-              <span className="brand-title">EventCoord</span>
+              <span className="brand-title">Live Connect</span>
               <span className="brand-subtitle">Participant Portal</span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="user-header__nav desktop-only" aria-label="Main Navigation">

@@ -12,6 +12,8 @@ import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { scheduleService } from '../../services/scheduleService';
 import type { ScheduleItem } from '../../types';
+import decorTopRight from '../../assets/updates-decor-top-right.png';
+import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './EventSchedulePage.css';
 
 interface EnrichedScheduleItem extends ScheduleItem {
@@ -110,25 +112,37 @@ export const EventSchedulePage: React.FC = () => {
   });
 
   return (
-    <div className="container event-schedule-page">
-      {/* Top Back Navigation */}
-      <div className="schedule-back">
-        <button type="button" onClick={() => navigate(-1)} className="back-btn">
-          <ArrowLeft size={16} />
-          <span>Back to Event</span>
-        </button>
-      </div>
+    <div className="event-schedule-page">
+      {/* Decorative background shapes */}
+      <img
+        src={decorTopRight}
+        alt=""
+        className="schedule-decor-top-right"
+        aria-hidden="true"
+      />
+      <img
+        src={decorBottomRight}
+        alt=""
+        className="schedule-decor-bottom-right"
+        aria-hidden="true"
+      />
 
-      {/* Header */}
-      <div className="schedule-header">
-        <div>
-          <span className="schedule-event-label">{event.name}</span>
-          <h1 className="schedule-page-title">Event Schedule</h1>
-          <p className="schedule-page-subtitle">
-            Timeline of sessions, keynotes, and workshops with real-time room adjustments.
-          </p>
-        </div>
-      </div>
+      <div className="schedule-content-wrap">
+        {/* Top Back Navigation Bar */}
+        <header className="schedule-top-bar">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="schedule-back-btn"
+            aria-label="Back to event"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <div className="schedule-top-title-group">
+            <span className="schedule-event-label">{event.name}</span>
+            <h1 className="schedule-page-title">Event Schedule</h1>
+          </div>
+        </header>
 
       {/* Controls Bar: Search & Change Filter */}
       <div className="schedule-controls">
@@ -260,6 +274,7 @@ export const EventSchedulePage: React.FC = () => {
             </div>
           );
         })}
+      </div>
       </div>
     </div>
   );

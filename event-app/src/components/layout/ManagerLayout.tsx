@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
   Calendar,
@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import lcIcon from '../../assets/lc-icon.png';
 import './ManagerLayout.css';
 
 export const ManagerLayout: React.FC = () => {
@@ -34,13 +35,13 @@ export const ManagerLayout: React.FC = () => {
       {/* Top Header */}
       <header className="manager-header">
         <div className="manager-header__inner container">
-          <div className="manager-header__brand">
-            <span className="brand-logo" aria-hidden="true">🛠️</span>
+          <Link to="/manager" className="manager-header__brand" aria-label="Live Connect Organizer Console">
+            <img src={lcIcon} alt="Live Connect" className="brand-logo-img" />
             <div className="brand-text">
-              <span className="brand-title">EventCoord</span>
+              <span className="brand-title">Live Connect</span>
               <span className="brand-tag">Organizer Console</span>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation (visible on tablet/desktop only) */}
           <nav className="manager-header__nav desktop-only" aria-label="Manager Navigation">

@@ -195,34 +195,54 @@
 }
 
 .role-option-card {
+  box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   gap: var(--space-4);
-  padding: var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  border: 1.5px solid transparent;
+  border-radius: 14px;
+  background-color: #f2f3f5;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .role-option-card {
+  background-color: #172136;
+  border-color: #1e293b;
 }
 
 .role-option-card:hover {
-  background-color: var(--color-bg-subtle);
-  border-color: var(--color-border-hover);
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .role-option-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
 }
 
 .role-option-card--selected {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary);
+  background-color: #f8dcca;
+  border-color: #f97316;
+}
+
+:root[data-theme="dark"] .role-option-card--selected {
+  background-color: rgba(249, 115, 22, 0.2);
+  border-color: #f97316;
 }
 
 .role-radio {
   margin-top: 4px;
-  accent-color: var(--color-primary);
+  accent-color: #ea580c;
 }
 
 .role-option-title {
   font-size: var(--text-base);
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text-main);
   margin-bottom: 2px;
 }
@@ -299,21 +319,46 @@
 }
 
 .dietary-card {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  padding: var(--space-3);
-  background-color: var(--color-bg-canvas);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  background-color: #f2f3f5;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
   font-size: var(--text-sm);
   cursor: pointer;
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .dietary-card {
+  background-color: #172136;
+  border-color: #1e293b;
+}
+
+.dietary-card:hover {
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.14);
+}
+
+:root[data-theme="dark"] .dietary-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.22);
 }
 
 .dietary-card--selected {
-  background-color: var(--color-primary-light);
-  border-color: var(--color-primary);
-  font-weight: 600;
+  background-color: #f8dcca;
+  border-color: #f97316;
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] .dietary-card--selected {
+  background-color: rgba(249, 115, 22, 0.2);
+  border-color: #f97316;
 }
 
 /* Review List */

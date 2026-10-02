@@ -2,29 +2,23 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   Calendar,
-  Clock,
   MapPin,
   Building,
-  CheckCircle2,
-  XCircle,
-  AlertTriangle,
   ArrowLeft,
-  Users,
-  ChevronRight,
+  Clock,
+  User,
+  HelpCircle,
   ShieldCheck,
-  Radio
+  ChevronRight
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
-import { Card, CardContent } from '../../components/ui/Card';
-import { StatusBadge } from '../../components/ui/StatusBadge';
-import type { StatusType } from '../../components/ui/StatusBadge';
-import { Alert } from '../../components/ui/Alert';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { scheduleService } from '../../services/scheduleService';
-import { updateService } from '../../services/updateService';
-import type { ScheduleItem, EventUpdate } from '../../types';
+import type { ScheduleItem } from '../../types';
 import './EventDetailsPage.css';
+
+type DetailTab = 'overview' | 'schedule' | 'speaker' | 'faqs';
 
 export const EventDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,8 +26,8 @@ export const EventDetailsPage: React.FC = () => {
 
   const [event, setEvent] = useState<EventWithMeta | null>(null);
   const [schedule, setSchedule] = useState<ScheduleItem[]>([]);
-  const [updates, setUpdates] = useState<EventUpdate[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<DetailTab>('overview');
 
   useEffect(() => {
     let isMounted = true;
@@ -41,13 +35,11 @@ export const EventDetailsPage: React.FC = () => {
 
     Promise.all([
       eventService.getEventById(id),
-      scheduleService.getEventSchedule(id),
-      updateService.getEventUpdates(id)
-    ]).then(([evtData, schData, updData]) => {
+      scheduleService.getEventSchedule(id)
+    ]).then(([evtData, schData]) => {
       if (isMounted) {
         setEvent(evtData);
         setSchedule(schData);
-        setUpdates(updData);
         setIsLoading(false);
       }
     });
@@ -59,19 +51,17 @@ export const EventDetailsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="container" style={{ padding: 'var(--space-12) var(--space-4)', textAlign: 'center' }}>
-        <p style={{ color: 'var(--color-text-muted)' }}>Loading event information...</p>
+      <div className="event-details-loading">
+        <div className="event-details-skeleton" />
       </div>
     );
   }
 
   if (!event) {
     return (
-      <div className="container" style={{ padding: 'var(--space-12) var(--space-4)', textAlign: 'center' }}>
+      <div className="container event-not-found">
         <h2>Event not found</h2>
-        <p style={{ color: 'var(--color-text-muted)', marginBottom: 'var(--space-4)' }}>
-          The event you requested could not be located.
-        </p>
+        <p>The event you requested could not be located.</p>
         <Link to="/events">
           <Button variant="primary">Browse All Events</Button>
         </Link>
@@ -80,336 +70,279 @@ export const EventDetailsPage: React.FC = () => {
   }
 
   const formattedDate = new Date(event.start_date).toLocaleDateString('en-US', {
-    weekday: 'long',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
     year: 'numeric'
   });
 
-  const formattedStartTime = new Date(event.start_date).toLocaleTimeString('en-US', {
-    hour: '2-digit',
+  const formattedTime = new Date(event.start_date).toLocaleTimeString('en-US', {
+    hour: 'numeric',
     minute: '2-digit',
     hour12: true
   });
-
-  const formattedEndTime = new Date(event.end_date).toLocaleTimeString('en-US', {
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
-  });
-
-  const deadlineFormatted = event.registration_deadline
-    ? new Date(event.registration_deadline).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      })
-    : 'Open until event date';
 
   const isRegistered = event.registration_status === 'registered';
 
   return (
-    <div className="event-details-page">
-      {/* Back button */}
-      <div className="container event-details-back">
+    <div className="event-details-container">
+      {/* 1. Top Navigation Bar: Back Arrow + Page Title */}
+      <div className="event-details-top-bar">
         <button
           type="button"
           onClick={() => navigate(-1)}
-          className="back-btn"
-          aria-label="Back to events"
+          className="event-details-back-btn"
+          aria-label="Back to previous page"
         >
-          <ArrowLeft size={16} />
-          <span>Back to events</span>
+          <ArrowLeft size={24} />
+        </button>
+        <h1 className="event-details-heading">Event Details</h1>
+      </div>
+
+      {/* 2. Hero Image with Category Badge */}
+      <div className="event-details-media">
+        <img
+          src={event.cover_image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'}
+          alt={event.name}
+          className="event-details-image"
+        />
+        <span className="event-details-category-pill">{event.category}</span>
+      </div>
+
+      {/* 3. Event Primary Info */}
+      <div className="event-details-primary-info">
+        <h2 className="event-details-title">{event.name}</h2>
+
+        <div className="event-details-meta-item">
+          <Calendar size={18} className="meta-icon" aria-hidden="true" />
+          <span>{formattedDate} - {formattedTime}</span>
+        </div>
+
+        <div className="event-details-meta-item">
+          <MapPin size={18} className="meta-icon" aria-hidden="true" />
+          <span>{event.venue}</span>
+        </div>
+
+        <div className="event-details-status-wrap">
+          <span className="event-details-open-badge">
+            {isRegistered ? 'Registered' : 'Open'}
+          </span>
+        </div>
+      </div>
+
+      {/* 4. Primary CTA: Register for Event */}
+      <div className="event-details-cta-section">
+        {isRegistered ? (
+          <Link to="/my-events" style={{ width: '100%' }}>
+            <Button
+              variant="primary"
+              size="lg"
+              className="event-details-register-btn"
+            >
+              Go to My Event Experience
+            </Button>
+          </Link>
+        ) : (
+          <Link to={`/events/${event.id}/register`} style={{ width: '100%' }}>
+            <Button
+              type="button"
+              variant="primary"
+              size="lg"
+              className="event-details-register-btn"
+            >
+              Register for Event
+            </Button>
+          </Link>
+        )}
+      </div>
+
+      {/* 5. Horizontal Tab Navigation: Overview | Schedule | Speaker | FAQs */}
+      <div className="event-details-tab-bar" role="tablist" aria-label="Event Details Tabs">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'overview'}
+          className={`event-tab-btn ${activeTab === 'overview' ? 'event-tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('overview')}
+        >
+          Overview
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'schedule'}
+          className={`event-tab-btn ${activeTab === 'schedule' ? 'event-tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('schedule')}
+        >
+          Schedule
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'speaker'}
+          className={`event-tab-btn ${activeTab === 'speaker' ? 'event-tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('speaker')}
+        >
+          Speaker
+        </button>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'faqs'}
+          className={`event-tab-btn ${activeTab === 'faqs' ? 'event-tab-btn--active' : ''}`}
+          onClick={() => setActiveTab('faqs')}
+        >
+          FAQs
         </button>
       </div>
 
-      {/* 1. HERO SECTION (Prompt Section 9) */}
-      <section className="event-hero container">
-        <div className="event-hero__grid">
-          <div className="event-hero__media">
-            <img
-              src={event.cover_image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'}
-              alt={event.name}
-              className="event-hero__image"
-            />
-          </div>
-          <div className="event-hero__info">
-            <div className="event-hero__tags">
-              <span className="event-hero__category">{event.category}</span>
-              <StatusBadge
-                status={isRegistered ? 'approved' : (event.registration_status as StatusType) || 'published'}
-                label={isRegistered ? `Registered (${event.user_role_name || 'Participant'})` : undefined}
-              />
+      {/* 6. Tab Content Panels */}
+      <div className="event-details-tab-content">
+        {activeTab === 'overview' && (
+          <div className="tab-pane-overview">
+            <h3 className="tab-section-title">About this event</h3>
+            <p className="tab-description-para">
+              {event.description ||
+                'The KNUST Technology Conference brings together innovators, researchers, and students to explore the future of technology and its impact on society.'}
+            </p>
+
+            {/* Accessibility Accommodations */}
+            <div className="details-card-block">
+              <div className="details-card-block__header">
+                <ShieldCheck size={20} className="details-block-icon" />
+                <h4 className="details-card-block__title">Accessibility Accommodations</h4>
+              </div>
+              <p className="details-card-block__desc">
+                {event.accessibility_info ||
+                  'Ramp access at main entrance, sign language interpreter during keynotes, priority seating reserved in rows 1-3.'}
+              </p>
+              <div className="accessibility-pill-tags">
+                <span className="acc-tag">✓ Step-free entrance</span>
+                <span className="acc-tag">✓ Front row seating</span>
+                <span className="acc-tag">✓ Live captioning (CART)</span>
+                <span className="acc-tag">✓ Sensory quiet area</span>
+              </div>
+              <div style={{ marginTop: '12px' }}>
+                <Link to={`/events/${event.id}/accessibility`} className="details-acc-view-link">
+                  <span>View Full Accessibility Details</span>
+                  <ChevronRight size={14} />
+                </Link>
+              </div>
             </div>
 
-            <h1 className="event-hero__title">{event.name}</h1>
-
-            <div className="event-hero__organizer">
-              <Building size={16} aria-hidden="true" />
+            {/* Organizer Info */}
+            <div className="details-organizer-block">
+              <Building size={18} className="details-block-icon" />
               <span>Organized by <strong>{event.organizer_name}</strong></span>
             </div>
-
-            <div className="event-hero__quick-meta">
-              <div className="quick-meta-item">
-                <Calendar size={18} aria-hidden="true" />
-                <div>
-                  <div className="meta-label">Date</div>
-                  <div className="meta-value">{formattedDate}</div>
-                </div>
-              </div>
-              <div className="quick-meta-item">
-                <Clock size={18} aria-hidden="true" />
-                <div>
-                  <div className="meta-label">Time</div>
-                  <div className="meta-value">{formattedStartTime} – {formattedEndTime}</div>
-                </div>
-              </div>
-              <div className="quick-meta-item">
-                <MapPin size={18} aria-hidden="true" />
-                <div>
-                  <div className="meta-label">Location</div>
-                  <div className="meta-value">{event.venue}, {event.location_details}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Primary CTA (Prompt: Register for Event / View My Registration) */}
-            <div className="event-hero__cta">
-              {isRegistered ? (
-                <div style={{ display: 'flex', gap: 'var(--space-3)', width: '100%' }}>
-                  <Link to="/my-events" style={{ flex: 1 }}>
-                    <Button variant="primary" size="lg" style={{ width: '100%' }} rightIcon={<ChevronRight size={18} />}>
-                      Go to My Event Experience
-                    </Button>
-                  </Link>
-                </div>
-              ) : (
-                <Link to={`/events/${event.id}/register`} style={{ width: '100%' }}>
-                  <Button variant="primary" size="lg" style={{ width: '100%' }}>
-                    Register for Event
-                  </Button>
-                </Link>
-              )}
-            </div>
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* MAIN TWO-COLUMN CONTENT */}
-      <div className="container event-details-body">
-        <div className="event-details-main">
-          {/* LATEST UPDATES (Prompt Section 9: Show most recent event updates) */}
-          {updates.length > 0 && (
-            <section className="event-section">
-              <div className="section-title-row">
-                <h2 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-                  <Radio size={20} className="pulse-icon" />
-                  <span>Latest Updates</span>
-                </h2>
-                <Link to={`/events/${event.id}/updates`} className="section-link">
-                  View All Updates ({updates.length})
-                </Link>
-              </div>
-              <div className="updates-list">
-                {updates.map((update) => (
-                  <Alert
-                    key={update.id}
-                    type={update.type === 'venue_change' ? 'warning' : 'info'}
-                    title={update.title}
-                    icon={update.type === 'venue_change' ? <AlertTriangle size={18} /> : <Radio size={18} />}
-                  >
-                    <p>{update.message}</p>
-                    <span className="update-timestamp">Updated 5 minutes ago</span>
-                  </Alert>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* 2. OVERVIEW (Prompt Section 9) */}
-          <section className="event-section">
-            <h2 className="section-title">Overview</h2>
-            <div className="event-description">
-              <p>{event.description}</p>
-              <h3 style={{ fontSize: 'var(--text-base)', marginTop: 'var(--space-4)', marginBottom: 'var(--space-2)' }}>
-                What to Expect
-              </h3>
-              <p>
-                Join fellow practitioners, keynote speakers, and organizers for structured talks, breakout technical clinics, and active networking. All registered participants receive live push notifications regarding room adjustments and schedule shifts.
-              </p>
-            </div>
-          </section>
-
-          {/* 3. ACCESSIBILITY SECTION (Prompt Section 9: Display before registration) */}
-          <section className="event-section accessibility-card-section">
-            <div className="accessibility-card">
-              <div className="accessibility-card__header">
-                <ShieldCheck size={22} className="accessibility-icon" />
-                <div>
-                  <h2 className="section-title" style={{ marginBottom: 0 }}>Accessibility</h2>
-                  <p style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-                    Physical & digital accommodations provided by the organizer
-                  </p>
-                </div>
-              </div>
-              <div className="accessibility-features-list">
-                <div className="feature-item feature-item--available">
-                  <CheckCircle2 size={16} />
-                  <span>Step-free entrance and ramps</span>
-                </div>
-                <div className="feature-item feature-item--available">
-                  <CheckCircle2 size={16} />
-                  <span>Accessible seating in front rows</span>
-                </div>
-                <div className="feature-item feature-item--available">
-                  <CheckCircle2 size={16} />
-                  <span>Live captioning (CART) in main auditorium</span>
-                </div>
-                <div className="feature-item feature-item--unavailable">
-                  <XCircle size={16} />
-                  <span>Sign-language interpretation unavailable</span>
-                </div>
-                <div className="feature-item feature-item--available">
-                  <CheckCircle2 size={16} />
-                  <span>Quiet sensory space available</span>
-                </div>
-              </div>
-
-              {/* Request an accommodation link */}
-              <div className="accessibility-request-box">
-                <p style={{ fontSize: 'var(--text-sm)' }}>
-                  Need specific accommodations, dietary support, or assistance?
-                </p>
-                <Link to={`/events/${event.id}/register?step=accessibility`}>
-                  <Button variant="outline" size="sm">
-                    Request an accommodation
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </section>
-
-          {/* 4. AVAILABLE ROLES (Prompt Section 9) */}
-          <section className="event-section">
-            <h2 className="section-title">Available Roles</h2>
-            <div className="roles-grid">
-              <Card className="role-card">
-                <CardContent>
-                  <div className="role-card__header">
-                    <Users size={18} />
-                    <h3 className="role-card__title">Participant</h3>
-                  </div>
-                  <p className="role-card__desc">
-                    Attend sessions, ask questions during panels, and connect with peers.
-                  </p>
-                  <span className="role-capacity">Automatic Approval • Capacity Open</span>
-                </CardContent>
-              </Card>
-
-              <Card className="role-card">
-                <CardContent>
-                  <div className="role-card__header">
-                    <Users size={18} />
-                    <h3 className="role-card__title">Volunteer</h3>
-                  </div>
-                  <p className="role-card__desc">
-                    Assist with attendee check-in, stage logistics, and accessibility support.
-                  </p>
-                  <span className="role-capacity">Reviewed by Organizer • 15 slots remaining</span>
-                </CardContent>
-              </Card>
-
-              <Card className="role-card">
-                <CardContent>
-                  <div className="role-card__header">
-                    <Users size={18} />
-                    <h3 className="role-card__title">Speaker</h3>
-                  </div>
-                  <p className="role-card__desc">
-                    Deliver lighting talks or panels on engineering and design topics.
-                  </p>
-                  <span className="role-capacity">Subject to Review • Requires topic submission</span>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          {/* 5. SCHEDULE PREVIEW (Prompt Section 9) */}
-          <section className="event-section">
-            <div className="section-title-row">
-              <h2 className="section-title">Schedule Preview</h2>
-              <Link to={`/events/${event.id}/schedule`} className="section-link">
-                View Full Schedule
+        {activeTab === 'schedule' && (
+          <div className="tab-pane-schedule">
+            <div className="schedule-header-row">
+              <h3 className="tab-section-title">Schedule</h3>
+              <Link to={`/events/${event.id}/schedule`} className="full-schedule-link">
+                Full View <ChevronRight size={14} />
               </Link>
             </div>
-            <div className="schedule-preview-list">
-              {schedule.slice(0, 3).map((item) => {
-                const itemTime = new Date(item.start_time).toLocaleTimeString('en-US', {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false
-                });
-                return (
-                  <div key={item.id} className="schedule-preview-item">
-                    <span className="preview-time">{itemTime}</span>
-                    <div className="preview-details">
-                      <div className="preview-title">{item.title}</div>
-                      <div className="preview-venue">{item.venue}</div>
+            {schedule.length > 0 ? (
+              <div className="detail-schedule-list">
+                {schedule.map((item) => {
+                  const itemTime = new Date(item.start_time).toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    hour12: true
+                  });
+                  return (
+                    <div key={item.id} className="detail-schedule-card">
+                      <div className="detail-schedule-time">
+                        <Clock size={14} />
+                        <span>{itemTime}</span>
+                      </div>
+                      <div className="detail-schedule-body">
+                        <h4 className="detail-schedule-title">{item.title}</h4>
+                        <div className="detail-schedule-meta">
+                          <span className="detail-schedule-venue">
+                            <MapPin size={13} />
+                            <span>{item.venue}</span>
+                          </span>
+                          {item.speaker_name && (
+                            <span className="detail-schedule-speaker">
+                              <User size={13} />
+                              <span>{item.speaker_name}</span>
+                            </span>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="tab-empty-text">No schedule published yet.</p>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'speaker' && (
+          <div className="tab-pane-speakers">
+            <h3 className="tab-section-title">Featured Speakers</h3>
+            <div className="speaker-cards-list">
+              <div className="speaker-card">
+                <div className="speaker-avatar-circle">
+                  <User size={22} />
+                </div>
+                <div className="speaker-info">
+                  <h4 className="speaker-name">Prof. Kwame Mensah</h4>
+                  <span className="speaker-role">Vice Chancellor & Keynote Speaker</span>
+                  <p className="speaker-bio">Leading advocate for digital infrastructure and engineering research across West Africa.</p>
+                </div>
+              </div>
+              <div className="speaker-card">
+                <div className="speaker-avatar-circle">
+                  <User size={22} />
+                </div>
+                <div className="speaker-info">
+                  <h4 className="speaker-name">Dr. Amina Touré</h4>
+                  <span className="speaker-role">AI Systems Architect & Panelist</span>
+                  <p className="speaker-bio">Specializing in edge machine learning and accessible computing in emerging tech ecosystems.</p>
+                </div>
+              </div>
             </div>
-          </section>
-        </div>
+          </div>
+        )}
 
-        {/* SIDEBAR: EVENT INFORMATION (Prompt Section 9) */}
-        <aside className="event-details-sidebar">
-          <Card className="sidebar-card">
-            <CardContent>
-              <h3 className="sidebar-card__title">Event Information</h3>
-              <div className="sidebar-info-list">
-                <div className="sidebar-info-item">
-                  <div className="info-label">Date</div>
-                  <div className="info-value">{formattedDate}</div>
-                </div>
-                <div className="sidebar-info-item">
-                  <div className="info-label">Time</div>
-                  <div className="info-value">{formattedStartTime} – {formattedEndTime}</div>
-                </div>
-                <div className="sidebar-info-item">
-                  <div className="info-label">Venue</div>
-                  <div className="info-value">{event.venue}</div>
-                  <div className="info-sub">{event.location_details}</div>
-                </div>
-                <div className="sidebar-info-item">
-                  <div className="info-label">Online Option</div>
-                  <div className="info-value">Hybrid • Live stream available for keynote</div>
-                </div>
-                <div className="sidebar-info-item">
-                  <div className="info-label">Registration Deadline</div>
-                  <div className="info-value">{deadlineFormatted}</div>
-                </div>
+        {activeTab === 'faqs' && (
+          <div className="tab-pane-faqs">
+            <h3 className="tab-section-title">Frequently Asked Questions</h3>
+            <div className="faq-items-list">
+              <div className="faq-item">
+                <h4 className="faq-question">
+                  <HelpCircle size={16} /> How do I check in on the event day?
+                </h4>
+                <p className="faq-answer">
+                  Show your mobile registration badge or provide your registered email at the entrance desk to receive your attendee credentials.
+                </p>
               </div>
-
-              <div style={{ marginTop: 'var(--space-6)' }}>
-                {isRegistered ? (
-                  <Link to="/my-events" style={{ width: '100%' }}>
-                    <Button variant="secondary" size="md" style={{ width: '100%' }}>
-                      View My Registration
-                    </Button>
-                  </Link>
-                ) : (
-                  <Link to={`/events/${event.id}/register`} style={{ width: '100%' }}>
-                    <Button variant="primary" size="md" style={{ width: '100%' }}>
-                      Register for Event
-                    </Button>
-                  </Link>
-                )}
+              <div className="faq-item">
+                <h4 className="faq-question">
+                  <HelpCircle size={16} /> Is the venue wheelchair accessible?
+                </h4>
+                <p className="faq-answer">
+                  Yes, the Great Hall has ramp access at the primary entryway and priority seating reserved in the front rows.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </aside>
+              <div className="faq-item">
+                <h4 className="faq-question">
+                  <HelpCircle size={16} /> Can I request special accommodations?
+                </h4>
+                <p className="faq-answer">
+                  Yes, during the registration flow you can indicate dietary requirements, CART captioning, or other personalized arrangements.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
