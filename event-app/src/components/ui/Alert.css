@@ -1,0 +1,72 @@
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  margin-bottom: var(--space-4);
+  text-align: left;
+}
+
+.alert__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: 2px;
+}
+
+.alert__body {
+  flex: 1;
+}
+
+.alert__title {
+  font-size: var(--text-base);
+  font-weight: 600;
+  margin-bottom: var(--space-1);
+}
+
+.alert__content {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+/* Info */
+.alert--info {
+  background-color: var(--color-info-bg);
+  border-color: var(--color-info-border);
+  color: var(--color-info-text);
+}
+.alert--info .alert__title {
+  color: var(--color-info-text);
+}
+
+/* Success */
+.alert--success {
+  background-color: var(--color-success-bg);
+  border-color: var(--color-success-border);
+  color: var(--color-success-text);
+}
+.alert--success .alert__title {
+  color: var(--color-success-text);
+}
+
+/* Warning */
+.alert--warning {
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+  color: var(--color-warning-text);
+}
+.alert--warning .alert__title {
+  color: var(--color-warning-text);
+}
+
+/* Error */
+.alert--error {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error-text);
+}
+.alert--error .alert__title {
+  color: var(--color-error-text);
+}
