@@ -17,10 +17,10 @@ import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
 import { ManagerEventsPage } from './pages/manager/ManagerEventsPage';
 import { CreateEventPage } from './pages/manager/CreateEventPage';
 import { EventManagementHubPage } from './pages/manager/EventManagementHubPage';
-import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
 import { OnboardingPage } from './pages/auth/OnboardingPage';
+import { SplashScreen } from './pages/auth/SplashScreen';
 
 /**
  * Route protection: Unauthenticated visitors are routed to /signup
@@ -55,8 +55,9 @@ export const App: React.FC = () => {
       <AuthProvider>
         <BrowserRouter>
         <Routes>
-          {/* Welcome / Landing Screen (Public) */}
-          <Route path="/welcome" element={<LandingPage />} />
+          {/* Welcome / Splash Screen (Public) */}
+          <Route path="/welcome" element={<SplashScreen standalone />} />
+          <Route path="/splash" element={<SplashScreen standalone />} />
 
           {/* Authentication Screens (Public only) */}
           <Route

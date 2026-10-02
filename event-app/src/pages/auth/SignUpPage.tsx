@@ -7,11 +7,13 @@ import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import lcIcon from '../../assets/lc-icon.png';
+import { SplashScreen } from './SplashScreen';
 import './AuthPages.css';
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
   const { signup, updateProfile } = useAuth();
+  const [showSplash, setShowSplash] = useState(true);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -101,7 +103,14 @@ export const SignUpPage: React.FC = () => {
   };
 
   return (
-    <div className="auth-page auth-page--signup">
+    <>
+      {showSplash && (
+        <SplashScreen
+          duration={2200}
+          onComplete={() => setShowSplash(false)}
+        />
+      )}
+      <div className="auth-page auth-page--signup">
       <div className="auth-card auth-card--signup">
         <div className="auth-card__theme-toggle">
           <ThemeToggle size="sm" />
@@ -285,5 +294,6 @@ export const SignUpPage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
