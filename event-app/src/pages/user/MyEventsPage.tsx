@@ -87,13 +87,10 @@ export const MyEventsPage: React.FC = () => {
     const now = new Date().toISOString();
 
     return items.filter((item) => {
-      let matchesTab = false;
-      if (activeTab === 'Past') {
-        matchesTab = item.event.end_date < now;
-      } else {
-        // 'Upcoming' includes all current, future, registered, or pending events
-        matchesTab = item.event.end_date >= now;
-      }
+      const matchesTab =
+        activeTab === 'Past'
+          ? item.event.end_date < now
+          : item.event.end_date >= now;
 
       if (!matchesTab) return false;
 

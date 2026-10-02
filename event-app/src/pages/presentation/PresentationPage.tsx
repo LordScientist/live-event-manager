@@ -35,13 +35,13 @@ export const PresentationPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (accountType === 'manager') {
       navigate('/manager');
     } else {
       navigate('/');
     }
-  };
+  }, [accountType, navigate]);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => (prev < 5 ? prev + 1 : prev));
@@ -80,7 +80,7 @@ export const PresentationPage: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextSlide, prevSlide]);
+  }, [nextSlide, prevSlide, handleClose]);
 
   const slides: Slide[] = [
     // SLIDE 1: The Raw Problem

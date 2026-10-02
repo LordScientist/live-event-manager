@@ -116,7 +116,7 @@ export const SignUpPage: React.FC = () => {
           <ThemeToggle size="sm" />
         </div>
 
-        {/* LC Logo — Top Left */}
+        {/* LC Logo - Top Left */}
         <div className="signup-logo">
           <img src={lcIcon} alt="Live Connect" className="signup-logo__icon-img" />
           <span className="signup-logo__text">
@@ -237,7 +237,7 @@ export const SignUpPage: React.FC = () => {
           {/* Password hint (matches Figma) */}
           <p className="signup-password-hint">Password must be at least 8 characters.</p>
 
-          {/* Row 4: Optional — Organization + Job title */}
+          {/* Row 4: Optional - Organization + Job title */}
           <div className="signup-optional-header">Optional</div>
           <div className="signup-grid">
             <Input

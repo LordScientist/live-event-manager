@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AUTH PAGES — Shared + Figma‑matched Create Account
+   AUTH PAGES - Shared + Figma‑matched Create Account
    ========================================================================== */
 
 /* ── Base page container ─────────────────────────────────────────────────── */
@@ -36,7 +36,7 @@
   box-shadow: var(--shadow-md);
 }
 
-/* Signup card — 440px mobile frame matching Figma Frame 1:3 */
+/* Signup card - 440px mobile frame matching Figma Frame 1:3 */
 .auth-card--signup {
   position: relative;
   width: 100%;
@@ -292,7 +292,7 @@
 }
 
 /* ==========================================================================
-   FIGMA — CREATE YOUR ACCOUNT (Signup Page)
+   FIGMA - CREATE YOUR ACCOUNT (Signup Page)
    Mobile-first design: 414 × 896 viewport
    Colors: Orange primary #E8720C, Navy #1B2559
    ========================================================================== */
@@ -533,7 +533,7 @@
 }
 
 /* ==========================================================================
-   FIGMA — LOGIN PAGE (Node 1:5)
+   FIGMA - LOGIN PAGE (Node 1:5)
    Mobile-first design: 414 × 896 viewport
    Palette: Orange #F36F12, Deep Blue #0C139D, Black #000000, Canvas #FAF9F9
    ========================================================================== */
