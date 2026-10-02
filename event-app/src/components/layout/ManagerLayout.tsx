@@ -67,12 +67,12 @@ export const ManagerLayout: React.FC = () => {
 
           {/* Actions & Role Switcher */}
           <div className="manager-header__actions">
-            {isAuthenticated && (
+            {(isAuthenticated || Boolean(currentUser?.id)) && (
               <Link
                 to="/presentation"
                 className="header-pres-btn header-pres-btn--manager"
-                title="Why Live Connect? Product Story & Presentation Deck"
-                aria-label="Why Live Connect? Product Story & Presentation Deck"
+                title="Why Live Connect? Product Story and Presentation Deck"
+                aria-label="Why Live Connect? Product Story and Presentation Deck"
               >
                 <Presentation size={17} aria-hidden="true" />
                 <span className="header-pres-btn__label">Why Live Connect?</span>
