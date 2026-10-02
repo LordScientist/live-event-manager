@@ -1,0 +1,286 @@
+/* ==========================================================================
+   MANAGER — MY EVENTS SCREEN STYLES (Prompt Section 22)
+   Filter Pills, Search, Event Cards with Manage/Edit/View Actions
+   ========================================================================== */
+
+.manager-events-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding-bottom: var(--space-12);
+}
+
+/* Header */
+.manager-events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.manager-events-header__title {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text-main);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-1);
+}
+
+.manager-events-header__subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Controls Bar (Filter Tabs + Search) */
+.manager-events-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.manager-filter-tabs {
+  display: inline-flex;
+  background-color: var(--color-surface-subtle);
+  padding: 4px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  gap: 2px;
+}
+
+.manager-filter-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.manager-filter-tab:hover {
+  color: var(--color-text-main);
+}
+
+.manager-filter-tab--active {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.manager-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background-color: rgba(0, 0, 0, 0.06);
+}
+
+.manager-filter-tab--active .manager-filter-badge {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.manager-search-box {
+  min-width: 260px;
+  position: relative;
+}
+
+.manager-search-input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3) var(--space-2) var(--space-9);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.manager-search-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.manager-search-icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+/* Event List */
+.manager-events-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.manager-event-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.manager-event-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+}
+
+.manager-event-card__cover {
+  width: 180px;
+  min-width: 180px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  background-color: var(--color-surface-subtle);
+}
+
+@media (max-width: 768px) {
+  .manager-event-card {
+    flex-direction: column;
+  }
+  .manager-event-card__cover {
+    width: 100%;
+    height: 140px;
+  }
+}
+
+.manager-event-card__body {
+  flex: 1;
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.manager-event-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.manager-event-card__meta-badges {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.manager-event-card__title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: var(--space-2);
+}
+
+.manager-event-card__details {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.manager-event-detail-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* Stats Row inside card */
+.manager-event-card__stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface-subtle);
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+}
+
+.manager-event-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.manager-event-stat__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.manager-event-stat__val {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+/* Action Buttons (Prompt Section 22: Manage, Edit, View Event) */
+.manager-event-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* Empty State */
+.manager-events-empty {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-12) var(--space-6);
+  text-align: center;
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.manager-events-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-2);
+}
+
+.manager-events-empty__title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-text-main);
+}
+
+.manager-events-empty__text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  max-width: 400px;
+}

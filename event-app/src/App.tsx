@@ -13,6 +13,7 @@ import { MyEventExperiencePage } from './pages/user/MyEventExperiencePage';
 import { NotificationsPage } from './pages/user/NotificationsPage';
 import { UserProfilePage } from './pages/user/UserProfilePage';
 import { ManagerDashboardPage } from './pages/manager/ManagerDashboardPage';
+import { ManagerEventsPage } from './pages/manager/ManagerEventsPage';
 import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
@@ -46,7 +47,7 @@ export const App: React.FC = () => {
           {/* Event Manager Application Routes */}
           <Route path="/manager" element={<ManagerLayout />}>
             <Route index element={<ManagerDashboardPage />} />
-            <Route path="events" element={<div style={{ padding: 'var(--space-4)' }}><h2>Managed Events</h2></div>} />
+            <Route path="events" element={<ManagerEventsPage />} />
             <Route path="create-event" element={<div style={{ padding: 'var(--space-4)' }}><h2>Create Event Wizard</h2></div>} />
             <Route path="notifications" element={<div style={{ padding: 'var(--space-4)' }}><h2>Manager Notifications</h2></div>} />
             <Route path="profile" element={<div style={{ padding: 'var(--space-4)' }}><h2>Organizer Profile</h2></div>} />

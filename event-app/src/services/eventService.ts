@@ -111,6 +111,172 @@ export const MOCK_EVENTS: EventWithMeta[] = [
   }
 ];
 
+export interface ManagerEventItem {
+  id: string;
+  name: string;
+  start_date: string;
+  end_date: string;
+  venue: string;
+  status: 'published' | 'draft' | 'completed' | 'cancelled';
+  total_registrations: number;
+  pending_approvals: number;
+  capacity?: number;
+  cover_image?: string;
+  category: string;
+}
+
+export interface ManagerActivityItem {
+  id: string;
+  type: 'registration' | 'approval' | 'schedule_change' | 'venue_change' | 'announcement';
+  text: string;
+  detail?: string;
+  event_name: string;
+  event_id: string;
+  timestamp: string; // ISO 8601
+}
+
+export interface ManagerDashboardStats {
+  total_events: number;
+  upcoming_events: number;
+  total_registrations: number;
+  pending_approvals: number;
+  upcoming_list: ManagerEventItem[];
+  recent_activities: ManagerActivityItem[];
+}
+
+export const MOCK_MANAGER_EVENTS: ManagerEventItem[] = [
+  {
+    id: 'evt-knust-2026',
+    name: 'KNUST Technology Conference 2026',
+    start_date: '2026-10-18T09:00:00Z',
+    end_date: '2026-10-18T17:00:00Z',
+    venue: 'Great Hall, KNUST',
+    status: 'published',
+    total_registrations: 452,
+    pending_approvals: 21,
+    capacity: 450,
+    category: 'Conference',
+    cover_image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-ai-workshop',
+    name: 'Hands-on AI & Systems Architecture Workshop',
+    start_date: '2026-10-25T13:00:00Z',
+    end_date: '2026-10-25T16:30:00Z',
+    venue: 'Innovation Hub Lab 4',
+    status: 'published',
+    total_registrations: 38,
+    pending_approvals: 12,
+    capacity: 40,
+    category: 'Workshop',
+    cover_image: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-gas-2026',
+    name: 'Global Accessibility Summit 2026',
+    start_date: '2026-11-05T08:30:00Z',
+    end_date: '2026-11-06T18:00:00Z',
+    venue: 'Main Convention Center • Hall A',
+    status: 'published',
+    total_registrations: 280,
+    pending_approvals: 4,
+    capacity: 300,
+    category: 'Conference',
+    cover_image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-career-fair',
+    name: 'Tech & Engineering Career Connect 2026',
+    start_date: '2026-11-12T10:00:00Z',
+    end_date: '2026-11-12T16:00:00Z',
+    venue: 'University Sports Complex Arena',
+    status: 'published',
+    total_registrations: 418,
+    pending_approvals: 0,
+    capacity: 800,
+    category: 'Career',
+    cover_image: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-community-meetup',
+    name: 'Open Source Community Code & Coffee',
+    start_date: '2026-10-31T10:00:00Z',
+    end_date: '2026-10-31T14:00:00Z',
+    venue: 'City Central Library Auditorium',
+    status: 'published',
+    total_registrations: 60,
+    pending_approvals: 0,
+    capacity: 60,
+    category: 'Community',
+    cover_image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-bootcamp-draft',
+    name: 'Frontend Engineering & Accessibility Bootcamp',
+    start_date: '2026-12-01T09:00:00Z',
+    end_date: '2026-12-03T17:00:00Z',
+    venue: 'Tech Park Training Room B',
+    status: 'draft',
+    total_registrations: 0,
+    pending_approvals: 0,
+    capacity: 50,
+    category: 'Bootcamp',
+    cover_image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1000&q=80'
+  },
+  {
+    id: 'evt-past-design-systems',
+    name: 'Design Systems & Inclusive Web Roundtable 2025',
+    start_date: '2025-11-14T10:00:00Z',
+    end_date: '2025-11-14T15:30:00Z',
+    venue: 'Innovation Auditorium 1',
+    status: 'completed',
+    total_registrations: 320,
+    pending_approvals: 0,
+    capacity: 350,
+    category: 'Roundtable',
+    cover_image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1000&q=80'
+  }
+];
+
+export const MOCK_ACTIVITIES: ManagerActivityItem[] = [
+  {
+    id: 'act-1',
+    type: 'registration',
+    text: '5 new registrations received',
+    detail: 'KNUST Technology Conference 2026',
+    event_name: 'KNUST Technology Conference 2026',
+    event_id: 'evt-knust-2026',
+    timestamp: '2026-10-02T08:50:00Z'
+  },
+  {
+    id: 'act-2',
+    type: 'approval',
+    text: '3 registrations approved',
+    detail: 'Hands-on AI & Systems Architecture Workshop',
+    event_name: 'Hands-on AI & Systems Architecture Workshop',
+    event_id: 'evt-ai-workshop',
+    timestamp: '2026-10-02T08:15:00Z'
+  },
+  {
+    id: 'act-3',
+    type: 'schedule_change',
+    text: 'Schedule updated',
+    detail: 'Keynote session moved to 10:30 AM',
+    event_name: 'KNUST Technology Conference 2026',
+    event_id: 'evt-knust-2026',
+    timestamp: '2026-10-02T07:00:00Z'
+  },
+  {
+    id: 'act-4',
+    type: 'venue_change',
+    text: 'Venue changed',
+    detail: 'Workshop moved from Room 204 to Lab 4',
+    event_name: 'Hands-on AI & Systems Architecture Workshop',
+    event_id: 'evt-ai-workshop',
+    timestamp: '2026-10-01T16:30:00Z'
+  }
+];
+
 // Async service functions with simulated latency
 export const eventService = {
   getEvents: async (): Promise<EventWithMeta[]> => {
@@ -126,6 +292,29 @@ export const eventService = {
       setTimeout(() => {
         const found = MOCK_EVENTS.find((e) => e.id === id) || null;
         resolve(found);
+      }, 150);
+    });
+  },
+
+  getManagerEvents: async (): Promise<ManagerEventItem[]> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve([...MOCK_MANAGER_EVENTS]);
+      }, 150);
+    });
+  },
+
+  getManagerDashboardStats: async (): Promise<ManagerDashboardStats> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          total_events: 12,
+          upcoming_events: 5,
+          total_registrations: 1248,
+          pending_approvals: 37,
+          upcoming_list: MOCK_MANAGER_EVENTS.filter((e) => e.status === 'published').slice(0, 4),
+          recent_activities: [...MOCK_ACTIVITIES]
+        });
       }, 150);
     });
   }
