@@ -35,9 +35,11 @@ export const ManagerLayout: React.FC = () => {
       <header className="manager-header">
         <div className="manager-header__inner container">
           <div className="manager-header__brand">
-            <span className="brand-logo" aria-hidden="true">🛠️</span>
+            <span className="brand-logo" aria-hidden="true" style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'Georgia, serif' }}>
+              <span style={{ color: '#93a3f8' }}>L</span><span style={{ color: '#E8720C' }}>C</span>
+            </span>
             <div className="brand-text">
-              <span className="brand-title">EventCoord</span>
+              <span className="brand-title">Live Connect</span>
               <span className="brand-tag">Organizer Console</span>
             </div>
           </div>

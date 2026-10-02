@@ -23,9 +23,11 @@ export const LandingPage: React.FC = () => {
       <header className="landing-header">
         <div className="container landing-header__inner">
           <div className="landing-header__brand">
-            <span className="brand-logo" aria-hidden="true">📡</span>
+            <span className="brand-logo" aria-hidden="true" style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'Georgia, serif' }}>
+              <span style={{ color: '#1B2559' }}>L</span><span style={{ color: '#E8720C' }}>C</span>
+            </span>
             <div className="brand-text">
-              <span className="brand-title">EventCoord</span>
+              <span className="brand-title">Live Connect</span>
               <span className="brand-subtitle">Event Coordination System</span>
             </div>
           </div>

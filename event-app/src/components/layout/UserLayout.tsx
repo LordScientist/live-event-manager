@@ -20,9 +20,11 @@ export const UserLayout: React.FC = () => {
       <header className="user-header">
         <div className="container user-header__inner">
           <div className="user-header__brand">
-            <span className="brand-logo" aria-hidden="true">📡</span>
+            <span className="brand-logo" aria-hidden="true" style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'Georgia, serif' }}>
+              <span style={{ color: '#1B2559' }}>L</span><span style={{ color: '#E8720C' }}>C</span>
+            </span>
             <div className="brand-text">
-              <span className="brand-title">EventCoord</span>
+              <span className="brand-title">Live Connect</span>
               <span className="brand-subtitle">Participant Portal</span>
             </div>
           </div>

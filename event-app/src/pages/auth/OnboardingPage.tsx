@@ -110,7 +110,7 @@ export const OnboardingPage: React.FC = () => {
             <Sparkles size={14} />
             <span>Profile Setup</span>
           </div>
-          <h1>Welcome to EventCoord</h1>
+          <h1>Welcome to Live Connect</h1>
           <p>
             Tell us a bit about yourself so event organizers can prepare attendee credentials,
             seating, and tailored arrangements for you.

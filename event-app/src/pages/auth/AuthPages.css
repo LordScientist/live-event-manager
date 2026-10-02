@@ -1,3 +1,8 @@
+/* ==========================================================================
+   AUTH PAGES — Shared + Figma‑matched Create Account
+   ========================================================================== */
+
+/* ── Base page container ─────────────────────────────────────────────────── */
 .auth-page {
   min-height: 100vh;
   display: flex;
@@ -8,6 +13,13 @@
   background-color: var(--color-bg-canvas);
 }
 
+.auth-page--signup {
+  justify-content: flex-start;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ── Auth card (login / general) ──────────────────────────────────────────── */
 .auth-card {
   position: relative;
   width: 100%;
@@ -17,6 +29,18 @@
   border-radius: var(--radius-xl);
   padding: var(--space-8);
   box-shadow: var(--shadow-md);
+}
+
+/* Signup card — wider, no border/shadow, full-height feel like Figma */
+.auth-card--signup {
+  max-width: 460px;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 40px 28px 32px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .auth-card__theme-toggle {
@@ -31,8 +55,13 @@
     padding: var(--space-6) var(--space-4);
     border-radius: var(--radius-lg);
   }
+  .auth-card--signup {
+    border-radius: 0;
+    padding: 32px 20px 24px;
+  }
 }
 
+/* ── Login / general auth header ──────────────────────────────────────────── */
 .auth-header {
   text-align: center;
   margin-bottom: var(--space-6);
@@ -68,6 +97,12 @@
   color: var(--color-text-muted);
 }
 
+.auth-header__desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ── Shared grid ─────────────────────────────────────────────────────────── */
 .auth-grid-2 {
   display: grid;
   grid-template-columns: 1fr;
@@ -80,6 +115,7 @@
   }
 }
 
+/* ── Shared checkbox / footer ─────────────────────────────────────────────── */
 .auth-checkbox-group {
   display: flex;
   align-items: flex-start;
@@ -115,7 +151,9 @@
   font-weight: 600;
 }
 
-/* Password Input with Toggle Button */
+/* ==========================================================================
+   PASSWORD INPUT – shared toggle button
+   ========================================================================== */
 .password-input-wrap {
   position: relative;
   width: 100%;
@@ -149,7 +187,9 @@
   color: var(--color-text-main);
 }
 
-/* Password Strength Meter */
+/* ==========================================================================
+   PASSWORD STRENGTH METER (kept for any page that still uses it)
+   ========================================================================== */
 .password-strength-meter {
   margin-top: calc(-1 * var(--space-2));
   margin-bottom: var(--space-4);
@@ -203,7 +243,7 @@
 .password-strength-segment--active-good { background-color: var(--color-info); }
 .password-strength-segment--active-strong { background-color: var(--color-success); }
 
-/* Password Requirements Checklist */
+/* ── Password Checklist ───────────────────────────────────────────────────── */
 .password-checklist {
   display: grid;
   grid-template-columns: 1fr;
@@ -240,3 +280,516 @@
 .checklist-item__icon {
   flex-shrink: 0;
 }
+
+/* ==========================================================================
+   FIGMA — CREATE YOUR ACCOUNT (Signup Page)
+   Mobile-first design: 414 × 896 viewport
+   Colors: Orange primary #E8720C, Navy #1B2559
+   ========================================================================== */
+
+/* ── LC Logo ──────────────────────────────────────────────────────────────── */
+.signup-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 48px;
+}
+
+.signup-logo__icon-img {
+  width: 36px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
+
+.signup-logo__icon {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.lc-mark-l {
+  font-size: 36px;
+  color: #1B2559;
+  font-family: 'Georgia', serif;
+}
+
+:root[data-theme="dark"] .lc-mark-l {
+  color: #93a3f8;
+}
+
+.lc-mark-c {
+  font-size: 32px;
+  color: #E8720C;
+  font-family: 'Georgia', serif;
+  position: relative;
+  top: -2px;
+}
+
+.signup-logo__text {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  line-height: 1;
+}
+
+.signup-logo__live {
+  color: #1B2559;
+}
+
+:root[data-theme="dark"] .signup-logo__live {
+  color: #93a3f8;
+}
+
+.signup-logo__connect {
+  color: #E8720C;
+}
+
+/* ── Signup Header ────────────────────────────────────────────────────────── */
+.signup-header {
+  text-align: left;
+  margin-bottom: 48px;
+}
+
+.signup-header__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.signup-header__subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+/* ── 2-Column Form Grid ──────────────────────────────────────────────────── */
+.signup-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 20px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 400px) {
+  .signup-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* Tighter field spacing inside the signup form */
+.auth-card--signup .form-field {
+  margin-bottom: 12px;
+}
+
+/* Labels match Figma: medium weight, dark */
+.auth-card--signup .form-field__label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  margin-bottom: 6px;
+}
+
+/* Inputs match Figma: thin 1px border, rounded, consistent height */
+.auth-card--signup .input {
+  height: 42px;
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  padding: 0 12px;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-main);
+}
+
+.auth-card--signup .input:focus {
+  border-color: #E8720C;
+  box-shadow: 0 0 0 2px rgba(232, 114, 12, 0.18);
+}
+
+/* ── Password hint ────────────────────────────────────────────────────────── */
+.signup-password-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+/* ── Optional section label ───────────────────────────────────────────────── */
+.signup-optional-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 4px;
+  margin-top: 4px;
+}
+
+/* ── Checkbox ─────────────────────────────────────────────────────────────── */
+.signup-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 16px;
+}
+
+.signup-checkbox-group input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #E8720C;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.signup-checkbox-label {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+/* ── Orange pill submit button ────────────────────────────────────────────── */
+.signup-submit-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: var(--radius-full) !important;
+  background-color: #E8720C !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-top: 56px;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.signup-submit-btn:hover:not(:disabled) {
+  background-color: #d0650a !important;
+  transform: translateY(-1px);
+}
+
+.signup-submit-btn:active:not(:disabled) {
+  background-color: #b85809 !important;
+  transform: translateY(0);
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.signup-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  padding-bottom: var(--space-6);
+}
+
+.signup-footer a {
+  color: var(--color-text-main);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.signup-footer a:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   FIGMA — LOGIN PAGE (Node 1:5)
+   Mobile-first design: 414 × 896 viewport
+   Palette: Orange #F36F12, Deep Blue #0C139D, Black #000000, Canvas #FAF9F9
+   ========================================================================== */
+
+.auth-page--login {
+  position: relative;
+  min-height: 100vh;
+  justify-content: flex-start;
+  padding: 0;
+  background-color: #FAF9F9;
+  overflow-x: hidden;
+}
+
+:root[data-theme="dark"] .auth-page--login {
+  background-color: var(--color-bg-canvas);
+}
+
+.auth-card--login {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 36px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+@media (max-width: 440px) {
+  .auth-card--login {
+    padding: 32px 24px 28px;
+  }
+}
+
+/* ── Top-right decorative background graphic ────────────────────────────── */
+.login-decor-graphic {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 148px;
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
+}
+
+:root[data-theme="dark"] .login-decor-graphic {
+  opacity: 0.85;
+}
+
+/* ── Top bar: LC Logo on left, ThemeToggle on right ───────────────────────── */
+.login-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 2;
+}
+
+.login-logo-img {
+  width: 38px;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* ── Centered Brand Hero "Live Connect" ───────────────────────────────────── */
+.login-brand-hero {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  margin-bottom: 32px;
+  font-family: var(--font-sans);
+}
+
+.login-brand-hero__live {
+  color: #0C139D;
+}
+
+:root[data-theme="dark"] .login-brand-hero__live {
+  color: #818cf8;
+}
+
+.login-brand-hero__connect {
+  color: #F36F12;
+}
+
+/* ── Left-aligned Welcome Section ─────────────────────────────────────────── */
+.login-welcome-block {
+  text-align: left;
+  margin-bottom: 48px;
+}
+
+.login-welcome-block__title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: -0.3px;
+}
+
+.login-welcome-block__subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* ── Form Fields ─────────────────────────────────────────────────────────── */
+.auth-card--login .form-field {
+  margin-bottom: 20px;
+}
+
+.auth-card--login .form-field__label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin-bottom: 8px;
+}
+
+.auth-card--login .input {
+  height: 44px;
+  border: 1px solid #737373;
+  border-radius: 6px;
+  font-size: 14px;
+  padding: 0 14px;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-main);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+:root[data-theme="dark"] .auth-card--login .input {
+  border-color: var(--color-border);
+  background-color: var(--color-bg-surface);
+}
+
+.auth-card--login .input:focus {
+  border-color: #F36F12;
+  box-shadow: 0 0 0 2px rgba(243, 111, 18, 0.2);
+}
+
+.auth-card--login .input::placeholder {
+  color: #737373;
+}
+
+:root[data-theme="dark"] .auth-card--login .input::placeholder {
+  color: #94a3b8;
+}
+
+.login-password-hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: -12px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.login-forgot-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -8px;
+  margin-bottom: 12px;
+}
+
+.login-forgot-btn {
+  background: none;
+  border: none;
+  color: #F36F12;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.login-forgot-btn:hover {
+  text-decoration: underline;
+}
+
+/* ── Login Action Button ─────────────────────────────────────────────────── */
+.login-submit-btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 9999px !important;
+  background-color: #F36F12 !important;
+  border: none !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-top: 56px;
+  box-shadow: 0 2px 8px rgba(243, 111, 18, 0.25);
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.login-submit-btn:hover:not(:disabled) {
+  background-color: #dc5f0a !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(243, 111, 18, 0.35);
+}
+
+.login-submit-btn:active:not(:disabled) {
+  background-color: #b84f08 !important;
+  transform: translateY(0);
+}
+
+.login-submit-btn .login-btn-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.login-footer-block {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+}
+
+.login-footer-block a {
+  color: var(--color-text-main);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.login-footer-block a:hover {
+  text-decoration: underline;
+}
+
+/* ── Version Tag ─────────────────────────────────────────────────────────── */
+.login-version-tag {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-text-subtle);
+  margin-top: 24px;
+  font-weight: 500;
+}
+
+/* ── Quick Demo Helper (Compact & subtle for testing/grading) ─────────────── */
+.login-demo-bar {
+  margin-top: 20px;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 11px;
+}
+
+:root[data-theme="dark"] .login-demo-bar {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.login-demo-bar__label {
+  color: var(--color-text-subtle);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.login-demo-pill {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  border-radius: var(--radius-full);
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.login-demo-pill:hover {
+  border-color: #F36F12;
+  color: #F36F12;
+}
+

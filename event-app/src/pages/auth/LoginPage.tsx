@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Fingerprint } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { useAuth, MOCK_REGULAR_USER, MOCK_EVENT_MANAGER } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
+import lcIcon from '../../assets/lc-icon.png';
+import decorGraphic from '../../assets/login-decor-top-right.png';
 import './AuthPages.css';
 
 export const LoginPage: React.FC = () => {
@@ -29,6 +31,8 @@ export const LoginPage: React.FC = () => {
     }
     if (!password) {
       newErrors.password = 'Password is required';
+    } else if (password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,7 +62,7 @@ export const LoginPage: React.FC = () => {
         login('user');
         navigate('/');
       }
-    }, 500);
+    }, 450);
   };
 
   const fillQuickPreset = (role: 'user' | 'manager') => {
@@ -83,24 +87,42 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-card__theme-toggle">
+    <div className="auth-page auth-page--login">
+      {/* Top right decorative shapes matching Figma design */}
+      <img
+        src={decorGraphic}
+        alt=""
+        className="login-decor-graphic"
+        aria-hidden="true"
+      />
+
+      <div className="auth-card auth-card--login">
+        {/* Top Bar: Brand Icon on left, Theme Toggle on right */}
+        <div className="login-top-bar">
+          <Link to="/welcome" aria-label="Live Connect Home">
+            <img src={lcIcon} alt="Live Connect" className="login-logo-img" />
+          </Link>
           <ThemeToggle size="sm" />
         </div>
-        <div className="auth-header">
-          <Link to="/welcome" className="auth-brand">
-            <span className="brand-logo" aria-hidden="true">📡</span>
-            <span className="brand-title">EventCoord</span>
-          </Link>
-          <h1>Welcome back</h1>
-          <p>Sign in to view your registrations, schedules, and live updates.</p>
+
+        {/* Centered Brand Title */}
+        <div className="login-brand-hero">
+          <span className="login-brand-hero__live">Live</span>{' '}
+          <span className="login-brand-hero__connect">Connect</span>
+        </div>
+
+        {/* Left-aligned Welcome Header */}
+        <div className="login-welcome-block">
+          <h1 className="login-welcome-block__title">Welcome back</h1>
+          <p className="login-welcome-block__subtitle">Login in to your account</p>
         </div>
 
         {generalError && (
-          <Alert type="error" title="Sign In Error">
-            {generalError}
-          </Alert>
+          <div style={{ marginBottom: '20px' }}>
+            <Alert type="error" title="Sign In Error">
+              {generalError}
+            </Alert>
+          </div>
         )}
 
         {forgotSent ? (
@@ -111,46 +133,17 @@ export const LoginPage: React.FC = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                setForgotSent(false);
-              }}
+              onClick={() => setForgotSent(false)}
               style={{ marginTop: 'var(--space-4)' }}
             >
               Back to Sign In
             </Button>
           </div>
         ) : (
-          <form onSubmit={handleLogin} noValidate>
-            {/* Quick Demonstration Presets */}
-            <div style={{ marginBottom: 'var(--space-5)', padding: 'var(--space-3)', backgroundColor: 'var(--color-bg-subtle)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-              <div style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', marginBottom: 'var(--space-2)', fontWeight: 600 }}>
-                QUICK DEMO SIGN IN PRESETS:
-              </div>
-              <div style={{ display: 'flex', gap: 'var(--space-2)' }}>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fillQuickPreset('user')}
-                  style={{ flex: 1, fontSize: 'var(--text-xs)' }}
-                >
-                  👤 Attendee / Speaker
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => fillQuickPreset('manager')}
-                  style={{ flex: 1, fontSize: 'var(--text-xs)' }}
-                >
-                  🛠️ Roland (Manager)
-                </Button>
-              </div>
-            </div>
-
-            {/* Email Field (Prompt Section 6) */}
+          <form onSubmit={handleLogin} noValidate className="login-form">
+            {/* Email Address Field */}
             <Input
-              label="Email"
+              label="Email Address"
               type="email"
               name="email"
               value={email}
@@ -158,12 +151,13 @@ export const LoginPage: React.FC = () => {
                 setEmail(e.target.value);
                 if (errors.email) setErrors((prev) => ({ ...prev, email: '' }));
               }}
+              placeholder="hello@reallygreatsite.com"
               error={errors.email}
               required
               autoComplete="email"
             />
 
-            {/* Password Field (Prompt Section 6) */}
+            {/* Password Field */}
             <Input
               label="Password"
               type={showPassword ? 'text' : 'password'}
@@ -173,6 +167,7 @@ export const LoginPage: React.FC = () => {
                 setPassword(e.target.value);
                 if (errors.password) setErrors((prev) => ({ ...prev, password: '' }));
               }}
+              placeholder="********"
               error={errors.password}
               required
               autoComplete="current-password"
@@ -188,41 +183,63 @@ export const LoginPage: React.FC = () => {
               }
             />
 
-            {/* Forgot Password Action (Prompt Section 6) */}
-            <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '-8px', marginBottom: 'var(--space-5)' }}>
+            {/* Password Length Hint */}
+            <p className="login-password-hint">
+              Password must be at least 8 characters.
+            </p>
+
+            {/* Forgot Password Link */}
+            <div className="login-forgot-action">
               <button
                 type="button"
+                className="login-forgot-btn"
                 onClick={handleForgotSubmit}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-primary)',
-                  fontSize: 'var(--text-xs)',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  padding: 0
-                }}
               >
                 Forgot password?
               </button>
             </div>
 
-            {/* Log in Action (Prompt Section 6) */}
+            {/* Orange Pill Button with Fingerprint Icon */}
             <Button
               type="submit"
               variant="primary"
               size="lg"
               isLoading={isLoading}
-              style={{ width: '100%' }}
+              className="login-submit-btn"
             >
-              Log in
+              <Fingerprint size={20} className="login-btn-icon" aria-hidden="true" />
+              <span>Login</span>
             </Button>
           </form>
         )}
 
-        {/* Create account Action (Prompt Section 6) */}
-        <div className="auth-footer">
-          Don't have an account? <Link to="/signup">Create account</Link>
+        {/* Footer Link */}
+        <div className="login-footer-block">
+          Don't Have an Account? <Link to="/signup"><strong>Sign Up</strong></Link>
+        </div>
+
+        {/* Version Tag */}
+        <div className="login-version-tag">
+          1.2.0
+        </div>
+
+        {/* Subtle Demo Quick Sign In Bar for evaluation */}
+        <div className="login-demo-bar">
+          <span className="login-demo-bar__label">Demo:</span>
+          <button
+            type="button"
+            className="login-demo-pill"
+            onClick={() => fillQuickPreset('user')}
+          >
+            Attendee
+          </button>
+          <button
+            type="button"
+            className="login-demo-pill"
+            onClick={() => fillQuickPreset('manager')}
+          >
+            Roland (Manager)
+          </button>
         </div>
       </div>
     </div>
