@@ -17,7 +17,7 @@ import './UserProfilePage.css';
 
 export const UserProfilePage: React.FC = () => {
   const navigate = useNavigate();
-  const { currentUser, updateProfile, switchAccountType } = useAuth();
+  const { currentUser, updateProfile, logout } = useAuth();
 
   const [isEditing, setIsEditing] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -92,8 +92,8 @@ export const UserProfilePage: React.FC = () => {
   };
 
   const handleLogout = () => {
-    switchAccountType('user');
-    navigate('/welcome');
+    logout();
+    navigate('/login');
   };
 
   return (

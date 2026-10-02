@@ -2,31 +2,35 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { UserProfile, AccountType } from '../types';
 
-interface AuthContextType {
+export interface AuthContextType {
   currentUser: UserProfile;
   accountType: AccountType;
   switchAccountType: (type: AccountType) => void;
   updateProfile: (profile: Partial<UserProfile>) => void;
   isAuthenticated: boolean;
+  login: (type?: AccountType, userOverrides?: Partial<UserProfile>) => void;
+  signup: (userData: Partial<UserProfile>) => void;
+  logout: () => void;
 }
 
 // Default mock profiles for demonstration and testing both experiences
 export const MOCK_REGULAR_USER: UserProfile = {
   id: 'usr-101-regular',
-  email: 'alex.rivera@example.com',
+  email: 'participant@example.com',
   first_name: 'Alex',
   last_name: 'Rivera',
-  phone: '+1 (555) 234-5678',
+  phone: '+233 24 555 7890',
   organization: 'Tech For All Collective',
-  job_title: 'Community Lead',
+  job_title: 'Attendee',
   account_type: 'user',
   created_at: '2026-01-15T09:00:00Z'
 };
 
+// Manager profile updated with the name Roland (Prompt requirement)
 export const MOCK_EVENT_MANAGER: UserProfile = {
   id: 'usr-202-manager',
-  email: 'osmond.adjei@knust.edu.gh',
-  first_name: 'Osmond',
+  email: 'roland.adjei@knust.edu.gh',
+  first_name: 'Roland',
   last_name: 'Adjei',
   phone: '+233 24 555 1234',
   organization: 'KNUST Event Operations',
@@ -38,27 +42,77 @@ export const MOCK_EVENT_MANAGER: UserProfile = {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Session check: only keep session alive when explicitly authenticated in localStorage
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    return localStorage.getItem('is_authenticated') === 'true';
+  });
+
   const [currentUser, setCurrentUser] = useState<UserProfile>(() => {
+    const savedUser = localStorage.getItem('current_user_profile');
+    if (savedUser) {
+      try {
+        return JSON.parse(savedUser);
+      } catch {
+        // Fall back to role preset
+      }
+    }
     const savedRole = localStorage.getItem('active_account_type');
     return savedRole === 'manager' ? MOCK_EVENT_MANAGER : MOCK_REGULAR_USER;
   });
 
   const accountType = currentUser.account_type;
 
+  const login = (type: AccountType = 'user', userOverrides?: Partial<UserProfile>) => {
+    const baseUser = type === 'manager' ? MOCK_EVENT_MANAGER : MOCK_REGULAR_USER;
+    const finalUser: UserProfile = userOverrides
+      ? { ...baseUser, ...userOverrides, account_type: type }
+      : baseUser;
+
+    setIsAuthenticated(true);
+    setCurrentUser(finalUser);
+    localStorage.setItem('is_authenticated', 'true');
+    localStorage.setItem('active_account_type', type);
+    localStorage.setItem('current_user_profile', JSON.stringify(finalUser));
+  };
+
+  const signup = (userData: Partial<UserProfile>) => {
+    const newUser: UserProfile = {
+      id: `usr-${Date.now()}`,
+      email: userData.email || 'user@example.com',
+      first_name: userData.first_name || 'Participant',
+      last_name: userData.last_name || 'User',
+      phone: userData.phone || '',
+      organization: userData.organization || 'General Community',
+      job_title: userData.job_title || 'Attendee',
+      account_type: 'user',
+      created_at: new Date().toISOString()
+    };
+
+    setIsAuthenticated(true);
+    setCurrentUser(newUser);
+    localStorage.setItem('is_authenticated', 'true');
+    localStorage.setItem('active_account_type', 'user');
+    localStorage.setItem('current_user_profile', JSON.stringify(newUser));
+  };
+
+  const logout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('is_authenticated');
+  };
+
   const switchAccountType = (type: AccountType) => {
     localStorage.setItem('active_account_type', type);
-    if (type === 'manager') {
-      setCurrentUser(MOCK_EVENT_MANAGER);
-    } else {
-      setCurrentUser(MOCK_REGULAR_USER);
-    }
+    const targetUser = type === 'manager' ? MOCK_EVENT_MANAGER : MOCK_REGULAR_USER;
+    setCurrentUser(targetUser);
+    localStorage.setItem('current_user_profile', JSON.stringify(targetUser));
   };
 
   const updateProfile = (updates: Partial<UserProfile>) => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      ...updates
-    }));
+    setCurrentUser((prev) => {
+      const updated = { ...prev, ...updates };
+      localStorage.setItem('current_user_profile', JSON.stringify(updated));
+      return updated;
+    });
   };
 
   useEffect(() => {
@@ -72,7 +126,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         accountType,
         switchAccountType,
         updateProfile,
-        isAuthenticated: true
+        isAuthenticated,
+        login,
+        signup,
+        logout
       }}
     >
       {children}

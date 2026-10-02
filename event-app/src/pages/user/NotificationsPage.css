@@ -8,8 +8,8 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--space-8);
-  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
@@ -18,12 +18,14 @@
   align-items: center;
   gap: var(--space-3);
   margin-bottom: var(--space-1);
+  flex-wrap: wrap;
 }
 
 .header-badge-row h1 {
-  font-size: var(--text-2xl);
+  font-size: clamp(1.35rem, 4vw, var(--text-2xl));
   font-weight: 700;
   margin: 0;
+  word-break: break-word;
 }
 
 .unread-counter-badge {

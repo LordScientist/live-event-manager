@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { UserLayout } from './components/layout/UserLayout';
 import { ManagerLayout } from './components/layout/ManagerLayout';
 import { UserHomePage } from './pages/user/UserHomePage';
@@ -20,20 +20,68 @@ import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
 
+/**
+ * Route protection: Unauthenticated visitors are routed to /signup
+ */
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/signup" state={{ from: location }} replace />;
+  }
+
+  return <>{children}</>;
+};
+
+/**
+ * Public-only auth routes: Authenticated users are redirected inside the app
+ */
+const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { isAuthenticated, accountType } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to={accountType === 'manager' ? '/manager' : '/'} replace />;
+  }
+
+  return <>{children}</>;
+};
+
 export const App: React.FC = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Welcome / Landing Screen (Prompt Section 4.1) */}
+          {/* Welcome / Landing Screen (Public) */}
           <Route path="/welcome" element={<LandingPage />} />
-          {/* Sign Up Screen (Prompt Section 5) */}
-          <Route path="/signup" element={<SignUpPage />} />
-          {/* Login Screen (Prompt Section 6) */}
-          <Route path="/login" element={<LoginPage />} />
 
-          {/* User Application Routes */}
-          <Route path="/" element={<UserLayout />}>
+          {/* Authentication Screens (Public only) */}
+          <Route
+            path="/signup"
+            element={
+              <PublicOnlyRoute>
+                <SignUpPage />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicOnlyRoute>
+                <LoginPage />
+              </PublicOnlyRoute>
+            }
+          />
+
+          {/* User Application Routes (Protected) */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <UserLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<UserHomePage />} />
             <Route path="events" element={<UserHomePage />} />
             <Route path="events/:id" element={<EventDetailsPage />} />
@@ -46,8 +94,15 @@ export const App: React.FC = () => {
             <Route path="profile" element={<UserProfilePage />} />
           </Route>
 
-          {/* Event Manager Application Routes */}
-          <Route path="/manager" element={<ManagerLayout />}>
+          {/* Event Manager Application Routes (Protected) */}
+          <Route
+            path="/manager"
+            element={
+              <ProtectedRoute>
+                <ManagerLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<ManagerDashboardPage />} />
             <Route path="events" element={<ManagerEventsPage />} />
             <Route path="events/:id" element={<EventManagementHubPage />} />

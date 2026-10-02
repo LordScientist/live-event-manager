@@ -8,7 +8,7 @@ import './AuthPages.css';
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
-  const { updateProfile } = useAuth();
+  const { signup } = useAuth();
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -71,10 +71,10 @@ export const SignUpPage: React.FC = () => {
 
     setIsSubmitting(true);
 
-    // Simulated account registration without backend leakage
+    // Account registration with persistent session activation
     setTimeout(() => {
       setIsSubmitting(false);
-      updateProfile({
+      signup({
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,
@@ -83,7 +83,7 @@ export const SignUpPage: React.FC = () => {
         job_title: formData.jobTitle || undefined,
         account_type: 'user'
       });
-      navigate('/events');
+      navigate('/');
     }, 600);
   };
 

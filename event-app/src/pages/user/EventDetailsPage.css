@@ -47,8 +47,14 @@
 }
 
 .event-hero__media {
-  height: 280px;
+  height: 220px;
   background-color: var(--color-bg-subtle);
+}
+
+@media (min-width: 640px) {
+  .event-hero__media {
+    height: 280px;
+  }
 }
 
 @media (min-width: 840px) {
@@ -65,9 +71,15 @@
 }
 
 .event-hero__info {
-  padding: var(--space-6);
+  padding: var(--space-4);
   display: flex;
   flex-direction: column;
+}
+
+@media (min-width: 640px) {
+  .event-hero__info {
+    padding: var(--space-6);
+  }
 }
 
 .event-hero__tags {
@@ -75,6 +87,7 @@
   align-items: center;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
+  flex-wrap: wrap;
 }
 
 .event-hero__category {
@@ -87,11 +100,12 @@
 }
 
 .event-hero__title {
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-size: clamp(1.35rem, 4vw, 2.25rem);
   font-weight: 700;
   color: var(--color-text-main);
   line-height: 1.2;
   margin-bottom: var(--space-2);
+  word-break: break-word;
 }
 
 .event-hero__organizer {
@@ -100,7 +114,8 @@
   gap: var(--space-2);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
 }
 
 .event-hero__quick-meta {
@@ -108,9 +123,15 @@
   grid-template-columns: 1fr;
   gap: var(--space-3);
   margin-bottom: var(--space-6);
-  padding: var(--space-4);
+  padding: var(--space-3);
   background-color: var(--color-bg-canvas);
   border-radius: var(--radius-md);
+}
+
+@media (min-width: 480px) {
+  .event-hero__quick-meta {
+    padding: var(--space-4);
+  }
 }
 
 @media (min-width: 600px) {
@@ -142,22 +163,31 @@
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-text-main);
+  word-break: break-word;
 }
 
 .event-hero__cta {
   margin-top: auto;
 }
 
+@media (max-width: 600px) {
+  .event-hero__cta button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Two-column Body Layout */
 .event-details-body {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-8);
+  gap: var(--space-6);
 }
 
 @media (min-width: 900px) {
   .event-details-body {
     grid-template-columns: 1.9fr 1.1fr;
+    gap: var(--space-8);
   }
 }
 
@@ -165,8 +195,15 @@
   background-color: var(--color-bg-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  margin-bottom: var(--space-6);
+  padding: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+@media (min-width: 640px) {
+  .event-section {
+    padding: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
 }
 
 .section-title-row {

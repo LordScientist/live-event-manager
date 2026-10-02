@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -6,9 +6,7 @@ import {
   PlusCircle,
   Bell,
   User,
-  ArrowRightLeft,
-  Menu,
-  X
+  ArrowRightLeft
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import './ManagerLayout.css';
@@ -16,7 +14,6 @@ import './ManagerLayout.css';
 export const ManagerLayout: React.FC = () => {
   const { currentUser, switchAccountType } = useAuth();
   const navigate = useNavigate();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleSwitchToUser = () => {
     switchAccountType('user');
@@ -25,9 +22,9 @@ export const ManagerLayout: React.FC = () => {
 
   const navItems = [
     { to: '/manager', label: 'Dashboard', icon: LayoutDashboard, end: true },
-    { to: '/manager/events', label: 'My Events', icon: Calendar },
-    { to: '/manager/create-event', label: 'Create Event', icon: PlusCircle },
-    { to: '/manager/notifications', label: 'Notifications', icon: Bell, badge: 3 },
+    { to: '/manager/events', label: 'Events', icon: Calendar },
+    { to: '/manager/create-event', label: 'Create', icon: PlusCircle, isCreate: true },
+    { to: '/manager/notifications', label: 'Alerts', icon: Bell, badge: 3 },
     { to: '/manager/profile', label: 'Profile', icon: User }
   ];
 
@@ -36,26 +33,15 @@ export const ManagerLayout: React.FC = () => {
       {/* Top Header */}
       <header className="manager-header">
         <div className="manager-header__inner container">
-          <div className="manager-header__left">
-            <button
-              type="button"
-              className="manager-hamburger mobile-only"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-            <div className="manager-header__brand">
-              <span className="brand-logo" aria-hidden="true">🛠️</span>
-              <div className="brand-text">
-                <span className="brand-title">EventCoord</span>
-                <span className="brand-tag">Organizer Console</span>
-              </div>
+          <div className="manager-header__brand">
+            <span className="brand-logo" aria-hidden="true">🛠️</span>
+            <div className="brand-text">
+              <span className="brand-title">EventCoord</span>
+              <span className="brand-tag">Organizer Console</span>
             </div>
           </div>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation (visible on tablet/desktop only) */}
           <nav className="manager-header__nav desktop-only" aria-label="Manager Navigation">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -69,7 +55,7 @@ export const ManagerLayout: React.FC = () => {
                   }
                 >
                   <Icon size={18} aria-hidden="true" />
-                  <span>{item.label}</span>
+                  <span>{item.isCreate ? 'Create Event' : item.label}</span>
                   {item.badge && <span className="nav-badge">{item.badge}</span>}
                 </NavLink>
               );
@@ -81,8 +67,9 @@ export const ManagerLayout: React.FC = () => {
             <button
               type="button"
               onClick={handleSwitchToUser}
-              className="role-switch-btn"
+              className="role-switch-btn role-switch-btn--manager"
               title="Switch to Participant Portal"
+              aria-label="Switch to Participant Portal"
             >
               <ArrowRightLeft size={16} aria-hidden="true" />
               <span className="role-switch-btn__text">Participant Mode</span>
@@ -94,36 +81,35 @@ export const ManagerLayout: React.FC = () => {
         </div>
       </header>
 
-      {/* Mobile Drawer Menu (Prompt requirement: collapse navigation into a menu) */}
-      {mobileMenuOpen && (
-        <div className="manager-mobile-menu mobile-only">
-          <nav className="manager-mobile-menu__nav" aria-label="Mobile Navigation Drawer">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              return (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  end={item.end}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={({ isActive }) =>
-                    `manager-mobile-nav-link ${isActive ? 'manager-mobile-nav-link--active' : ''}`
-                  }
-                >
-                  <Icon size={20} aria-hidden="true" />
-                  <span>{item.label}</span>
-                  {item.badge && <span className="nav-badge">{item.badge}</span>}
-                </NavLink>
-              );
-            })}
-          </nav>
-        </div>
-      )}
-
       {/* Main Content Area */}
       <main className="manager-layout__main container">
         <Outlet />
       </main>
+
+      {/* Mobile Bottom Navigation (Section 35: Dashboard | Events | Create | Notifications | Profile) */}
+      <nav className="manager-bottom-nav mobile-only" aria-label="Manager Mobile Navigation">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              className={({ isActive }) =>
+                `manager-bottom-nav-item ${item.isCreate ? 'manager-bottom-nav-item--create' : ''} ${
+                  isActive ? 'manager-bottom-nav-item--active' : ''
+                }`
+              }
+            >
+              <div className="manager-bottom-nav-icon-wrapper">
+                <Icon size={item.isCreate ? 22 : 20} aria-hidden="true" />
+                {item.badge && <span className="manager-bottom-badge">{item.badge}</span>}
+              </div>
+              <span className="manager-bottom-nav-label">{item.label}</span>
+            </NavLink>
+          );
+        })}
+      </nav>
     </div>
   );
 };
