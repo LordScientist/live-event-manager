@@ -221,6 +221,12 @@ export const EventDetailsPage: React.FC = () => {
                 <span className="acc-tag">✓ Live captioning (CART)</span>
                 <span className="acc-tag">✓ Sensory quiet area</span>
               </div>
+              <div style={{ marginTop: '12px' }}>
+                <Link to={`/events/${event.id}/accessibility`} className="details-acc-view-link">
+                  <span>View Full Accessibility Details</span>
+                  <ChevronRight size={14} />
+                </Link>
+              </div>
             </div>
 
             {/* Organizer Info */}
