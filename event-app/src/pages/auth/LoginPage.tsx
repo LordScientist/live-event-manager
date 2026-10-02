@@ -8,7 +8,7 @@ import './AuthPages.css';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { switchAccountType } = useAuth();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,12 +42,18 @@ export const LoginPage: React.FC = () => {
     setTimeout(() => {
       setIsLoading(false);
       // Determine account type based on input email or default to user
-      if (email.toLowerCase().includes('manager') || email.toLowerCase().includes('chen')) {
-        switchAccountType('manager');
+      const isManager =
+        email.toLowerCase().includes('manager') ||
+        email.toLowerCase().includes('roland') ||
+        email.toLowerCase().includes('adjei') ||
+        email.toLowerCase().includes('chen');
+
+      if (isManager) {
+        login('manager');
         navigate('/manager');
       } else {
-        switchAccountType('user');
-        navigate('/events');
+        login('user');
+        navigate('/');
       }
     }, 500);
   };
@@ -131,7 +137,7 @@ export const LoginPage: React.FC = () => {
                   onClick={() => fillQuickPreset('manager')}
                   style={{ flex: 1, fontSize: 'var(--text-xs)' }}
                 >
-                  🛠️ Event Manager
+                  🛠️ Roland (Manager)
                 </Button>
               </div>
             </div>

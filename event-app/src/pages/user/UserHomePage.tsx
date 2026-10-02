@@ -38,7 +38,7 @@ export const UserHomePage: React.FC = () => {
     let prefix = 'Good afternoon';
     if (hour < 12) prefix = 'Good morning';
     else if (hour >= 18) prefix = 'Good evening';
-    return `${prefix}, ${currentUser.first_name || 'Osmond'}`;
+    return `${prefix}, ${currentUser.first_name || 'Participant'}`;
   }, [currentUser.first_name]);
 
   // Filtered events by search and category

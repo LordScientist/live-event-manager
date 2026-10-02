@@ -28,9 +28,10 @@
 }
 
 .updates-page-title {
-  font-size: var(--text-3xl);
+  font-size: clamp(1.35rem, 4vw, var(--text-3xl));
   font-weight: 700;
   margin-bottom: var(--space-1);
+  word-break: break-word;
 }
 
 .updates-page-subtitle {
@@ -63,10 +64,16 @@
 .updates-filters {
   display: flex;
   gap: var(--space-2);
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   border-bottom: 1px solid var(--color-border);
   padding-bottom: var(--space-3);
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.updates-filters::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-btn {

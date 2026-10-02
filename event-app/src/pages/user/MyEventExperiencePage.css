@@ -8,14 +8,15 @@
 }
 
 .experience-header {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
 }
 
 .experience-header__top {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin-bottom: var(--space-2);
+  flex-wrap: wrap;
 }
 
 .experience-category {
@@ -49,9 +50,10 @@
 }
 
 .experience-event-name {
-  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-size: clamp(1.35rem, 4vw, 2.25rem);
   font-weight: 700;
   margin-bottom: var(--space-2);
+  word-break: break-word;
 }
 
 .experience-role-callout {
@@ -64,6 +66,7 @@
   border-radius: var(--radius-md);
   font-size: var(--text-sm);
   font-weight: 500;
+  flex-wrap: wrap;
 }
 
 /* Highlights Grid (Next Up & Latest Update) */
@@ -187,6 +190,13 @@
   position: relative;
 }
 
+@media (max-width: 480px) {
+  .timeline-item {
+    grid-template-columns: 50px 16px 1fr;
+    gap: var(--space-2);
+  }
+}
+
 .timeline-time {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
@@ -194,6 +204,12 @@
   color: var(--color-primary);
   text-align: right;
   padding-top: 2px;
+}
+
+@media (max-width: 480px) {
+  .timeline-time {
+    font-size: var(--text-xs);
+  }
 }
 
 .timeline-connector {
@@ -229,6 +245,12 @@
   padding: var(--space-4);
 }
 
+@media (max-width: 480px) {
+  .timeline-content {
+    padding: var(--space-3);
+  }
+}
+
 .timeline-item--changed .timeline-content {
   border-color: var(--color-warning-border);
   background-color: var(--color-warning-bg);
@@ -240,6 +262,7 @@
   align-items: flex-start;
   gap: var(--space-2);
   margin-bottom: var(--space-1);
+  flex-wrap: wrap;
 }
 
 .timeline-title {

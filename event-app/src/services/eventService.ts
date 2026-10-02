@@ -373,7 +373,7 @@ export const eventService = {
           accessibility_info: input.accessibility_info,
           collect_dietary: input.collected_fields.includes('dietary_requirements'),
           created_at: new Date().toISOString(),
-          organizer_name: 'Osmond Adjei',
+          organizer_name: 'Roland Adjei',
           registration_status: input.status === 'published' ? 'open' : undefined
         };
 

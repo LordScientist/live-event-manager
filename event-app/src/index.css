@@ -130,12 +130,16 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 #root {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Focus indicator for keyboard navigation */
@@ -144,17 +148,18 @@ body {
   box-shadow: var(--focus-ring);
 }
 
-/* Headings */
+/* Headings with Fluid Typography */
 h1, h2, h3, h4, h5, h6 {
   color: var(--color-text-main);
   font-weight: 600;
   line-height: 1.25;
+  word-break: break-word;
 }
 
-h1 { font-size: var(--text-3xl); }
-h2 { font-size: var(--text-2xl); }
-h3 { font-size: var(--text-xl); }
-h4 { font-size: var(--text-lg); }
+h1 { font-size: clamp(1.5rem, 4vw, var(--text-3xl)); }
+h2 { font-size: clamp(1.25rem, 3.5vw, var(--text-2xl)); }
+h3 { font-size: clamp(1.1rem, 3vw, var(--text-xl)); }
+h4 { font-size: clamp(1rem, 2.5vw, var(--text-lg)); }
 
 p {
   color: var(--color-text-secondary);
@@ -185,5 +190,23 @@ a:hover {
   .container {
     padding-left: var(--space-6);
     padding-right: var(--space-6);
+  }
+}
+
+/* Global Responsive Utilities */
+.desktop-only {
+  display: none !important;
+}
+
+.mobile-only {
+  display: flex !important;
+}
+
+@media (min-width: 768px) {
+  .desktop-only {
+    display: flex !important;
+  }
+  .mobile-only {
+    display: none !important;
   }
 }
