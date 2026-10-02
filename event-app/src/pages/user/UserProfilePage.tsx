@@ -371,21 +371,11 @@ export const UserProfilePage: React.FC = () => {
             <CardContent className="account-actions-content">
               <Link
                 to="/presentation"
-                className="btn btn--outline"
-                style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '8px',
-                  color: '#ea580c',
-                  borderColor: '#f97316',
-                  textDecoration: 'none',
-                  fontWeight: 600
-                }}
+                className="profile-deck-btn"
+                title="Why Live Connect? Product Story and Presentation Deck"
               >
-                <Presentation size={16} aria-hidden="true" />
-                <span>Why Live Connect? Product Story and Deck</span>
+                <Presentation size={17} aria-hidden="true" style={{ flexShrink: 0 }} />
+                <span>Why Live Connect?</span>
               </Link>
 
               <Button

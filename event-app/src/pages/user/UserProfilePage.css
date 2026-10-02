@@ -387,6 +387,50 @@
   gap: 12px;
 }
 
+.profile-deck-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  border: 1.5px solid #f97316;
+  background-color: rgba(249, 115, 22, 0.08);
+  color: #ea580c;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+  transition: all 0.18s ease-in-out;
+}
+
+.profile-deck-btn:hover,
+.profile-deck-btn:focus-visible {
+  background-color: #ea580c;
+  color: #ffffff;
+  border-color: #ea580c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+}
+
+:root[data-theme="dark"] .profile-deck-btn {
+  background-color: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border-color: #fb923c;
+}
+
+:root[data-theme="dark"] .profile-deck-btn:hover,
+:root[data-theme="dark"] .profile-deck-btn:focus-visible {
+  background-color: #ea580c;
+  color: #ffffff;
+  border-color: #ea580c;
+}
+
 /* ── Modal ───────────────────────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed;
