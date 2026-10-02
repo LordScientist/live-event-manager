@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Sparkles } from 'lucide-react';
-import { EventCard } from '../../components/events/EventCard';
-import { Button } from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { registrationService } from '../../services/registrationService';
 import type { Registration } from '../../types';
+import lcLogoFull from '../../assets/lc-logo-full.png';
 import './MyEventsPage.css';
 
-type TabType = 'Upcoming' | 'Pending' | 'Past';
+type TabType = 'Upcoming' | 'Past';
 
 interface EnrichedRegistration {
   registration: Registration;
@@ -58,140 +57,176 @@ export const MyEventsPage: React.FC = () => {
     };
   }, [currentUser.id]);
 
-  // Tab & Search Filtering
+  // Format date matching Figma Node 1:10: "Oct 18,2026 - 9:00 AM"
+  const formatFigmaDate = (dateString: string) => {
+    const d = new Date(dateString);
+    const month = d.toLocaleDateString('en-US', { month: 'short' });
+    const day = d.getDate();
+    const year = d.getFullYear();
+    const time = d.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
+    return `${month} ${day},${year} - ${time}`;
+  };
+
+  // Determine badge type matching Figma mockup: Registered | Open | Pending
+  const getBadgeConfig = (status: string, eventStatus?: string) => {
+    if (status === 'pending') {
+      return { label: 'Pending', className: 'my-event-badge--pending' };
+    }
+    if (eventStatus === 'open') {
+      return { label: 'Open', className: 'my-event-badge--open' };
+    }
+    return { label: 'Registered', className: 'my-event-badge--registered' };
+  };
+
+  // Filtering based on tab & optional search
   const filteredItems = useMemo(() => {
     const now = new Date().toISOString();
 
     return items.filter((item) => {
-      // Tab check
       let matchesTab = false;
-      if (activeTab === 'Pending') {
-        matchesTab = item.registration.status === 'pending';
-      } else if (activeTab === 'Past') {
-        matchesTab = item.registration.status === 'approved' && item.event.end_date < now;
+      if (activeTab === 'Past') {
+        matchesTab = item.event.end_date < now;
       } else {
-        // 'Upcoming'
-        matchesTab = item.registration.status === 'approved' && item.event.end_date >= now;
+        // 'Upcoming' includes all current, future, registered, or pending events
+        matchesTab = item.event.end_date >= now;
       }
 
       if (!matchesTab) return false;
 
-      // Search check
       if (!searchQuery.trim()) return true;
       const q = searchQuery.toLowerCase();
       return (
         item.event.name.toLowerCase().includes(q) ||
         item.event.venue.toLowerCase().includes(q) ||
-        item.event.category.toLowerCase().includes(q) ||
-        item.roleName.toLowerCase().includes(q)
+        item.event.category.toLowerCase().includes(q)
       );
     });
   }, [items, activeTab, searchQuery]);
 
   return (
-    <div className="container my-events-page">
-      {/* Header: Title only, no description */}
-      <div className="my-events-header">
-        <h1>My Events</h1>
-      </div>
+    <div className="my-events-screen">
+      <div className="my-events-container">
+        {/* 1. Header Bar: Authentic Live Connect Logo + My Events Title */}
+        <header className="my-events-header-bar">
+          <img
+            src={lcLogoFull}
+            alt="Live Connect"
+            className="my-events-header-logo"
+          />
+          <h1 className="my-events-title">My Events</h1>
+        </header>
 
-      {/* Search Bar */}
-      <div className="my-events-search">
-        <Search size={18} className="my-events-search__icon" aria-hidden="true" />
-        <input
-          type="search"
-          className="my-events-search__input"
-          placeholder="Search your registered events or venues..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          aria-label="Search your events"
-        />
-        {searchQuery && (
+        {/* 2. Top Segmented Control Tabs matching Figma Node 1:10 */}
+        <div className="my-events-segmented-tabs" role="tablist">
           <button
             type="button"
-            className="my-events-search__clear"
-            onClick={() => setSearchQuery('')}
-            aria-label="Clear search"
+            role="tab"
+            aria-selected={activeTab === 'Upcoming'}
+            className={`my-events-tab-btn ${activeTab === 'Upcoming' ? 'my-events-tab-btn--active' : ''}`}
+            onClick={() => setActiveTab('Upcoming')}
           >
-            Clear
+            <span>Upcoming</span>
+            {activeTab === 'Upcoming' && <span className="my-events-tab-indicator" />}
           </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'Past'}
+            className={`my-events-tab-btn ${activeTab === 'Past' ? 'my-events-tab-btn--active' : ''}`}
+            onClick={() => setActiveTab('Past')}
+          >
+            <span>Past</span>
+            {activeTab === 'Past' && <span className="my-events-tab-indicator" />}
+          </button>
+        </div>
+
+        {/* 3. Search Bar */}
+        <div className="my-events-search-wrap">
+          <Search size={16} className="my-events-search-icon" aria-hidden="true" />
+          <input
+            type="search"
+            placeholder="Search your events..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="my-events-search-input"
+            aria-label="Search your registered events"
+          />
+        </div>
+
+        {/* 4. Event Cards List matching Figma Node 1:10 */}
+        {isLoading ? (
+          <div className="my-events-loading">
+            <div className="my-events-skeleton" />
+            <div className="my-events-skeleton" />
+            <div className="my-events-skeleton" />
+          </div>
+        ) : filteredItems.length > 0 ? (
+          <div className="my-events-list" role="list">
+            {filteredItems.map(({ registration, event }) => {
+              const isApproved = registration.status === 'approved';
+              const badge = getBadgeConfig(registration.status, event.registration_status);
+              const destinationUrl = isApproved
+                ? `/my-events/${event.id}`
+                : `/events/${event.id}`;
+
+              return (
+                <Link
+                  key={registration.id}
+                  to={destinationUrl}
+                  className="my-event-card-item"
+                  role="listitem"
+                >
+                  <img
+                    src={event.cover_image}
+                    alt={event.name}
+                    className="my-event-card-thumb"
+                    loading="lazy"
+                  />
+                  <div className="my-event-card-body">
+                    <h3 className="my-event-card-title">{event.name}</h3>
+                    <span className="my-event-card-date">
+                      {formatFigmaDate(event.start_date)}
+                    </span>
+                    <div className="my-event-card-badge-wrap">
+                      <span className={`my-event-badge ${badge.className}`}>
+                        {badge.label}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          /* Empty State */
+          <div className="my-events-empty-state">
+            <div className="my-events-empty-icon">
+              <Sparkles size={28} />
+            </div>
+            <h3 className="my-events-empty-title">
+              No {activeTab.toLowerCase()} events
+            </h3>
+            <p className="my-events-empty-desc">
+              {searchQuery
+                ? `No events match "${searchQuery}".`
+                : activeTab === 'Upcoming'
+                ? "You haven't registered for any upcoming events yet."
+                : 'You have no past event records.'}
+            </p>
+            {activeTab === 'Upcoming' && (
+              <Link to="/events" className="my-events-browse-link">
+                Browse Events
+              </Link>
+            )}
+          </div>
         )}
       </div>
-
-      {/* Tabs */}
-      <div className="my-events-tabs" role="tablist">
-        {(['Upcoming', 'Pending', 'Past'] as const).map((tab) => {
-          const count =
-            tab === 'Pending'
-              ? items.filter((i) => i.registration.status === 'pending').length
-              : tab === 'Past'
-              ? items.filter((i) => i.registration.status === 'approved' && i.event.end_date < new Date().toISOString()).length
-              : items.filter((i) => i.registration.status === 'approved' && i.event.end_date >= new Date().toISOString()).length;
-
-          return (
-            <button
-              key={tab}
-              role="tab"
-              type="button"
-              aria-selected={activeTab === tab}
-              className={`tab-btn ${activeTab === tab ? 'tab-btn--active' : ''}`}
-              onClick={() => setActiveTab(tab)}
-            >
-              <span>{tab}</span>
-              <span className="tab-counter">{count}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Content Area with EventCard */}
-      {isLoading ? (
-        <div style={{ textAlign: 'center', padding: 'var(--space-12) 0' }}>
-          <p style={{ color: 'var(--color-text-muted)' }}>Loading your events...</p>
-        </div>
-      ) : filteredItems.length > 0 ? (
-        <div className="my-events-grid">
-          {filteredItems.map(({ registration, event, roleName }) => {
-            const isApproved = registration.status === 'approved';
-            return (
-              <EventCard
-                key={registration.id}
-                event={{
-                  ...event,
-                  registration_status: isApproved ? 'registered' : 'pending',
-                  user_role_name: roleName
-                }}
-                actionUrl={isApproved ? `/my-events/${event.id}` : `/events/${event.id}`}
-                actionLabel={isApproved ? 'Open Event' : 'View Application'}
-              />
-            );
-          })}
-        </div>
-      ) : (
-        /* Empty State */
-        <div className="my-events-empty">
-          <div className="empty-icon">
-            <Sparkles size={32} />
-          </div>
-          <h3>No {activeTab.toLowerCase()} events</h3>
-          <p>
-            {searchQuery
-              ? `No ${activeTab.toLowerCase()} events match "${searchQuery}".`
-              : activeTab === 'Upcoming'
-              ? 'You have no confirmed upcoming events on your schedule.'
-              : activeTab === 'Pending'
-              ? 'You currently have no registrations pending organizer review.'
-              : 'You do not have any past event records yet.'}
-          </p>
-          {activeTab !== 'Past' && (
-            <Link to="/events">
-              <Button variant="primary" size="md">
-                Browse Events
-              </Button>
-            </Link>
-          )}
-        </div>
-      )}
     </div>
   );
 };
+
+export default MyEventsPage;

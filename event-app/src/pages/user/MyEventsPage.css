@@ -1,249 +1,377 @@
-.my-events-page {
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-12);
+/* ==========================================================================
+   FIGMA — MY EVENTS SCREEN (Node 1:10)
+   Mobile-first design: 414 × 896 viewport
+   Palette: Background #FAF9F9, Tab Container #F3F2F2, Cobalt #0C139D,
+            Green Pill #B3E2B2 / #057A24, Yellow Pill #FCE9B8 / #854D0E
+   ========================================================================== */
+
+.my-events-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #FAF9F9;
 }
 
-@media (min-width: 640px) {
-  .my-events-page {
-    padding-top: var(--space-6);
-  }
+:root[data-theme="dark"] .my-events-screen {
+  background-color: #0b0f19;
 }
 
-.my-events-header {
-  margin-bottom: var(--space-4);
+.my-events-container {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 20px 84px;
 }
 
-.my-events-header h1 {
-  font-size: clamp(1.35rem, 4vw, var(--text-2xl));
-  font-weight: 700;
-  margin: 0;
-  word-break: break-word;
-}
-
-/* Search Bar */
-.my-events-search {
-  position: relative;
+/* ── 1. Header Bar: Logo + Heading ───────────────────────────────────────── */
+.my-events-header-bar {
   display: flex;
   align-items: center;
-  margin-bottom: var(--space-4);
-  width: 100%;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
-.my-events-search__icon {
+.my-events-header-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.my-events-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #000000;
+  margin: 0;
+  line-height: 1.1;
+  letter-spacing: -0.3px;
+}
+
+:root[data-theme="dark"] .my-events-title {
+  color: #ffffff;
+}
+
+/* ── 2. Segmented Control Tabs (Upcoming / Past) ────────────────────────── */
+.my-events-segmented-tabs {
+  display: flex;
+  background-color: #F3F2F2;
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 18px;
+  position: relative;
+}
+
+:root[data-theme="dark"] .my-events-segmented-tabs {
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
+}
+
+.my-events-tab-btn {
+  flex: 1;
+  position: relative;
+  padding: 11px 0 13px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  cursor: pointer;
+  text-align: center;
+  transition: color 0.15s ease;
+  min-height: 44px;
+}
+
+:root[data-theme="dark"] .my-events-tab-btn {
+  color: #9ca3af;
+}
+
+.my-events-tab-btn--active {
+  color: #0C139D !important;
+}
+
+:root[data-theme="dark"] .my-events-tab-btn--active {
+  color: #60a5fa !important;
+}
+
+.my-events-tab-indicator {
   position: absolute;
-  left: 14px;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 3.5px;
+  background-color: #0C139D;
+  border-radius: 2px;
+}
+
+:root[data-theme="dark"] .my-events-tab-indicator {
+  background-color: #60a5fa;
+}
+
+/* ── 3. Search Bar ───────────────────────────────────────────────────────── */
+.my-events-search-wrap {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.my-events-search-icon {
+  position: absolute;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--color-text-muted);
   pointer-events: none;
 }
 
-.my-events-search__input {
+.my-events-search-input {
   width: 100%;
-  min-height: var(--touch-target-min);
-  padding: var(--space-2) 64px var(--space-2) 42px;
-  background-color: var(--color-bg-surface);
+  height: 40px;
+  padding: 0 14px 0 38px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
+  border-radius: 8px;
+  background-color: var(--color-bg-surface);
   color: var(--color-text-main);
-  transition: all 0.15s ease;
-  box-sizing: border-box;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.my-events-search__input:focus {
+.my-events-search-input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: var(--focus-ring);
+  border-color: #0C139D;
+  box-shadow: 0 0 0 3px rgba(12, 19, 157, 0.12);
 }
 
-.my-events-search__clear {
-  position: absolute;
-  right: var(--space-3);
-  top: 50%;
-  transform: translateY(-50%);
-  background: transparent;
-  border: none;
-  color: var(--color-text-muted);
-  font-size: var(--text-xs);
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
+:root[data-theme="dark"] .my-events-search-input:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
 }
 
-.my-events-search__clear:hover {
-  color: var(--color-text-main);
-}
-
-/* Tabs */
-.my-events-tabs {
+/* ── 4. Event Cards List ─────────────────────────────────────────────────── */
+.my-events-list {
   display: flex;
-  gap: var(--space-2);
-  border-bottom: 1px solid var(--color-border);
-  margin-bottom: var(--space-6);
-  padding-bottom: var(--space-2);
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.my-events-tabs::-webkit-scrollbar {
-  display: none;
-}
-
-.tab-btn {
-  display: inline-flex;
+.my-event-card-item {
+  display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  background: transparent;
-  border: none;
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  font-weight: 500;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  border-radius: var(--radius-md);
-  transition: all 0.15s ease;
-  white-space: nowrap;
-  flex-shrink: 0;
-  min-height: var(--touch-target-min);
+  gap: 16px;
+  padding: 14px;
+  background-color: #F3F2F2;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  min-height: 112px;
 }
 
-.tab-btn:hover {
-  color: var(--color-text-main);
+.my-event-card-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+:root[data-theme="dark"] .my-event-card-item {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
+
+:root[data-theme="dark"] .my-event-card-item:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background-color: rgba(255, 255, 255, 0.07);
+}
+
+.my-event-card-thumb {
+  width: 88px;
+  height: 88px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
   background-color: var(--color-bg-subtle);
 }
 
-.tab-btn--active {
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
-  font-weight: 600;
+.my-event-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
 }
 
-.tab-counter {
-  font-size: 11px;
-  background-color: rgba(15, 23, 42, 0.08);
-  padding: 1px 7px;
-  border-radius: var(--radius-full);
+.my-event-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  line-height: 1.3;
+  word-break: break-word;
 }
 
-.tab-btn--active .tab-counter {
-  background-color: var(--color-primary);
+:root[data-theme="dark"] .my-event-card-title {
   color: #ffffff;
 }
 
-/* Grid & Cards */
-.my-events-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
+.my-event-card-date {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4B5563;
+  word-break: break-word;
 }
 
-@media (min-width: 640px) {
-  .my-events-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+:root[data-theme="dark"] .my-event-card-date {
+  color: #9ca3af;
 }
 
-@media (min-width: 1024px) {
-  .my-events-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.my-event-card-badge-wrap {
+  margin-top: 4px;
 }
 
-.my-event-card {
-  display: flex;
-  flex-direction: column;
-}
-
-.my-event-card__content {
-  display: flex;
-  flex-direction: column;
-  padding: var(--space-5);
-  height: 100%;
-}
-
-.my-event-card__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin-bottom: var(--space-4);
-}
-
-.my-event-card__title {
-  font-size: var(--text-base);
+.my-event-badge {
+  display: inline-block;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--color-text-main);
-  line-height: 1.3;
+  padding: 3px 14px;
+  border-radius: 9999px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
 }
 
-.my-event-card__details {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  margin-bottom: var(--space-4);
+.my-event-badge--registered,
+.my-event-badge--open {
+  background-color: #B3E2B2;
+  color: #057A24;
 }
 
-.detail-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
+:root[data-theme="dark"] .my-event-badge--registered,
+:root[data-theme="dark"] .my-event-badge--open {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
 }
 
-.detail-row svg {
-  color: var(--color-text-muted);
+.my-event-badge--pending {
+  background-color: #FCE9B8;
+  color: #854D0E;
 }
 
-.my-event-card__role-tag {
-  font-size: var(--text-xs);
-  color: var(--color-text-secondary);
-  background-color: var(--color-bg-canvas);
-  border: 1px solid var(--color-border);
-  padding: 4px 10px;
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-5);
+:root[data-theme="dark"] .my-event-badge--pending {
+  background-color: rgba(245, 158, 11, 0.22);
+  color: #fbbf24;
 }
 
-.my-event-card__action {
-  margin-top: auto;
-}
-
-/* Empty State */
-.my-events-empty {
+/* ── 5. Empty & Loading States ───────────────────────────────────────────── */
+.my-events-empty-state {
   text-align: center;
-  padding: var(--space-12) var(--space-4);
-  background-color: var(--color-bg-surface);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-xl);
-  max-width: 480px;
-  margin: var(--space-4) auto 0;
+  padding: 48px 16px;
+  background-color: #F3F2F2;
+  border-radius: 16px;
+  margin-top: 12px;
 }
 
-.empty-icon {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto var(--space-4);
-  border-radius: var(--radius-full);
-  background-color: var(--color-primary-light);
-  color: var(--color-primary);
+:root[data-theme="dark"] .my-events-empty-state {
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px dashed var(--color-border);
+}
+
+.my-events-empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgba(12, 19, 157, 0.08);
+  color: #0C139D;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto 12px;
 }
 
-.my-events-empty h3 {
-  font-size: var(--text-lg);
-  font-weight: 600;
-  margin-bottom: var(--space-1);
+:root[data-theme="dark"] .my-events-empty-icon {
+  background-color: rgba(96, 165, 250, 0.15);
+  color: #60a5fa;
 }
 
-.my-events-empty p {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-bottom: var(--space-6);
+.my-events-empty-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text-main);
+  margin: 0 0 6px;
+}
+
+.my-events-empty-desc {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  margin: 0 0 16px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-events-browse-link {
+  display: inline-block;
+  padding: 8px 20px;
+  background-color: #0C139D;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+
+.my-events-browse-link:hover {
+  background-color: #091079;
+}
+
+:root[data-theme="dark"] .my-events-browse-link {
+  background-color: #2563eb;
+}
+
+.my-events-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.my-events-skeleton {
+  width: 100%;
+  height: 110px;
+  background-color: #F3F2F2;
+  border-radius: 14px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+:root[data-theme="dark"] .my-events-skeleton {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Mobile Breakpoint (< 360px) ─────────────────────────────────────────── */
+@media (max-width: 360px) {
+  .my-events-container {
+    padding: 14px 14px 60px;
+  }
+  .my-events-title {
+    font-size: 22px;
+  }
+  .my-events-header-logo {
+    height: 34px;
+  }
+  .my-event-card-item {
+    padding: 10px 12px;
+    gap: 12px;
+    min-height: 98px;
+  }
+  .my-event-card-thumb {
+    width: 76px;
+    height: 76px;
+  }
+  .my-event-card-title {
+    font-size: 15px;
+  }
+  .my-event-card-date {
+    font-size: 12px;
+  }
+  .my-event-badge {
+    font-size: 11px;
+    padding: 2px 10px;
+  }
 }

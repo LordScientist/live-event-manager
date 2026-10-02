@@ -24,6 +24,35 @@ export const MOCK_REGISTRATIONS: Registration[] = [
     requires_accommodation: true,
     accommodation_details: 'Live captions (CART) preferred during fast-paced coding walkthroughs',
     dietary_requirements: 'Vegetarian'
+  },
+  {
+    id: 'reg-003',
+    event_id: 'evt-graphic-design',
+    user_id: 'usr-101-regular',
+    event_role_id: 'role-participant-design',
+    status: 'approved',
+    submitted_at: '2026-09-25T11:00:00Z',
+    reviewed_at: '2026-09-25T12:00:00Z',
+    requires_accommodation: false
+  },
+  {
+    id: 'reg-004',
+    event_id: 'evt-climate-action',
+    user_id: 'usr-101-regular',
+    event_role_id: 'role-participant-climate',
+    status: 'approved',
+    submitted_at: '2026-09-26T14:20:00Z',
+    reviewed_at: '2026-09-26T15:00:00Z',
+    requires_accommodation: false
+  },
+  {
+    id: 'reg-005',
+    event_id: 'evt-career-fair-2026',
+    user_id: 'usr-101-regular',
+    event_role_id: 'role-participant-career',
+    status: 'pending',
+    submitted_at: '2026-09-29T16:45:00Z',
+    requires_accommodation: false
   }
 ];
 
