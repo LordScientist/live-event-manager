@@ -216,20 +216,60 @@
   background-color: var(--color-surface);
   font-size: var(--text-xs);
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary, #334155);
   cursor: pointer;
   transition: all var(--transition-fast);
+  outline: none;
+}
+
+:root[data-theme="dark"] .category-pill-btn {
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
 }
 
 .category-pill-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: #f97316;
+  color: #ea580c;
+  background-color: #fff7ed;
 }
 
-.category-pill-btn--active {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: #ffffff;
+:root[data-theme="dark"] .category-pill-btn:hover {
+  border-color: #f97316;
+  color: #fb923c;
+  background-color: rgba(249, 115, 22, 0.14);
+}
+
+.category-pill-btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+}
+
+/* Explicit Active / Selected State - locked high contrast white text in all pseudo-states */
+.category-pill-btn.category-pill-btn--active,
+.category-pill-btn--active,
+.category-pill-btn--active:hover,
+.category-pill-btn--active:focus,
+.category-pill-btn--active:focus-visible,
+.category-pill-btn--active:active {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+:root[data-theme="dark"] .category-pill-btn.category-pill-btn--active,
+:root[data-theme="dark"] .category-pill-btn--active,
+:root[data-theme="dark"] .category-pill-btn--active:hover,
+:root[data-theme="dark"] .category-pill-btn--active:focus,
+:root[data-theme="dark"] .category-pill-btn--active:focus-visible,
+:root[data-theme="dark"] .category-pill-btn--active:active {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
 }
 
 /* Format Radios (Physical, Online, Hybrid) */
