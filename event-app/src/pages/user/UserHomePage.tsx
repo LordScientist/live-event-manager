@@ -9,6 +9,7 @@ import type { EventWithMeta } from '../../services/eventService';
 import { registrationService } from '../../services/registrationService';
 import type { Registration } from '../../types';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import './UserHomePage.css';
 
 const CATEGORIES = ['All', 'Conference', 'Workshop', 'Seminar', 'Career', 'Community'] as const;
@@ -60,14 +61,13 @@ export const UserHomePage: React.FC = () => {
     };
   }, [registrations, events]);
 
-  // Time-aware greeting: "Good morning/afternoon/evening, [First Name]"
-  const greeting = useMemo(() => {
+  // Time-aware salutation: "Good morning/afternoon/evening"
+  const salutation = useMemo(() => {
     const hour = new Date().getHours();
-    let prefix = 'Good afternoon';
-    if (hour < 12) prefix = 'Good morning';
-    else if (hour >= 18) prefix = 'Good evening';
-    return `${prefix}, ${currentUser.first_name || 'Participant'}`;
-  }, [currentUser.first_name]);
+    if (hour < 12) return 'Good morning';
+    if (hour >= 18) return 'Good evening';
+    return 'Good afternoon';
+  }, []);
 
   // Filtered events by search and category
   const filteredEvents = useMemo(() => {
@@ -85,27 +85,41 @@ export const UserHomePage: React.FC = () => {
 
   return (
     <div className="container user-home-page">
-      {/* Header Section: Single notification icon, no duplicate profile icon, no greeting subtitle */}
+      {/* Header Section matching Figma frame 1:6: Greeting with wave, notification bell, user avatar */}
       <section className="user-home-header">
         <div className="user-home-header__top">
           <div className="user-home-greeting">
-            <h1 className="user-home-greeting__title">{greeting}</h1>
+            <span className="user-home-greeting__salutation">{salutation},</span>
+            <h1 className="user-home-greeting__name">
+              {currentUser.first_name || 'Jonathan'}
+              <span className="greeting-wave" aria-hidden="true">👋</span>
+            </h1>
           </div>
           <div className="user-home-header__quick-actions">
-            <Link to="/notifications" className="icon-badge-btn" aria-label="View notifications">
-              <Bell size={20} />
-              <span className="icon-badge-btn__dot" />
+            <ThemeToggle size="sm" />
+            <Link to="/notifications" className="user-home-bell-btn" aria-label="View notifications">
+              <Bell size={22} />
+              <span className="user-home-bell-dot" />
+            </Link>
+            <Link to="/profile" className="user-home-avatar" aria-label="View profile">
+              {currentUser.profile_photo ? (
+                <img src={currentUser.profile_photo} alt="" className="user-home-avatar__img" />
+              ) : (
+                <span className="user-home-avatar__initials">
+                  {currentUser.first_name?.[0] || 'J'}{currentUser.last_name?.[0] || 'D'}
+                </span>
+              )}
             </Link>
           </div>
         </div>
 
-        {/* Search Bar */}
+        {/* Search Bar matching Figma: "Find an event....." */}
         <div className="user-home-search">
-          <Search size={18} className="user-home-search__icon" aria-hidden="true" />
+          <Search size={20} className="user-home-search__icon" aria-hidden="true" />
           <input
             type="search"
             className="user-home-search__input"
-            placeholder="Find an event, topic, or venue..."
+            placeholder="Find an event....."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label="Find an event"
@@ -180,9 +194,9 @@ export const UserHomePage: React.FC = () => {
         </section>
       )}
 
-      {/* Categories Bar */}
+      {/* Categories Bar matching Figma frame 1:6 */}
       <section className="user-home-categories" aria-label="Event Categories">
-        <div className="categories-scroll">
+        <div className="categories-grid-wrap">
           {CATEGORIES.map((category) => (
             <button
               key={category}
@@ -196,17 +210,22 @@ export const UserHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured / Upcoming Events Grid: No subtitle */}
-      <section className="user-home-events" aria-label="Upcoming Events">
+      {/* Featured Events Section matching Figma frame 1:6 */}
+      <section className="user-home-events" aria-label="Featured Events">
         <div className="events-section-header">
-          <div>
-            <h2 className="events-section-title">
-              {selectedCategory === 'All' ? 'Upcoming Events' : `${selectedCategory}s`}
-            </h2>
-          </div>
-          <span className="events-count-badge">
-            {filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'}
-          </span>
+          <h2 className="events-section-title">
+            {selectedCategory === 'All' ? 'Featured Events' : `${selectedCategory} Events`}
+          </h2>
+          <button
+            type="button"
+            className="events-see-all-btn"
+            onClick={() => {
+              setSelectedCategory('All');
+              setSearchQuery('');
+            }}
+          >
+            See all
+          </button>
         </div>
 
         {isLoading ? (

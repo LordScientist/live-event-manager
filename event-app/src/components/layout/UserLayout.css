@@ -14,6 +14,12 @@
   box-shadow: var(--shadow-sm);
 }
 
+@media (max-width: 767px) {
+  .user-header {
+    display: none;
+  }
+}
+
 .user-header__inner {
   display: flex;
   align-items: center;
@@ -223,8 +229,12 @@
 }
 
 .mobile-nav-item--active {
-  color: var(--color-primary);
-  font-weight: 600;
+  color: #0C139D;
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] .mobile-nav-item--active {
+  color: #3b82f6;
 }
 
 .mobile-nav-item__icon-wrapper {
