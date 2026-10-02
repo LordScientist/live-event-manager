@@ -853,7 +853,9 @@ export const CreateEventPage: React.FC = () => {
                       borderRadius: 'var(--radius-sm)',
                       backgroundColor: 'var(--color-primary-light)',
                       color: 'var(--color-primary)',
-                      fontWeight: 600
+                      fontWeight: 600,
+                      wordBreak: 'break-word',
+                      maxWidth: '100%'
                     }}
                   >
                     {f.replace(/_/g, ' ')}
