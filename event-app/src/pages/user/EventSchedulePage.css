@@ -113,19 +113,19 @@
 }
 
 /* Timeline */
-.schedule-timeline {
+.event-schedule-page .schedule-timeline {
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
 }
 
 @media (min-width: 640px) {
-  .schedule-timeline {
+  .event-schedule-page .schedule-timeline {
     gap: var(--space-6);
   }
 }
 
-.schedule-timeline-item {
+.event-schedule-page .schedule-timeline-item {
   display: grid;
   grid-template-columns: 65px 24px 1fr;
   gap: var(--space-4);
@@ -133,9 +133,9 @@
 }
 
 @media (max-width: 480px) {
-  .schedule-timeline-item {
-    grid-template-columns: 50px 16px 1fr;
-    gap: var(--space-2);
+  .event-schedule-page .schedule-timeline-item {
+    grid-template-columns: 46px 14px 1fr;
+    gap: 8px;
   }
 }
 
@@ -151,12 +151,14 @@
   font-size: var(--text-sm);
   font-weight: 700;
   color: var(--color-text-main);
+  white-space: nowrap;
 }
 
 .timeline-end-time {
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .timeline-item__axis {
@@ -203,6 +205,13 @@
   padding: var(--space-5);
   box-shadow: var(--shadow-sm);
   transition: all 0.15s ease;
+  min-width: 0;
+}
+
+@media (max-width: 480px) {
+  .timeline-item__card {
+    padding: 12px 14px;
+  }
 }
 
 .schedule-timeline-item--changed .timeline-item__card {
@@ -218,11 +227,24 @@
   margin-bottom: var(--space-2);
 }
 
+@media (max-width: 480px) {
+  .timeline-card-header {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+}
+
+.timeline-card-title-group {
+  flex: 1;
+  min-width: 0;
+}
+
 .timeline-card-title {
   font-size: var(--text-base);
   font-weight: 700;
   color: var(--color-text-main);
   margin-bottom: var(--space-1);
+  word-break: break-word;
 }
 
 .timeline-speaker-tag {
@@ -231,6 +253,7 @@
   gap: 4px;
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
+  word-break: break-word;
 }
 
 .change-warning-badge {

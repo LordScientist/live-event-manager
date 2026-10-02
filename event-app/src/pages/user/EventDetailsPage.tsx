@@ -240,7 +240,7 @@ export const EventDetailsPage: React.FC = () => {
               </Link>
             </div>
             {schedule.length > 0 ? (
-              <div className="schedule-timeline">
+              <div className="detail-schedule-list">
                 {schedule.map((item) => {
                   const itemTime = new Date(item.start_time).toLocaleTimeString('en-US', {
                     hour: 'numeric',
@@ -248,19 +248,25 @@ export const EventDetailsPage: React.FC = () => {
                     hour12: true
                   });
                   return (
-                    <div key={item.id} className="schedule-timeline-item">
-                      <div className="schedule-timeline-time">
+                    <div key={item.id} className="detail-schedule-card">
+                      <div className="detail-schedule-time">
                         <Clock size={14} />
                         <span>{itemTime}</span>
                       </div>
-                      <div className="schedule-timeline-body">
-                        <h4 className="schedule-timeline-title">{item.title}</h4>
-                        <span className="schedule-timeline-venue">{item.venue}</span>
-                        {item.speaker_name && (
-                          <span className="schedule-timeline-speaker">
-                            Speaker: {item.speaker_name}
+                      <div className="detail-schedule-body">
+                        <h4 className="detail-schedule-title">{item.title}</h4>
+                        <div className="detail-schedule-meta">
+                          <span className="detail-schedule-venue">
+                            <MapPin size={13} />
+                            <span>{item.venue}</span>
                           </span>
-                        )}
+                          {item.speaker_name && (
+                            <span className="detail-schedule-speaker">
+                              <User size={13} />
+                              <span>{item.speaker_name}</span>
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );

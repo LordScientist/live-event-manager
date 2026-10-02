@@ -176,14 +176,14 @@
 }
 
 /* Timeline */
-.timeline-list {
+.experience-page .timeline-list {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
   margin-top: var(--space-4);
 }
 
-.timeline-item {
+.experience-page .timeline-item {
   display: grid;
   grid-template-columns: 60px 24px 1fr;
   gap: var(--space-3);
@@ -191,8 +191,8 @@
 }
 
 @media (max-width: 480px) {
-  .timeline-item {
-    grid-template-columns: 50px 16px 1fr;
+  .experience-page .timeline-item {
+    grid-template-columns: 46px 14px 1fr;
     gap: var(--space-2);
   }
 }
@@ -204,6 +204,7 @@
   color: var(--color-primary);
   text-align: right;
   padding-top: 2px;
+  white-space: nowrap;
 }
 
 @media (max-width: 480px) {
@@ -243,6 +244,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-4);
+  min-width: 0;
 }
 
 @media (max-width: 480px) {
@@ -265,11 +267,21 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 480px) {
+  .timeline-header {
+    flex-direction: column-reverse;
+    gap: 6px;
+  }
+}
+
 .timeline-title {
   font-size: var(--text-sm);
   font-weight: 600;
   color: var(--color-text-main);
   margin: 0;
+  word-break: break-word;
+  flex: 1;
+  min-width: 0;
 }
 
 .change-indicator-pill {
