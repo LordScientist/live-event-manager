@@ -21,6 +21,14 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  text-decoration: none;
+}
+
+.landing-header__brand .brand-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .landing-header__auth {

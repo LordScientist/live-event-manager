@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/Button';
 import { Card } from '../../components/ui/Card';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
+import lcIcon from '../../assets/lc-icon.png';
 import {
   Calendar,
   Search,
@@ -22,15 +23,13 @@ export const LandingPage: React.FC = () => {
       {/* Top Simple Header */}
       <header className="landing-header">
         <div className="container landing-header__inner">
-          <div className="landing-header__brand">
-            <span className="brand-logo" aria-hidden="true" style={{ fontSize: '20px', fontWeight: 900, fontFamily: 'Georgia, serif' }}>
-              <span style={{ color: '#1B2559' }}>L</span><span style={{ color: '#E8720C' }}>C</span>
-            </span>
+          <Link to="/" className="landing-header__brand" aria-label="Live Connect Home">
+            <img src={lcIcon} alt="Live Connect" className="brand-logo-img" />
             <div className="brand-text">
               <span className="brand-title">Live Connect</span>
               <span className="brand-subtitle">Event Coordination System</span>
             </div>
-          </div>
+          </Link>
           <div className="landing-header__auth">
             <ThemeToggle size="sm" />
             <Link to="/login">
