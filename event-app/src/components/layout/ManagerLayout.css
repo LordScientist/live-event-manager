@@ -18,6 +18,11 @@
   box-shadow: var(--shadow-sm);
 }
 
+:root[data-theme="dark"] .manager-header {
+  background-color: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
 .manager-header__inner {
   display: flex;
   align-items: center;
@@ -187,6 +192,11 @@
   justify-content: space-around;
   z-index: 50;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="dark"] .manager-bottom-nav {
+  background-color: var(--color-bg-surface);
+  border-top: 1px solid var(--color-border);
 }
 
 @media (min-width: 768px) {

@@ -26,9 +26,14 @@
   --space-5: 1.25rem;     /* 20px */
   --space-6: 1.5rem;      /* 24px */
   --space-8: 2rem;        /* 32px */
+  --space-9: 2.25rem;     /* 36px */
   --space-10: 2.5rem;     /* 40px */
   --space-12: 3rem;       /* 48px */
   --space-16: 4rem;       /* 64px */
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
 
   /* Border Radii (Moderate corners) */
   --radius-sm: 4px;
@@ -36,6 +41,12 @@
   --radius-lg: 12px;
   --radius-xl: 16px;
   --radius-full: 9999px;
+
+  /* Touch Target Minimum (Accessibility) */
+  --touch-target-min: 44px;
+
+  /* LIGHT THEME TOKENS (Default) */
+  color-scheme: light;
 
   /* Primary Brand Colors */
   --color-primary: #2563eb;
@@ -54,7 +65,9 @@
   /* Background Colors */
   --color-bg-canvas: #f8fafc;
   --color-bg-surface: #ffffff;
+  --color-surface: var(--color-bg-surface);
   --color-bg-subtle: #f1f5f9;
+  --color-surface-subtle: var(--color-bg-subtle);
   --color-bg-muted: #e2e8f0;
 
   /* Text Colors */
@@ -105,9 +118,90 @@
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
 
-  /* Touch Target Minimum (Accessibility) */
-  --touch-target-min: 44px;
+/* ==========================================================================
+   NICER SHADE OF DARK MODE (SaaS Midnight Obsidian & Luminous Slate)
+   Deep obsidian canvas (#0b0f19) + Elevated slate surface (#131b2e)
+   ========================================================================== */
+:root[data-theme="dark"],
+.dark {
+  color-scheme: dark;
+
+  /* Primary Brand Colors (Calibrated for dark mode contrast) */
+  --color-primary: #3b82f6;
+  --color-primary-hover: #60a5fa;
+  --color-primary-active: #2563eb;
+  --color-primary-light: rgba(59, 130, 246, 0.16);
+  --color-primary-text: #ffffff;
+
+  /* Secondary & Accent Colors */
+  --color-secondary: #1e293b;
+  --color-secondary-hover: #334155;
+  --color-secondary-text: #f8fafc;
+  --color-accent: #38bdf8;
+  --color-accent-light: rgba(56, 189, 248, 0.14);
+
+  /* Background Colors (Deep, elegant midnight slate with clear elevation hierarchy) */
+  --color-bg-canvas: #0b0f19;       /* Deep obsidian canvas */
+  --color-bg-surface: #131b2e;      /* Rich elevated dark slate card/surface */
+  --color-surface: var(--color-bg-surface);
+  --color-bg-subtle: #1a243b;       /* Interactive / hover background */
+  --color-surface-subtle: var(--color-bg-subtle);
+  --color-bg-muted: #24304d;        /* Recessed wells / muted pills */
+
+  /* Text Colors (Refined contrast, zero harsh ocular glare) */
+  --color-text-main: #f8fafc;       /* Crisp slate-50 */
+  --color-text-secondary: #cbd5e1;  /* Balanced slate-300 */
+  --color-text-muted: #94a3b8;      /* Legible slate-400 */
+  --color-text-subtle: #64748b;     /* Slate-500 */
+  --color-text-inverse: #0b0f19;
+
+  /* Border Colors (Refined subtle definition) */
+  --color-border: #1e293b;
+  --color-border-hover: #334155;
+  --color-border-focus: #3b82f6;
+
+  /* Semantic Feedback States (Vibrant & readable on dark backgrounds) */
+  --color-success: #10b981;
+  --color-success-bg: rgba(16, 185, 129, 0.14);
+  --color-success-border: rgba(16, 185, 129, 0.32);
+  --color-success-text: #6ee7b7;
+
+  --color-warning: #f59e0b;
+  --color-warning-bg: rgba(245, 158, 11, 0.14);
+  --color-warning-border: rgba(245, 158, 11, 0.32);
+  --color-warning-text: #fcd34d;
+
+  --color-error: #ef4444;
+  --color-error-hover: #f87171;
+  --color-error-bg: rgba(239, 68, 68, 0.14);
+  --color-error-border: rgba(239, 68, 68, 0.32);
+  --color-error-text: #fca5a5;
+
+  --color-info: #0ea5e9;
+  --color-info-bg: rgba(14, 165, 233, 0.14);
+  --color-info-border: rgba(14, 165, 233, 0.32);
+  --color-info-text: #7dd3fc;
+
+  --color-disabled-bg: #151d2f;
+  --color-disabled-text: #64748b;
+  --color-disabled-border: #1e293b;
+
+  /* Focus & Elevation */
+  --focus-ring: 0 0 0 2px #0b0f19, 0 0 0 4px #3b82f6;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.7), 0 4px 10px -2px rgba(0, 0, 0, 0.45);
+}
+
+/* Smooth Theme Switching Transitions */
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease !important;
+  transition-delay: 0s !important;
 }
 
 /* Base Styles */
@@ -184,6 +278,13 @@ a:hover {
   margin-right: auto;
   padding-left: var(--space-4);
   padding-right: var(--space-4);
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
+  }
 }
 
 @media (min-width: 768px) {

@@ -20,6 +20,26 @@
   color: var(--color-error);
 }
 
+.form-field__control-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.input--with-right {
+  padding-right: 44px;
+}
+
+.form-field__right-element {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
 .input {
   width: 100%;
   min-height: var(--touch-target-min);

@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Bell, Sparkles } from 'lucide-react';
+import { Search, Bell, Sparkles, Calendar, MapPin, ArrowRight, Radio } from 'lucide-react';
 import { EventCard } from '../../components/events/EventCard';
 import { Button } from '../../components/ui/Button';
+import { StatusBadge } from '../../components/ui/StatusBadge';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
+import { registrationService } from '../../services/registrationService';
+import type { Registration } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import './UserHomePage.css';
 
@@ -14,23 +17,48 @@ type Category = typeof CATEGORIES[number];
 export const UserHomePage: React.FC = () => {
   const { currentUser } = useAuth();
   const [events, setEvents] = useState<EventWithMeta[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<Category>('All');
 
-  // Load events via async service
+  // Load events and registrations
   useEffect(() => {
     let isMounted = true;
-    eventService.getEvents().then((data) => {
+    Promise.all([
+      eventService.getEvents(),
+      registrationService.getUserRegistrations(currentUser.id)
+    ]).then(([eventsData, regsData]) => {
       if (isMounted) {
-        setEvents(data);
+        setEvents(eventsData);
+        setRegistrations(regsData);
         setIsLoading(false);
       }
     });
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [currentUser.id]);
+
+  // Derive current / active registered event for quicklink dashboard card
+  const activeEventData = useMemo(() => {
+    if (!registrations.length || !events.length) return null;
+    // Find approved registration first, or pending
+    const reg = registrations.find((r) => r.status === 'approved') || registrations[0];
+    if (!reg) return null;
+    const evt = events.find((e) => e.id === reg.event_id);
+    if (!evt) return null;
+
+    let roleName = 'Participant';
+    if (reg.event_role_id.includes('speaker')) roleName = 'Speaker';
+    else if (reg.event_role_id.includes('volunteer')) roleName = 'Volunteer';
+
+    return {
+      registration: reg,
+      event: evt,
+      roleName
+    };
+  }, [registrations, events]);
 
   // Time-aware greeting: "Good morning/afternoon/evening, [First Name]"
   const greeting = useMemo(() => {
@@ -57,22 +85,16 @@ export const UserHomePage: React.FC = () => {
 
   return (
     <div className="container user-home-page">
-      {/* Header Section (Prompt Section 7: Greeting, Search bar, Notification icon, Profile avatar) */}
+      {/* Header Section: Single notification icon, no duplicate profile icon, no greeting subtitle */}
       <section className="user-home-header">
         <div className="user-home-header__top">
           <div className="user-home-greeting">
             <h1 className="user-home-greeting__title">{greeting}</h1>
-            <p className="user-home-greeting__subtitle">
-              Find your events and see what is happening next.
-            </p>
           </div>
           <div className="user-home-header__quick-actions">
             <Link to="/notifications" className="icon-badge-btn" aria-label="View notifications">
               <Bell size={20} />
               <span className="icon-badge-btn__dot" />
-            </Link>
-            <Link to="/profile" className="profile-avatar-btn" aria-label="View profile">
-              {currentUser.first_name[0]}{currentUser.last_name[0]}
             </Link>
           </div>
         </div>
@@ -101,7 +123,64 @@ export const UserHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Categories Bar (Prompt Section 7: Horizontal scroll on mobile) */}
+      {/* Quicklink Dashboard Card: Shows your current / registered event with quick actions */}
+      {activeEventData && (
+        <section className="active-event-quicklink" aria-label="Current Event Dashboard">
+          <div className="active-event-quicklink__header">
+            <span className="active-event-quicklink__tag">
+              <Radio size={14} />
+              <span>Your Active Event</span>
+            </span>
+            <StatusBadge
+              status={activeEventData.registration.status === 'approved' ? 'approved' : 'pending'}
+              label={
+                activeEventData.registration.status === 'approved'
+                  ? `Approved (${activeEventData.roleName})`
+                  : 'Pending Review'
+              }
+            />
+          </div>
+
+          <h2 className="active-event-quicklink__title">{activeEventData.event.name}</h2>
+
+          <div className="active-event-quicklink__meta">
+            <div className="active-event-quicklink__meta-item">
+              <Calendar size={15} />
+              <span>
+                {new Date(activeEventData.event.start_date).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
+              </span>
+            </div>
+            <div className="active-event-quicklink__meta-item">
+              <MapPin size={15} />
+              <span>{activeEventData.event.venue}</span>
+            </div>
+          </div>
+
+          <div className="active-event-quicklink__actions">
+            <Link to={`/my-events/${activeEventData.event.id}`}>
+              <Button variant="primary" size="sm" rightIcon={<ArrowRight size={14} />}>
+                Open Event Hub
+              </Button>
+            </Link>
+            <Link to={`/events/${activeEventData.event.id}/schedule`}>
+              <Button variant="secondary" size="sm">
+                View Schedule
+              </Button>
+            </Link>
+            <Link to={`/events/${activeEventData.event.id}/updates`}>
+              <Button variant="outline" size="sm">
+                Live Updates
+              </Button>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* Categories Bar */}
       <section className="user-home-categories" aria-label="Event Categories">
         <div className="categories-scroll">
           {CATEGORIES.map((category) => (
@@ -117,16 +196,13 @@ export const UserHomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Featured / Upcoming Events Grid */}
+      {/* Featured / Upcoming Events Grid: No subtitle */}
       <section className="user-home-events" aria-label="Upcoming Events">
         <div className="events-section-header">
           <div>
             <h2 className="events-section-title">
               {selectedCategory === 'All' ? 'Upcoming Events' : `${selectedCategory}s`}
             </h2>
-            <p className="events-section-subtitle">
-              Browse sessions, verify accessible facilities, and sign up in your chosen role.
-            </p>
           </div>
           <span className="events-count-badge">
             {filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'}
@@ -146,7 +222,6 @@ export const UserHomePage: React.FC = () => {
             ))}
           </div>
         ) : (
-          /* Empty State (Prompt Section 7: "No upcoming events yet." + Button: "Explore Events") */
           <div className="events-empty-state">
             <div className="empty-state-icon">
               <Sparkles size={32} />

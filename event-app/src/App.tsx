@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { UserLayout } from './components/layout/UserLayout';
 import { ManagerLayout } from './components/layout/ManagerLayout';
 import { UserHomePage } from './pages/user/UserHomePage';
@@ -19,6 +20,7 @@ import { EventManagementHubPage } from './pages/manager/EventManagementHubPage';
 import { LandingPage } from './pages/auth/LandingPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
+import { OnboardingPage } from './pages/auth/OnboardingPage';
 
 /**
  * Route protection: Unauthenticated visitors are routed to /signup
@@ -49,8 +51,9 @@ const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <ThemeProvider>
+      <AuthProvider>
+        <BrowserRouter>
         <Routes>
           {/* Welcome / Landing Screen (Public) */}
           <Route path="/welcome" element={<LandingPage />} />
@@ -70,6 +73,14 @@ export const App: React.FC = () => {
               <PublicOnlyRoute>
                 <LoginPage />
               </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <OnboardingPage />
+              </ProtectedRoute>
             }
           />
 
@@ -117,6 +128,7 @@ export const App: React.FC = () => {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ThemeProvider>
   );
 };
 

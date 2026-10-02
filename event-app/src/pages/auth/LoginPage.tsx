@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { useAuth, MOCK_REGULAR_USER, MOCK_EVENT_MANAGER } from '../../context/AuthContext';
+import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import './AuthPages.css';
 
 export const LoginPage: React.FC = () => {
@@ -12,6 +14,7 @@ export const LoginPage: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [generalError, setGeneralError] = useState<string | null>(null);
@@ -82,6 +85,9 @@ export const LoginPage: React.FC = () => {
   return (
     <div className="auth-page">
       <div className="auth-card">
+        <div className="auth-card__theme-toggle">
+          <ThemeToggle size="sm" />
+        </div>
         <div className="auth-header">
           <Link to="/welcome" className="auth-brand">
             <span className="brand-logo" aria-hidden="true">📡</span>
@@ -160,7 +166,7 @@ export const LoginPage: React.FC = () => {
             {/* Password Field (Prompt Section 6) */}
             <Input
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="password"
               value={password}
               onChange={(e) => {
@@ -170,6 +176,16 @@ export const LoginPage: React.FC = () => {
               error={errors.password}
               required
               autoComplete="current-password"
+              rightElement={
+                <button
+                  type="button"
+                  className="password-toggle-btn"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              }
             />
 
             {/* Forgot Password Action (Prompt Section 6) */}

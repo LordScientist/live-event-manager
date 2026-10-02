@@ -240,8 +240,8 @@
 
 /* Accessibility Card */
 .accessibility-card-section {
-  background-color: #f8fafc;
-  border-color: #cbd5e1;
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-border);
 }
 
 .accessibility-card__header {

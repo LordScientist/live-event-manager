@@ -10,9 +10,11 @@ import './EventCard.css';
 
 export interface EventCardProps {
   event: EventWithMeta;
+  actionUrl?: string;
+  actionLabel?: string;
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event }) => {
+export const EventCard: React.FC<EventCardProps> = ({ event, actionUrl, actionLabel }) => {
   // Format date: "October 18, 2026"
   const formattedDate = new Date(event.start_date).toLocaleDateString('en-US', {
     month: 'long',
@@ -36,7 +38,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
           label: event.user_role_name ? `Registered (${event.user_role_name})` : 'Registered'
         };
       case 'pending':
-        return { status: 'pending', label: 'Registration Pending' };
+        return { status: 'pending', label: 'Pending Approval' };
       case 'closing_soon':
         return { status: 'warning', label: 'Closing Soon' };
       case 'full':
@@ -48,6 +50,8 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
   };
 
   const badgeConfig = getStatusBadgeConfig();
+  const destinationUrl = actionUrl || (event.registration_status === 'registered' ? `/my-events/${event.id}` : `/events/${event.id}`);
+  const buttonLabel = actionLabel || (event.registration_status === 'registered' ? 'Open Event' : 'View Event');
 
   return (
     <Card variant="interactive" className="event-card">
@@ -67,7 +71,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
 
       <CardContent className="event-card__content">
         <h3 className="event-card__title">
-          <Link to={`/events/${event.id}`} className="event-card__title-link">
+          <Link to={destinationUrl} className="event-card__title-link">
             {event.name}
           </Link>
         </h3>
@@ -96,15 +100,15 @@ export const EventCard: React.FC<EventCardProps> = ({ event }) => {
           </div>
         </div>
 
-        {/* View Event Button (Prompt Section 7: [View Event]) */}
+        {/* View Event Button */}
         <div className="event-card__footer">
-          <Link to={`/events/${event.id}`} style={{ width: '100%' }}>
+          <Link to={destinationUrl} style={{ width: '100%' }}>
             <Button
-              variant={event.registration_status === 'registered' ? 'secondary' : 'primary'}
+              variant={event.registration_status === 'registered' ? 'primary' : 'secondary'}
               size="md"
               style={{ width: '100%' }}
             >
-              {event.registration_status === 'registered' ? 'View My Event' : 'View Event'}
+              {buttonLabel}
             </Button>
           </Link>
         </div>

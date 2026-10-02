@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Home, CalendarCheck, Bell, User, ArrowRightLeft } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { ThemeToggle } from '../ui/ThemeToggle';
 import './UserLayout.css';
 
 export const UserLayout: React.FC = () => {
@@ -62,6 +63,7 @@ export const UserLayout: React.FC = () => {
 
           {/* Actions & Role Switcher */}
           <div className="user-header__actions">
+            <ThemeToggle size="sm" />
             <button
               type="button"
               onClick={handleSwitchToManager}
