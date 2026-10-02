@@ -6,6 +6,7 @@ import { ManagerLayout } from './components/layout/ManagerLayout';
 import { UserHomePage } from './pages/user/UserHomePage';
 import { EventDetailsPage } from './pages/user/EventDetailsPage';
 import { EventSchedulePage } from './pages/user/EventSchedulePage';
+import { EventUpdatesPage } from './pages/user/EventUpdatesPage';
 import { EventRegistrationPage } from './pages/user/EventRegistrationPage';
 import { MyEventsPage } from './pages/user/MyEventsPage';
 import { MyEventExperiencePage } from './pages/user/MyEventExperiencePage';
@@ -32,6 +33,7 @@ export const App: React.FC = () => {
             <Route path="events" element={<UserHomePage />} />
             <Route path="events/:id" element={<EventDetailsPage />} />
             <Route path="events/:id/schedule" element={<EventSchedulePage />} />
+            <Route path="events/:id/updates" element={<EventUpdatesPage />} />
             <Route path="events/:id/register" element={<EventRegistrationPage />} />
             <Route path="my-events" element={<MyEventsPage />} />
             <Route path="my-events/:id" element={<MyEventExperiencePage />} />

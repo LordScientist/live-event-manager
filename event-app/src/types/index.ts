@@ -106,7 +106,12 @@ export interface ScheduleItem {
 /**
  * Event Updates (The core differentiator: permanent change log & targeted alerts)
  */
-export type UpdateType = 'schedule_change' | 'venue_change' | 'announcement' | 'urgent';
+export type UpdateType =
+  | 'schedule_change'
+  | 'venue_change'
+  | 'speaker_change'
+  | 'general_announcement'
+  | 'emergency';
 export type UpdateAudience = 'all' | 'speakers' | 'volunteers' | 'attendees' | 'approved';
 
 export interface EventUpdate {
