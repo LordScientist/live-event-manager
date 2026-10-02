@@ -24,12 +24,12 @@ export const MOCK_REGULAR_USER: UserProfile = {
 
 export const MOCK_EVENT_MANAGER: UserProfile = {
   id: 'usr-202-manager',
-  email: 'sarah.chen@innovateconf.org',
-  first_name: 'Sarah',
-  last_name: 'Chen',
-  phone: '+1 (555) 876-5432',
-  organization: 'Global Tech Summits',
-  job_title: 'Director of Event Operations',
+  email: 'osmond.adjei@knust.edu.gh',
+  first_name: 'Osmond',
+  last_name: 'Adjei',
+  phone: '+233 24 555 1234',
+  organization: 'KNUST Event Operations',
+  job_title: 'Head of Event Management',
   account_type: 'manager',
   created_at: '2025-11-20T10:30:00Z'
 };

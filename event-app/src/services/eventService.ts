@@ -317,5 +317,70 @@ export const eventService = {
         });
       }, 150);
     });
+  },
+
+  createEvent: async (input: {
+    name: string;
+    description: string;
+    category: string;
+    cover_image?: string;
+    start_date: string;
+    end_date: string;
+    venue: string;
+    location_details?: string;
+    format?: 'physical' | 'online' | 'hybrid';
+    online_link?: string;
+    status: 'draft' | 'published';
+    approval_mode: 'automatic' | 'manual';
+    roles: string[];
+    capacity?: number;
+    registration_deadline?: string;
+    accessibility_info?: string;
+    collected_fields: string[];
+  }): Promise<ManagerEventItem> => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const id = `evt-${Date.now().toString(36)}`;
+        const newManagerEvent: ManagerEventItem = {
+          id,
+          name: input.name,
+          start_date: input.start_date,
+          end_date: input.end_date,
+          venue: input.venue,
+          status: input.status,
+          total_registrations: 0,
+          pending_approvals: 0,
+          capacity: input.capacity,
+          category: input.category,
+          cover_image: input.cover_image || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1000&q=80'
+        };
+
+        const newPublicEvent: EventWithMeta = {
+          id,
+          manager_id: 'usr-202-manager',
+          name: input.name,
+          description: input.description,
+          category: input.category,
+          cover_image: newManagerEvent.cover_image,
+          start_date: input.start_date,
+          end_date: input.end_date,
+          venue: input.venue,
+          location_details: input.location_details,
+          status: input.status,
+          registration_deadline: input.registration_deadline,
+          approval_mode: input.approval_mode,
+          capacity: input.capacity,
+          accessibility_info: input.accessibility_info,
+          collect_dietary: input.collected_fields.includes('dietary_requirements'),
+          created_at: new Date().toISOString(),
+          organizer_name: 'Osmond Adjei',
+          registration_status: input.status === 'published' ? 'open' : undefined
+        };
+
+        MOCK_MANAGER_EVENTS.unshift(newManagerEvent);
+        MOCK_EVENTS.unshift(newPublicEvent);
+        resolve(newManagerEvent);
+      }, 250);
+    });
   }
 };
