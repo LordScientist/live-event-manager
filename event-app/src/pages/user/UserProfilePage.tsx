@@ -16,6 +16,8 @@ import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import type { UserProfile } from '../../types';
+import decorTopRight from '../../assets/updates-decor-top-right.png';
+import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './UserProfilePage.css';
 
 const GENDER_OPTIONS = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
@@ -186,11 +188,26 @@ export const UserProfilePage: React.FC = () => {
   };
 
   return (
-    <div className="container user-profile-page">
-      {/* Page Title: No description as requested */}
-      <div className="profile-page-header">
-        <h1>Profile & Preferences</h1>
-      </div>
+    <div className="user-profile-page">
+      {/* Decorative background shapes */}
+      <img
+        src={decorTopRight}
+        alt=""
+        className="profile-decor-top-right"
+        aria-hidden="true"
+      />
+      <img
+        src={decorBottomRight}
+        alt=""
+        className="profile-decor-bottom-right"
+        aria-hidden="true"
+      />
+
+      <div className="profile-content-wrap">
+        {/* Page Title */}
+        <div className="profile-page-header">
+          <h1 className="profile-page-title">Profile & Preferences</h1>
+        </div>
 
       {successMessage && (
         <Alert type="success" title="Success" className="profile-alert">
@@ -430,6 +447,7 @@ export const UserProfilePage: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

@@ -14,6 +14,8 @@ import { Button } from '../../components/ui/Button';
 import { notificationService } from '../../services/notificationService';
 import { useAuth } from '../../context/AuthContext';
 import type { Notification } from '../../types';
+import decorTopRight from '../../assets/updates-decor-top-right.png';
+import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './NotificationsPage.css';
 
 type FilterType = 'all' | 'unread' | 'urgent';
@@ -195,24 +197,39 @@ export const NotificationsPage: React.FC = () => {
   };
 
   return (
-    <div className="container notifications-page">
-      {/* Header */}
-      <div className="notifications-header">
-        <div className="notifications-header__main">
-          <div className="header-badge-row">
-            <h1>Notifications</h1>
-            {unreadCount > 0 && (
-              <span className="unread-counter-badge">
-                {unreadCount} unread
-              </span>
-            )}
-          </div>
-          <p className="notifications-subtitle">
-            Live updates on room assignments, schedule shifts, and registration statuses.
-          </p>
-        </div>
+    <div className="notifications-page">
+      {/* Decorative background shapes */}
+      <img
+        src={decorTopRight}
+        alt=""
+        className="notifications-decor-top-right"
+        aria-hidden="true"
+      />
+      <img
+        src={decorBottomRight}
+        alt=""
+        className="notifications-decor-bottom-right"
+        aria-hidden="true"
+      />
 
-        <div className="notifications-header__actions">
+      <div className="notifications-content-wrap">
+        {/* Header */}
+        <div className="notifications-header">
+          <div className="notifications-header__main">
+            <div className="header-badge-row">
+              <h1 className="notifications-page-title">Notifications</h1>
+              {unreadCount > 0 && (
+                <span className="unread-counter-badge">
+                  {unreadCount} unread
+                </span>
+              )}
+            </div>
+            <p className="notifications-subtitle">
+              Live updates on room assignments, schedule shifts, and registration statuses.
+            </p>
+          </div>
+
+          <div className="notifications-header__actions">
           {unreadCount > 0 && (
             <Button
               variant="outline"
@@ -304,6 +321,7 @@ export const NotificationsPage: React.FC = () => {
           </p>
         </div>
       )}
+      </div>
     </div>
   );
 };

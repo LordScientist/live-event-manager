@@ -1,42 +1,79 @@
+/* ==========================================================================
+   USER PROFILE PAGE (Aligned with Figma Design System Frame 1:11)
+   Consistent padding, decor shapes, box-sizing, and orange hover states
+   ========================================================================== */
+
 .user-profile-page {
-  padding-top: var(--space-4);
-  padding-bottom: var(--space-12);
-  max-width: 980px;
+  position: relative;
+  min-height: 100vh;
+  background-color: var(--color-bg-canvas, #fafafb);
+  overflow-x: hidden;
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
 }
 
-@media (min-width: 640px) {
-  .user-profile-page {
-    padding-top: var(--space-6);
-  }
+/* ── Decorative Background Shapes ────────────────────────────────────────── */
+.profile-decor-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 170px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+  opacity: 0.95;
 }
 
-/* Header without description */
+.profile-decor-bottom-right {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 190px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  user-select: none;
+  opacity: 0.85;
+}
+
+.profile-content-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 840px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  box-sizing: border-box;
+}
+
+/* ── Page Header ─────────────────────────────────────────────────────────── */
 .profile-page-header {
-  margin-bottom: var(--space-5);
+  margin-bottom: 24px;
 }
 
-.profile-page-header h1 {
-  font-size: clamp(1.4rem, 4vw, var(--text-2xl));
-  font-weight: 700;
+.profile-page-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--color-text-main, #000000);
   margin: 0;
-  word-break: break-word;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 .profile-alert {
-  margin-bottom: var(--space-5);
+  margin-bottom: 20px;
 }
 
-/* Grid Layout */
+/* ── Grid Layout ─────────────────────────────────────────────────────────── */
 .profile-layout-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-5);
+  gap: 20px;
 }
 
 @media (min-width: 840px) {
   .profile-layout-grid {
-    grid-template-columns: 1.6fr 1fr;
-    gap: var(--space-6);
+    grid-template-columns: 1.55fr 1fr;
+    gap: 24px;
   }
 }
 
@@ -44,31 +81,32 @@
 .profile-side-col {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: 20px;
   min-width: 0;
 }
 
-@media (min-width: 640px) {
-  .profile-main-col,
-  .profile-side-col {
-    gap: var(--space-6);
-  }
-}
-
 .profile-section-card {
-  height: fit-content;
+  box-sizing: border-box;
+  background-color: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
 }
 
-/* Profile Photo */
+:root[data-theme="dark"] .profile-section-card {
+  background-color: #172136;
+  border-color: #1e293b;
+}
+
+/* ── Profile Photo ───────────────────────────────────────────────────────── */
 .profile-photo-row {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
-  padding-bottom: var(--space-5);
-  margin-bottom: var(--space-5);
-  border-bottom: 1px solid var(--color-border);
+  gap: 16px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
   flex-wrap: wrap;
 }
 
@@ -76,23 +114,16 @@
   position: relative;
   width: 64px;
   height: 64px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-primary);
+  border-radius: 50%;
+  background-color: #ea580c; /* Theme orange accent */
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--text-xl);
-  font-weight: 700;
+  font-size: 22px;
+  font-weight: 800;
   flex-shrink: 0;
-}
-
-@media (min-width: 480px) {
-  .profile-photo-avatar {
-    width: 68px;
-    height: 68px;
-    font-size: var(--text-2xl);
-  }
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
 }
 
 .photo-edit-badge {
@@ -101,103 +132,118 @@
   right: 0;
   width: 24px;
   height: 24px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  background-color: #0f172a;
+  color: #ffffff;
+  border: 2px solid #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-text-secondary);
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.profile-photo-info {
-  flex: 1;
-  min-width: 180px;
+.photo-edit-badge:hover {
+  background-color: #f97316;
+  transform: scale(1.1);
 }
 
 .profile-display-name {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  margin-bottom: 2px;
-  word-break: break-word;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-main, #0b132b);
+  margin: 0 0 4px 0;
 }
 
 .profile-account-tag {
-  font-size: var(--text-xs);
-  color: var(--color-text-muted);
   display: inline-block;
-  line-height: 1.4;
-  word-break: break-word;
+  font-size: 11px;
+  font-weight: 700;
+  color: #ea580c;
+  background-color: #f8dcca;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-/* Inline Editable Fields with Pen Icon */
+/* ── Editable Grid & Items matching Frame 1:11 design styles ─────────────── */
 .profile-editable-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-}
-
-@media (min-width: 540px) {
-  .profile-editable-grid {
-    grid-template-columns: 1fr 1fr;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .profile-editable-item {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-lg);
-  background-color: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
-  transition: all 0.15s ease;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background-color: #f2f3f5; /* Clean light grey matching Figma cards */
+  border: 1.5px solid transparent;
+  transition: all 0.22s ease-in-out;
   min-width: 0;
 }
 
+:root[data-theme="dark"] .profile-editable-item {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+/* ── Orange Hover State (Reverts on mouse leave) ────────────────────────── */
 .profile-editable-item:hover {
-  border-color: var(--color-border-hover);
+  background-color: #f8dcca; /* Soft peach/orange */
+  border-color: #f97316; /* Vibrant orange outline */
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.14);
+}
+
+:root[data-theme="dark"] .profile-editable-item:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25);
 }
 
 .profile-editable-item__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
 }
 
 .profile-editable-item__label {
-  font-size: var(--text-xs);
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #64748b);
 }
 
 .profile-editable-item__pen-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #94a3b8);
   padding: 4px;
-  border-radius: var(--radius-sm);
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
-  flex-shrink: 0;
 }
 
+.profile-editable-item:hover .profile-editable-item__pen-btn,
 .profile-editable-item__pen-btn:hover {
-  color: var(--color-primary);
-  background-color: var(--color-bg-surface);
+  color: #ea580c;
+  background-color: rgba(234, 88, 12, 0.1);
 }
 
 .profile-editable-item__val {
-  font-size: var(--text-sm);
+  font-size: 14px;
   font-weight: 600;
-  color: var(--color-text-main);
+  color: var(--color-text-main, #0b132b);
   word-break: break-word;
 }
 
@@ -205,40 +251,29 @@
 .profile-inline-form {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: 8px;
   width: 100%;
 }
 
-.profile-inline-input {
-  flex: 1;
-  min-width: 0;
-  min-height: 36px;
-  padding: 4px 8px;
-  font-size: var(--text-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-primary);
-  background-color: var(--color-bg-surface);
-  color: var(--color-text-main);
-  outline: none;
-}
-
+.profile-inline-input,
 .profile-inline-select {
+  box-sizing: border-box;
   flex: 1;
   min-width: 0;
-  min-height: 36px;
-  padding: 4px 8px;
-  font-size: var(--text-sm);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-primary);
-  background-color: var(--color-bg-surface);
+  height: 38px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1.5px solid #f97316;
+  background-color: var(--color-bg-surface, #ffffff);
   color: var(--color-text-main);
   outline: none;
 }
 
 .profile-inline-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-md);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
   border: none;
   display: flex;
   align-items: center;
@@ -249,16 +284,16 @@
 }
 
 .profile-inline-btn--save {
-  background-color: var(--color-primary);
+  background-color: #ea580c;
   color: #ffffff;
 }
 
 .profile-inline-btn--save:hover {
-  opacity: 0.9;
+  background-color: #c2410c;
 }
 
 .profile-inline-btn--cancel {
-  background-color: var(--color-bg-surface);
+  background-color: var(--color-bg-surface, #ffffff);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
 }
@@ -267,21 +302,20 @@
   color: var(--color-text-main);
 }
 
-/* Preferences List */
+/* ── Preferences List ───────────────────────────────────────────────────── */
 .preferences-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 8px;
 }
 
 .preference-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) 0;
-  min-height: var(--touch-target-min);
-  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
 }
 
 .preference-item:last-child {
@@ -297,24 +331,24 @@
 }
 
 .preference-title {
-  font-size: var(--text-sm);
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--color-text-main);
 }
 
 .preference-desc {
-  font-size: var(--text-xs);
+  font-size: 12px;
   color: var(--color-text-muted);
   line-height: 1.4;
 }
 
-/* Modern Color-Changing Toggle Switch */
+/* Toggle Switch */
 .toggle-switch-btn {
   position: relative;
   width: 48px;
   height: 26px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-border);
+  border-radius: 9999px;
+  background-color: var(--color-border, #cbd5e1);
   border: 2px solid transparent;
   cursor: pointer;
   transition: background-color 0.25s ease;
@@ -329,13 +363,13 @@
 }
 
 .toggle-switch-btn--active {
-  background-color: var(--color-primary) !important;
+  background-color: #ea580c !important;
 }
 
 .toggle-switch-thumb {
   width: 20px;
   height: 20px;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
   background-color: #ffffff;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   transform: translateX(2px);
@@ -346,41 +380,33 @@
   transform: translateX(22px);
 }
 
-/* Account Actions */
+/* ── Account Actions ─────────────────────────────────────────────────────── */
 .account-actions-content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 12px;
 }
 
-/* Modal */
+/* ── Modal ───────────────────────────────────────────────────────────────── */
 .modal-backdrop {
   position: fixed;
   inset: 0;
   background-color: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
-  padding: var(--space-4);
-  overflow-y: auto;
+  padding: 16px;
 }
 
 .modal-content {
-  background-color: var(--color-bg-surface);
+  box-sizing: border-box;
+  background-color: var(--color-bg-surface, #ffffff);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-  padding: var(--space-5);
+  border-radius: 20px;
+  padding: 24px;
   width: 100%;
   max-width: 440px;
-  box-shadow: var(--shadow-lg);
-  max-height: calc(100vh - 32px);
-  overflow-y: auto;
-}
-
-@media (min-width: 480px) {
-  .modal-content {
-    padding: var(--space-6);
-  }
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }

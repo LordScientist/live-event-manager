@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
-  Radio,
-  MapPin,
+  Megaphone,
   Calendar,
-  Users,
-  AlertTriangle,
+  MapPin,
+  Sparkles,
   ArrowLeft,
-  CheckCircle2,
+  X,
   Clock,
-  Info
+  Users,
+  Radio,
+  ExternalLink
 } from 'lucide-react';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
@@ -17,23 +18,24 @@ import { updateService } from '../../services/updateService';
 import { registrationService } from '../../services/registrationService';
 import { useAuth } from '../../context/AuthContext';
 import type { EventUpdate, UpdateType, Registration } from '../../types';
+import decorTopRight from '../../assets/updates-decor-top-right.png';
+import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './EventUpdatesPage.css';
 
-// Format relative timestamp
+// Format relative timestamp matching Figma: "2 hours ago", "4 hours ago", "1 day ago"
 const getRelativeTime = (isoString: string): string => {
   const diffMs = Date.now() - new Date(isoString).getTime();
   const diffMins = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
 
   if (diffMins < 1) return 'Just now';
   if (diffMins === 1) return '1 minute ago';
   if (diffMins < 60) return `${diffMins} minutes ago`;
   if (diffHours === 1) return '1 hour ago';
   if (diffHours < 24) return `${diffHours} hours ago`;
-  return new Date(isoString).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric'
-  });
+  if (diffDays === 1) return '1 day ago';
+  return `${diffDays} days ago`;
 };
 
 export const EventUpdatesPage: React.FC = () => {
@@ -46,6 +48,7 @@ export const EventUpdatesPage: React.FC = () => {
   const [userRegistration, setUserRegistration] = useState<Registration | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [filterType, setFilterType] = useState<'all' | 'affects_me' | 'venue_schedule'>('all');
+  const [selectedUpdate, setSelectedUpdate] = useState<EventUpdate | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -73,13 +76,14 @@ export const EventUpdatesPage: React.FC = () => {
 
   if (isLoading || !event) {
     return (
-      <div className="container" style={{ padding: 'var(--space-12) 0', textAlign: 'center' }}>
-        <p style={{ color: 'var(--color-text-muted)' }}>Loading event updates...</p>
+      <div className="event-updates-page event-updates-page--loading">
+        <div className="updates-loading-spinner" />
+        <p>Loading event updates...</p>
       </div>
     );
   }
 
-  // Derive user's registered role in this event
+  // Derive user role
   let userRoleCategory: 'speakers' | 'volunteers' | 'attendees' = 'attendees';
   if (userRegistration?.event_role_id.includes('speaker') || event.user_role_name === 'Speaker') {
     userRoleCategory = 'speakers';
@@ -87,52 +91,55 @@ export const EventUpdatesPage: React.FC = () => {
     userRoleCategory = 'volunteers';
   }
 
-  // Helper to determine if an update affects this user
+  // Check if an update affects this user
   const checkAffectsUser = (audience: string): boolean => {
     if (audience === 'all' || audience === 'approved') return true;
     return audience === userRoleCategory;
   };
 
-  // Helper for UI icons and color styles based on UpdateType (Prompt Section 18)
+  // Icon and theme config matching Figma Frame 1:11
   const getTypeConfig = (type: UpdateType) => {
     switch (type) {
-      case 'venue_change':
+      case 'speaker_change':
         return {
-          label: 'Venue Change',
-          icon: MapPin,
-          className: 'update-badge--venue',
-          cardClass: 'update-card--venue'
+          icon: Megaphone,
+          iconColor: '#16A34A', // Vibrant green matching frame
+          iconBg: 'rgba(22, 163, 74, 0.12)'
         };
       case 'schedule_change':
         return {
-          label: 'Schedule Change',
           icon: Calendar,
-          className: 'update-badge--schedule',
-          cardClass: 'update-card--schedule'
+          iconColor: '#FF2625', // Vibrant red calendar
+          iconBg: 'rgba(255, 38, 37, 0.12)'
         };
-      case 'speaker_change':
+      case 'venue_change':
         return {
-          label: 'Speaker Change',
-          icon: Users,
-          className: 'update-badge--speaker',
-          cardClass: 'update-card--speaker'
+          icon: MapPin,
+          iconColor: '#EA580C', // Vibrant orange map pin
+          iconBg: 'rgba(234, 88, 12, 0.12)'
         };
       case 'emergency':
         return {
-          label: 'Emergency Alert',
-          icon: AlertTriangle,
-          className: 'update-badge--emergency',
-          cardClass: 'update-card--emergency'
+          icon: Calendar,
+          iconColor: '#DC2626',
+          iconBg: 'rgba(220, 38, 38, 0.15)'
         };
       case 'general_announcement':
       default:
         return {
-          label: 'General Announcement',
-          icon: Info,
-          className: 'update-badge--announcement',
-          cardClass: 'update-card--announcement'
+          icon: Sparkles,
+          iconColor: '#4F46E5', // Indigo / resource blue
+          iconBg: 'rgba(79, 70, 229, 0.12)'
         };
     }
+  };
+
+  // Derive top featured alert (prefer schedule_change or emergency, fallback to latest)
+  const featuredChange = updates.find(
+    (u) => u.type === 'schedule_change' || u.type === 'emergency'
+  ) || {
+    title: 'SCHEDULE CHANGED',
+    message: 'Your 2:00 PM session has moved from Room 204 to the Main Auditorium.'
   };
 
   // Filter updates
@@ -148,117 +155,201 @@ export const EventUpdatesPage: React.FC = () => {
   });
 
   return (
-    <div className="container event-updates-page">
-      {/* Back button */}
-      <div className="updates-back">
-        <button type="button" onClick={() => navigate(-1)} className="back-btn">
-          <ArrowLeft size={16} />
-          <span>Back to Event</span>
-        </button>
-      </div>
+    <div className="event-updates-page">
+      {/* Decorative background shapes matching Figma Frame 1:11 */}
+      <img
+        src={decorTopRight}
+        alt=""
+        className="updates-decor-top-right"
+        aria-hidden="true"
+      />
+      <img
+        src={decorBottomRight}
+        alt=""
+        className="updates-decor-bottom-right"
+        aria-hidden="true"
+      />
 
-      {/* Header */}
-      <div className="updates-header">
-        <div className="updates-header__title-group">
-          <span className="updates-event-tag">{event.name}</span>
-          <h1 className="updates-page-title">Live Updates & Change Log</h1>
-          <p className="updates-page-subtitle">
-            Permanent record of venue shifts, time adjustments, and urgent announcements.
+      <div className="updates-content-wrap">
+        {/* 1. Header Bar: Back Arrow + Event Update */}
+        <header className="updates-top-bar">
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="updates-back-btn"
+            aria-label="Back to event"
+          >
+            <ArrowLeft size={24} />
+          </button>
+          <h1 className="updates-page-title">Event Update</h1>
+        </header>
+
+        {/* 2. Highlight Alert Card matching Figma Frame 1:11 */}
+        <section className="updates-alert-card" aria-label="Schedule Changed Alert">
+          <span className="updates-alert-tag">SCHEDULE CHANGED</span>
+          <p className="updates-alert-message">
+            {featuredChange.message ||
+              'Your 2:00 PM session has moved from Room 204 to the Main Auditorium.'}
           </p>
-        </div>
+          <button
+            type="button"
+            className="updates-alert-btn"
+            onClick={() => navigate(`/events/${id}/schedule`)}
+          >
+            View Schedule
+          </button>
+        </section>
 
-        <div className="live-broadcast-pill">
-          <span className="live-broadcast-dot" />
-          <span>Live Broadcast Enabled</span>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div className="updates-filters">
-        <button
-          type="button"
-          className={`filter-btn ${filterType === 'all' ? 'filter-btn--active' : ''}`}
-          onClick={() => setFilterType('all')}
-        >
-          All Updates ({updates.length})
-        </button>
-        <button
-          type="button"
-          className={`filter-btn ${filterType === 'affects_me' ? 'filter-btn--active' : ''}`}
-          onClick={() => setFilterType('affects_me')}
-        >
-          Affects My Role ({updates.filter((u) => checkAffectsUser(u.audience)).length})
-        </button>
-        <button
-          type="button"
-          className={`filter-btn ${filterType === 'venue_schedule' ? 'filter-btn--active' : ''}`}
-          onClick={() => setFilterType('venue_schedule')}
-        >
-          Venue & Schedule Shifts
-        </button>
-      </div>
-
-      {/* Updates Timeline List (Prompt Section 18) */}
-      <div className="updates-timeline">
-        {filteredUpdates.length > 0 ? (
-          filteredUpdates.map((update) => {
-            const config = getTypeConfig(update.type);
-            const Icon = config.icon;
-            const affectsUser = checkAffectsUser(update.audience);
-            const relativeTime = getRelativeTime(update.created_at);
-
-            return (
-              <article key={update.id} className={`update-card ${config.cardClass}`}>
-                {/* Header row: Type badge, Audience, Relative Time */}
-                <div className="update-card__top">
-                  <div className="update-card__badges">
-                    <span className={`update-badge ${config.className}`}>
-                      <Icon size={14} aria-hidden="true" />
-                      <span>{config.label}</span>
-                    </span>
-
-                    {affectsUser && (
-                      <span className="affects-you-pill">
-                        <CheckCircle2 size={13} />
-                        <span>Affects You</span>
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="update-timestamp">
-                    <Clock size={13} aria-hidden="true" />
-                    <span>Updated {relativeTime}</span>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <h3 className="update-card__title">{update.title}</h3>
-                <p className="update-card__message">{update.message}</p>
-
-                {/* Footer metadata: Target audience & time */}
-                <div className="update-card__footer">
-                  <div className="update-audience-tag">
-                    <Users size={13} />
-                    <span>Target Audience: <strong>{update.audience.toUpperCase()}</strong></span>
-                  </div>
-                  <div className="update-exact-time">
-                    {new Date(update.created_at).toLocaleTimeString('en-US', {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })} • {new Date(update.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                  </div>
-                </div>
-              </article>
-            );
-          })
-        ) : (
-          <div className="updates-empty">
-            <Radio size={36} className="updates-empty__icon" />
-            <h3>No updates found</h3>
-            <p>There are currently no updates matching your selected filter.</p>
+        {/* 3. Section Header: "Recent Updates" + Live broadcast pill */}
+        <div className="updates-section-header">
+          <div className="updates-section-title-wrap">
+            <h2 className="updates-section-title">Recent Updates</h2>
+            <div className="live-broadcast-pill">
+              <span className="live-broadcast-dot" />
+              <span>Live Broadcast</span>
+            </div>
           </div>
-        )}
+
+          {/* Filter Pills */}
+          <div className="updates-filters" role="tablist" aria-label="Filter updates">
+            <button
+              type="button"
+              className={`filter-pill ${filterType === 'all' ? 'filter-pill--active' : ''}`}
+              onClick={() => setFilterType('all')}
+            >
+              All ({updates.length})
+            </button>
+            <button
+              type="button"
+              className={`filter-pill ${filterType === 'affects_me' ? 'filter-pill--active' : ''}`}
+              onClick={() => setFilterType('affects_me')}
+            >
+              Affects Me
+            </button>
+            <button
+              type="button"
+              className={`filter-pill ${filterType === 'venue_schedule' ? 'filter-pill--active' : ''}`}
+              onClick={() => setFilterType('venue_schedule')}
+            >
+              Venue & Schedule
+            </button>
+          </div>
+        </div>
+
+        {/* 4. Updates List matching Figma Frame 1:11 */}
+        <div className="updates-list">
+          {filteredUpdates.length > 0 ? (
+            filteredUpdates.map((update) => {
+              const config = getTypeConfig(update.type);
+              const Icon = config.icon;
+              const affectsUser = checkAffectsUser(update.audience);
+              const relativeTime = getRelativeTime(update.created_at);
+
+              return (
+                <article
+                  key={update.id}
+                  className="update-card-item"
+                  onClick={() => setSelectedUpdate(update)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedUpdate(update);
+                    }
+                  }}
+                  aria-label={`${update.title}, updated ${relativeTime}`}
+                >
+                  <div
+                    className="update-card-item__icon-wrap"
+                    style={{ color: config.iconColor, backgroundColor: config.iconBg }}
+                  >
+                    <Icon size={24} aria-hidden="true" />
+                  </div>
+                  <div className="update-card-item__body">
+                    <div className="update-card-item__top-line">
+                      <h3 className="update-card-item__title">{update.title}</h3>
+                      {affectsUser && (
+                        <span className="update-card-item__affects-tag">Affects You</span>
+                      )}
+                    </div>
+                    <span className="update-card-item__time">{relativeTime}</span>
+                  </div>
+                </article>
+              );
+            })
+          ) : (
+            <div className="updates-empty-card">
+              <Radio size={36} className="updates-empty-icon" />
+              <h3>No updates available</h3>
+              <p>Everything is currently proceeding according to schedule.</p>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* 5. Update Detail Modal for deep inspection */}
+      {selectedUpdate && (
+        <div className="update-modal-backdrop" onClick={() => setSelectedUpdate(null)}>
+          <div
+            className="update-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-update-title"
+          >
+            <div className="update-modal__header">
+              <h3 id="modal-update-title" className="update-modal__title">
+                {selectedUpdate.title}
+              </h3>
+              <button
+                type="button"
+                className="update-modal__close"
+                onClick={() => setSelectedUpdate(null)}
+                aria-label="Close dialog"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="update-modal__body">
+              <div className="update-modal__meta-row">
+                <span className="update-modal__time">
+                  <Clock size={14} />
+                  {getRelativeTime(selectedUpdate.created_at)} (
+                  {new Date(selectedUpdate.created_at).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                  )
+                </span>
+                <span className="update-modal__audience">
+                  <Users size={14} />
+                  Audience: <strong>{selectedUpdate.audience.toUpperCase()}</strong>
+                </span>
+              </div>
+
+              <p className="update-modal__message">{selectedUpdate.message}</p>
+
+              {(selectedUpdate.type === 'schedule_change' || selectedUpdate.type === 'venue_change') && (
+                <div className="update-modal__actions">
+                  <button
+                    type="button"
+                    className="update-modal__action-btn"
+                    onClick={() => {
+                      setSelectedUpdate(null);
+                      navigate(`/events/${id}/schedule`);
+                    }}
+                  >
+                    <span>Open Schedule Timeline</span>
+                    <ExternalLink size={16} />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

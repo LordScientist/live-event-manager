@@ -153,19 +153,33 @@
 }
 
 .manager-event-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  background-color: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  background-color: var(--color-surface, #ffffff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: stretch;
   overflow: hidden;
-  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  transition: all 0.22s ease-in-out;
+}
+
+:root[data-theme="dark"] .manager-event-card {
+  background-color: #172136;
+  border-color: #1e293b;
 }
 
 .manager-event-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: var(--shadow-md);
+  background-color: #f8dcca;
+  border-color: #f97316;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+}
+
+:root[data-theme="dark"] .manager-event-card:hover {
+  background-color: rgba(249, 115, 22, 0.16);
+  border-color: #f97316;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
 }
 
 .manager-event-card__cover {
