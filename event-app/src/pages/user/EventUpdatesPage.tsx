@@ -18,8 +18,6 @@ import { updateService } from '../../services/updateService';
 import { registrationService } from '../../services/registrationService';
 import { useAuth } from '../../context/AuthContext';
 import type { EventUpdate, UpdateType, Registration } from '../../types';
-import decorTopRight from '../../assets/updates-decor-top-right.png';
-import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './EventUpdatesPage.css';
 
 // Format relative timestamp matching Figma: "2 hours ago", "4 hours ago", "1 day ago"
@@ -156,19 +154,6 @@ export const EventUpdatesPage: React.FC = () => {
 
   return (
     <div className="event-updates-page">
-      {/* Decorative background shapes matching Figma Frame 1:11 */}
-      <img
-        src={decorTopRight}
-        alt=""
-        className="updates-decor-top-right"
-        aria-hidden="true"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        className="updates-decor-bottom-right"
-        aria-hidden="true"
-      />
 
       <div className="updates-content-wrap">
         {/* 1. Header Bar: Back Arrow + Event Update */}

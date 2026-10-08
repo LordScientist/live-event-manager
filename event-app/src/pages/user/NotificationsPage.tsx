@@ -14,8 +14,6 @@ import { Button } from '../../components/ui/Button';
 import { notificationService } from '../../services/notificationService';
 import { useAuth } from '../../context/AuthContext';
 import type { Notification } from '../../types';
-import decorTopRight from '../../assets/updates-decor-top-right.png';
-import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './NotificationsPage.css';
 
 type FilterType = 'all' | 'unread' | 'urgent';
@@ -198,19 +196,6 @@ export const NotificationsPage: React.FC = () => {
 
   return (
     <div className="notifications-page">
-      {/* Decorative background shapes */}
-      <img
-        src={decorTopRight}
-        alt=""
-        className="notifications-decor-top-right"
-        aria-hidden="true"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        className="notifications-decor-bottom-right"
-        aria-hidden="true"
-      />
 
       <div className="notifications-content-wrap">
         {/* Header */}

@@ -17,8 +17,6 @@ import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import type { UserProfile } from '../../types';
-import decorTopRight from '../../assets/updates-decor-top-right.png';
-import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './UserProfilePage.css';
 
 const GENDER_OPTIONS = ['Male', 'Female', 'Non-binary', 'Prefer not to say'];
@@ -190,19 +188,6 @@ export const UserProfilePage: React.FC = () => {
 
   return (
     <div className="user-profile-page">
-      {/* Decorative background shapes */}
-      <img
-        src={decorTopRight}
-        alt=""
-        className="profile-decor-top-right"
-        aria-hidden="true"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        className="profile-decor-bottom-right"
-        aria-hidden="true"
-      />
 
       <div className="profile-content-wrap">
         {/* Page Title */}

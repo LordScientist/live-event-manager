@@ -16,7 +16,7 @@
 .auth-page--signup {
   justify-content: flex-start;
   padding: 0;
-  background-color: #FAF9F9;
+  background-color: transparent;
   min-height: 100vh;
 }
 
@@ -572,22 +572,6 @@
   .auth-card--login {
     padding: 32px 24px 28px;
   }
-}
-
-/* ── Top-right decorative background graphic ────────────────────────────── */
-.login-decor-graphic {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 148px;
-  height: auto;
-  pointer-events: none;
-  z-index: 1;
-  user-select: none;
-}
-
-:root[data-theme="dark"] .login-decor-graphic {
-  opacity: 0.85;
 }
 
 /* ── Top bar: LC Logo on left, ThemeToggle on right ───────────────────────── */

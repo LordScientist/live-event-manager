@@ -22,14 +22,14 @@ const MASCOT_DIALOGUES = [
   },
   {
     slideId: 2,
-    headline: "Role Freedom!",
-    message: "Speaker on Friday, Volunteer on Saturday, Attendee on Sunday? Your login handles all your roles without locked accounts!",
+    headline: "Zero Blackouts Architecture!",
+    message: "Floating Dynamic Island HUD + Role Decoupling! The HUD floats at the top with 3 spring physics states while your login seamlessly handles Speaker, Volunteer, or Attendee passes.",
     mood: "happy"
   },
   {
     slideId: 3,
-    headline: "Sub-10s Chain Reaction",
-    message: "Watch this: Organizer edits Room 204 to Great Hall, and BAM—an urgent Venue Shift banner lands on attendee screens instantly!",
+    headline: "Sub-10s Room Diff Engine!",
+    message: "Watch this: Organizer shifts Room 102 to Main Amphitheater, and BAM—Dynamic Island chimes with Web Audio and shows the before/after room diff in under 10 seconds!",
     mood: "excited"
   },
   {

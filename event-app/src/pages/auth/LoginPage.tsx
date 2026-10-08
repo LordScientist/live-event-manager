@@ -7,7 +7,6 @@ import { Alert } from '../../components/ui/Alert';
 import { useAuth, MOCK_REGULAR_USER, MOCK_EVENT_MANAGER } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import lcIcon from '../../assets/lc-icon.png';
-import decorGraphic from '../../assets/login-decor-top-right.png';
 import './AuthPages.css';
 
 export const LoginPage: React.FC = () => {
@@ -88,13 +87,6 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="auth-page auth-page--login">
-      {/* Top right decorative shapes matching Figma design */}
-      <img
-        src={decorGraphic}
-        alt=""
-        className="login-decor-graphic"
-        aria-hidden="true"
-      />
 
       <div className="auth-card auth-card--login">
         {/* Top Bar: Brand Icon on left, Theme Toggle on right */}

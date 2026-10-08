@@ -12,8 +12,6 @@ import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { scheduleService } from '../../services/scheduleService';
 import type { ScheduleItem } from '../../types';
-import decorTopRight from '../../assets/updates-decor-top-right.png';
-import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './EventSchedulePage.css';
 
 interface EnrichedScheduleItem extends ScheduleItem {
@@ -113,19 +111,6 @@ export const EventSchedulePage: React.FC = () => {
 
   return (
     <div className="event-schedule-page">
-      {/* Decorative background shapes */}
-      <img
-        src={decorTopRight}
-        alt=""
-        className="schedule-decor-top-right"
-        aria-hidden="true"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        className="schedule-decor-bottom-right"
-        aria-hidden="true"
-      />
 
       <div className="schedule-content-wrap">
         {/* Top Back Navigation Bar */}

@@ -359,6 +359,12 @@
   -ms-overflow-style: none;
   padding: 6px 4px 14px 4px;
   gap: 12px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .categories-grid-wrap::-webkit-scrollbar {
@@ -383,6 +389,8 @@
   white-space: nowrap;
   flex-shrink: 0;
   user-select: none;
+  min-height: var(--touch-target-min, 44px);
+  box-sizing: border-box;
 }
 
 :root[data-theme="dark"] .category-bento-tile {
@@ -744,20 +752,100 @@
 @media (max-width: 480px) {
   .active-event-quicklink {
     padding: var(--space-4);
+    box-sizing: border-box;
+  }
+
+  .active-event-quicklink__header {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .active-event-quicklink__title {
+    font-size: 17px;
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .active-event-quicklink__actions {
+    display: flex;
     flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .active-event-quicklink__actions > * {
+    display: block;
     width: 100%;
+    text-decoration: none;
+    box-sizing: border-box;
   }
 
   .active-event-quicklink__actions button,
-  .active-event-quicklink__actions a {
+  .active-event-quicklink__actions a,
+  .active-event-quicklink__actions .btn {
     width: 100%;
+    min-height: 44px;
     justify-content: center;
+    box-sizing: border-box;
+    padding: 0 12px;
+    white-space: normal;
+    text-align: center;
   }
 }
+
+/* Narrow mobile devices (320px–375px) */
+@media (max-width: 375px) {
+  .user-home-header__top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .user-home-header__quick-actions {
+    align-self: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .active-event-quicklink {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .active-event-quicklink__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .active-event-quicklink__meta {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .active-event-quicklink__title {
+    font-size: 16px;
+  }
+}
+
+/* Ultra-compact mobile screens (< 360px: 320px–359px) */
+@media (max-width: 359px) {
+  .active-event-quicklink {
+    padding: 12px 10px;
+    border-radius: 14px;
+  }
+
+  .active-event-quicklink__title {
+    font-size: 15px;
+  }
+
+  .active-event-quicklink__actions button,
+  .active-event-quicklink__actions a,
+  .active-event-quicklink__actions .btn {
+    font-size: 12px;
+    padding: 0 8px;
+  }
+}
+
 

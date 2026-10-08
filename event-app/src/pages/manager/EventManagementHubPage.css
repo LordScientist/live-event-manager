@@ -405,7 +405,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-4);
-  z-index: 1000;
+  z-index: 110;
   backdrop-filter: blur(4px);
 }
 

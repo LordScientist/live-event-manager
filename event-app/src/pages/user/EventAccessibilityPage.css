@@ -8,38 +8,12 @@
   position: relative;
   width: 100%;
   min-height: 100vh;
-  background-color: #FAF9F9;
+  background-color: transparent;
   overflow-x: hidden;
 }
 
 :root[data-theme="dark"] .event-accessibility-screen {
-  background-color: #0b0f19;
-}
-
-/* ── Decorative Corner Graphics matching Figma Node 1:8 ──────────────────── */
-.event-acc-decor-tr {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 154px;
-  height: auto;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.event-acc-decor-br {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 180px;
-  height: auto;
-  pointer-events: none;
-  z-index: 0;
-}
-
-:root[data-theme="dark"] .event-acc-decor-tr,
-:root[data-theme="dark"] .event-acc-decor-br {
-  opacity: 0.35;
+  background-color: transparent;
 }
 
 /* ── Container Layout ────────────────────────────────────────────────────── */
@@ -298,7 +272,7 @@
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  z-index: 100;
+  z-index: 110;
   display: flex;
   align-items: center;
   justify-content: center;

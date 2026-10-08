@@ -5,10 +5,10 @@
 
 .dynamic-island {
   position: fixed;
-  top: 12px;
+  top: calc(12px + env(safe-area-inset-top, 0px));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 999;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -147,6 +147,11 @@
   height: 100%;
   padding: 0 16px;
   cursor: pointer;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
 }
 
 .island-alert-leading {
@@ -511,3 +516,204 @@
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
+
+/* ==========================================================================
+   4. MOBILE RESPONSIVENESS & SPATIAL ORIENTATION (Apple Dynamic Island)
+   ========================================================================== */
+
+/* Handheld Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  .dynamic-island {
+    top: calc(12px + env(safe-area-inset-top, 0px));
+  }
+
+  /* Compact HUD: strictly centered, fits calc(100vw - 24px), no horizontal overflow */
+  .dynamic-island--compact {
+    min-width: min(240px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
+    width: auto;
+    height: 38px;
+    box-sizing: border-box;
+  }
+
+  .island-compact-wrap {
+    padding: 0 10px;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .island-compact-title {
+    font-size: 11px;
+    max-width: 170px;
+    min-width: 0;
+  }
+
+  /* Alert HUD: strictly fits calc(100vw - 20px) without overflow */
+  .dynamic-island--alert {
+    min-width: 0;
+    max-width: calc(100vw - 20px);
+    width: calc(100vw - 20px);
+    height: 44px;
+    box-sizing: border-box;
+  }
+
+  .island-alert-wrap {
+    padding: 0 10px;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .island-alert-icon-pulse {
+    width: 22px;
+    height: 22px;
+  }
+
+  .island-alert-urgency-chip {
+    font-size: 9px;
+    padding: 1px 6px;
+  }
+
+  .island-alert-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .island-alert-diff {
+    font-size: 11px;
+    gap: 4px;
+    min-width: 0;
+  }
+
+  .island-venue-old,
+  .island-venue-new {
+    max-width: 76px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .island-alert-tap-hint {
+    display: none; /* Hide tap hint text on narrow mobile so room change is fully visible */
+  }
+
+  /* Expanded 3D GlassModal: fits within calc(100vw - 20px) with comfortable touch targets */
+  .dynamic-island--expanded {
+    width: calc(100vw - 20px);
+    max-width: calc(100vw - 20px);
+    padding: 14px 12px;
+    border-radius: 22px;
+    max-height: calc(100vh - 24px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+  }
+
+  .island-card-header {
+    gap: 8px;
+  }
+
+  .island-card-badge {
+    font-size: 9px;
+    padding: 2px 7px;
+  }
+
+  .island-sync-chip {
+    font-size: 10px;
+  }
+
+  .island-card-tool-btn,
+  .island-card-close-btn {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .island-event-title {
+    font-size: 14px;
+  }
+
+  .island-diff-box {
+    padding: 10px;
+    border-radius: 16px;
+    gap: 8px;
+  }
+
+  .island-diff-node-venue {
+    font-size: 12px;
+  }
+
+  .island-note-card {
+    padding: 8px 10px;
+  }
+
+  .island-note-text {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .island-card-footer {
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .island-btn {
+    min-height: 44px; /* Accessible touch target size */
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Narrow mobile devices (< 360px: 320px–359px) */
+@media (max-width: 359px) {
+  .dynamic-island--compact {
+    max-width: calc(100vw - 16px);
+    min-width: 0;
+  }
+
+  .island-compact-title {
+    max-width: 135px;
+    font-size: 10px;
+  }
+
+  .dynamic-island--alert {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+  }
+
+  .island-venue-old,
+  .island-venue-new {
+    max-width: 55px;
+  }
+
+  .dynamic-island--expanded {
+    width: calc(100vw - 16px);
+    max-width: calc(100vw - 16px);
+    padding: 12px 10px;
+    border-radius: 18px;
+  }
+
+  /* Diff box stacks nicely into 1 column on narrow screens (< 360px) */
+  .island-diff-box {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .island-diff-connector {
+    transform: rotate(90deg);
+    padding: 2px 0;
+  }
+
+  /* Footer action buttons stack vertically for comfortable touch */
+  .island-card-footer {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .island-card-footer .island-btn {
+    width: 100%;
+  }
+}
+

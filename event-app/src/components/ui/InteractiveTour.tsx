@@ -15,6 +15,7 @@ import {
 import { Button } from './Button';
 import { CodiToyAvatar } from '../presentation/CodiToyAvatar';
 import { triggerConfetti } from '../../utils/confetti';
+import { triggerLiveBroadcastShift } from '../../services/presentationService';
 import './InteractiveTour.css';
 
 interface TourStep {
@@ -35,15 +36,15 @@ const TOUR_STEPS: TourStep[] = [
     perkBadge: 'Perk 01: Zero Blackouts',
     perkColor: 'blue',
     icon: <Radio size={22} />,
-    title: 'The Campus Spark',
-    subtitle: 'Real-time coordination without group chat chaos',
+    title: 'The Campus Spark: Zero Blackouts',
+    subtitle: 'Dynamic Island HUD alerts venue shifts in under 10 seconds',
     codiHeadline: 'The WhatsApp Nightmare Ends Here!',
     codiComment:
-      "Ever tried moving 300 students when a room changes 20 minutes before kickoff through 6 muted group chats? Pure chaos! In Live Connect, the moment an organizer edits a room, everyone's screen shifts simultaneously in under 10 seconds. Zero blackouts!",
+      "Ever tried moving 300 students when a room changes 20 minutes before kickoff through 6 muted group chats? Pure chaos! In Live Connect, the floating Dynamic Island Live Broadcast HUD alerts participants to sudden room & venue shifts in under 10 seconds with audio-visual spring physics and before/after venue diffs. Traditional campus group chats (WhatsApp, Telegram) and buried emails fail during live events when an auditorium changes 20 minutes before kickoff—the Dynamic Island provides a single shared source of live truth!",
     codiTakeaways: [
-      'Instant broadcast banners for sudden venue & room shifts',
-      'One shared truth across organizers, speakers, and attendees',
-      'Zero frantic phone calls or guessing where to go'
+      'WHAT IT DOES: Floating real-time broadcast HUD that alerts participants to sudden room & venue shifts in under 10 seconds with audio-visual spring physics and before/after venue diffs.',
+      'WHY IT IS THERE: Traditional campus group chats (WhatsApp, Telegram) and buried emails fail during live events when an auditorium changes 20 minutes before kickoff. The Dynamic Island provides a single shared source of live truth.',
+      'Instant sub-10s sync with zero-lag synthetic Web Audio chime and automatic room diff comparison.'
     ]
   },
   {
@@ -118,6 +119,20 @@ export const InteractiveTour: React.FC = () => {
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isWaving, setIsWaving] = useState(false);
   const [commentaryKey, setCommentaryKey] = useState(0);
+  const [simulatedShiftActive, setSimulatedShiftActive] = useState(false);
+
+  const handleSimulateShift = () => {
+    setSimulatedShiftActive(true);
+    triggerLiveBroadcastShift({
+      id: 'tour-shift-sim',
+      eventName: 'KNUST Tech Conference 2026',
+      oldVenue: 'Room 102 (Great Hall)',
+      newVenue: 'Main Amphitheater • Hall A',
+      reason: 'Overcapacity alert: Keynote relocated immediately to Main Amphitheater. Audio chime and live venue diff synchronized.',
+      timestamp: 'Just now (live tour test)',
+      urgency: 'high'
+    });
+  };
 
   useEffect(() => {
     // Only activate for fresh users who registered and haven't finished the tour
@@ -290,6 +305,25 @@ export const InteractiveTour: React.FC = () => {
 
               <h3 className="tour-speech-title">{currentStep.codiHeadline}</h3>
               <p className="tour-speech-text">{currentStep.codiComment}</p>
+
+              {currentStep.id === 1 && (
+                <div className="tour-island-trigger-container">
+                  <button
+                    type="button"
+                    className="tour-island-trigger-btn luminous-bloom"
+                    onClick={handleSimulateShift}
+                  >
+                    <Radio size={14} className="tour-island-btn-icon animate-pulse" />
+                    <span>Simulate Shift (Test Dynamic Island)</span>
+                  </button>
+                  {simulatedShiftActive && (
+                    <div className="tour-island-trigger-hint">
+                      <Sparkles size={12} className="tour-sparkle-amber" />
+                      <span>Live HUD triggered! Look at the top Dynamic Island bouncing with chime ⬆️</span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Triangle Tail pointing toward Codi */}
               <div className="tour-speech-tail" aria-hidden="true" />

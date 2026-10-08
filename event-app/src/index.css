@@ -4,8 +4,8 @@
    ========================================================================== */
 
 :root {
-  /* Typography */
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Typography - 2026 Geometric Grotesque with Humanist Warmth */
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   /* Font Sizes */
@@ -119,19 +119,19 @@
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
 
-  /* macOS Liquid Frosted Glass System Tokens (Light Mode) */
-  --glass-bg-base: rgba(255, 255, 255, 0.72);
-  --glass-bg-elevated: rgba(255, 255, 255, 0.84);
-  --glass-bg-subtle: rgba(255, 255, 255, 0.52);
-  --glass-border: rgba(255, 255, 255, 0.75);
-  --glass-border-subtle: rgba(255, 255, 255, 0.45);
+  /* 2026 Polished Crystal Glass System Tokens (Light Mode) */
+  --glass-bg-base: rgba(255, 255, 255, 0.80);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.92);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.58);
+  --glass-border: rgba(226, 232, 240, 0.85);
+  --glass-border-subtle: rgba(226, 232, 240, 0.50);
   --glass-border-highlight: rgba(255, 255, 255, 0.95);
-  --glass-blur: blur(28px) saturate(200%);
-  --glass-blur-heavy: blur(48px) saturate(220%);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-blur-heavy: blur(36px) saturate(190%);
   --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --glass-shadow-md: 0 12px 34px rgba(0, 0, 0, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --glass-shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --glass-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --glass-shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --glass-shadow-lg: 0 20px 48px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 /* ==========================================================================
@@ -208,19 +208,19 @@
   --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.65), 0 2px 6px -2px rgba(0, 0, 0, 0.45);
   --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.75), 0 4px 10px -2px rgba(0, 0, 0, 0.5);
 
-  /* macOS Liquid Frosted Glass System Tokens (Dark Mode Milled Obsidian Crystal) */
-  --glass-bg-base: rgba(14, 21, 38, 0.70);
-  --glass-bg-elevated: rgba(18, 27, 48, 0.82);
+  /* 2026 Polished Crystal Glass System Tokens (Dark Mode) */
+  --glass-bg-base: rgba(14, 21, 38, 0.72);
+  --glass-bg-elevated: rgba(18, 27, 48, 0.84);
   --glass-bg-subtle: rgba(14, 21, 38, 0.48);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-border-highlight: rgba(255, 255, 255, 0.28);
-  --glass-blur: blur(28px) saturate(200%);
-  --glass-blur-heavy: blur(48px) saturate(220%);
-  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  --glass-shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.14);
-  --glass-shadow-md: 0 16px 38px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
-  --glass-shadow-lg: 0 36px 90px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-subtle: rgba(255, 255, 255, 0.06);
+  --glass-border-highlight: rgba(255, 255, 255, 0.22);
+  --glass-blur: blur(20px) saturate(180%);
+  --glass-blur-heavy: blur(36px) saturate(190%);
+  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --glass-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --glass-shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.70), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 /* Smooth Theme Switching Transitions */
@@ -255,14 +255,14 @@ body {
   overflow-x: hidden;
   width: 100%;
   background-color: var(--color-bg-canvas);
-  background-image: radial-gradient(130% 90% at 50% -8%, #ffffff 0%, #f8fafc 52%, #f1f5f9 100%);
+  background-image: radial-gradient(120% 80% at 50% -6%, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%);
   background-attachment: fixed;
   position: relative;
 }
 
 :root[data-theme="dark"] body {
   background-color: var(--color-bg-canvas);
-  background-image: radial-gradient(130% 90% at 50% -12%, #0f1629 0%, #070913 55%, #030408 100%);
+  background-image: radial-gradient(120% 80% at 50% -8%, #0d1224 0%, #070913 60%, #04050a 100%);
   background-attachment: fixed;
 }
 
@@ -270,7 +270,7 @@ body {
    AMBIENT SPATIAL BACKGROUND: Stage Spotlights, Micro-Dot Matrix & Caustics
    ========================================================================== */
 
-/* LIGHT MODE: Crisp Daylight Campus & Keynote Arena Aesthetic */
+/* LIGHT MODE: Pure Crisp Daylight Keynote Canvas (#f8fafc) */
 body::before {
   content: '';
   position: fixed;
@@ -278,52 +278,38 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background-image:
-    /* Micro-dot matrix grid */
-    radial-gradient(circle, rgba(15, 23, 42, 0.055) 1.2px, transparent 1.2px),
-    /* Overhead auditorium daylight keynote spotlight (Center floodlight) */
-    radial-gradient(ellipse 75% 50% at 50% -6%, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 45%, transparent 70%),
-    /* Vibrant daylight sky / cyan stage laser rig (Top left) */
-    radial-gradient(circle at 10% 16%, rgba(2, 132, 199, 0.15) 0%, rgba(56, 189, 248, 0.08) 32%, transparent 62%),
-    /* Warm sunrise coral / amber keynote spotlight (Top right) */
-    radial-gradient(circle at 90% 18%, rgba(249, 115, 22, 0.13) 0%, rgba(251, 191, 36, 0.07) 36%, transparent 64%),
-    /* Energetic iris / violet stage caustic (Center-left wash) */
-    radial-gradient(circle at 18% 68%, rgba(139, 92, 246, 0.12) 0%, rgba(124, 58, 237, 0.05) 34%, transparent 60%),
-    /* Fresh emerald arena light (Bottom right wash) */
-    radial-gradient(circle at 84% 82%, rgba(16, 185, 129, 0.11) 0%, rgba(5, 150, 105, 0.04) 34%, transparent 58%),
-    /* Subtle angled stage horizon cross-beam flare */
-    linear-gradient(130deg, transparent 0%, rgba(56, 189, 248, 0.07) 30%, rgba(249, 115, 22, 0.06) 58%, transparent 100%);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    /* Subtle 28px micro-dot matrix grid */
+    radial-gradient(circle, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    /* Pure daylight keynote overhead skylight (Center flood) */
+    radial-gradient(ellipse 75% 42% at 50% -5%, rgba(56, 189, 248, 0.09) 0%, rgba(37, 99, 235, 0.03) 45%, transparent 70%),
+    /* Soft ambient sky prism (Top left) */
+    radial-gradient(circle at 10% 12%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+    /* Gentle soft violet-indigo prism (Top right) */
+    radial-gradient(circle at 90% 14%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
   background-attachment: fixed;
 }
 
-/* DARK MODE: Authentic Live Event Stage & Stadium Concert Aura */
+/* DARK MODE: Ultra-Clean Obsidian Canvas (#070913) & Luminous Cosmic Stage Caustics */
 :root[data-theme="dark"] body::before {
   background-image:
-    /* Tech luminescent micro-dot matrix */
-    radial-gradient(circle, rgba(255, 255, 255, 0.085) 1.2px, transparent 1.2px),
-    /* Overhead arena spotlight rig (Massive royal sapphire center truss #2563eb / #1d4ed8) */
-    radial-gradient(ellipse 70% 48% at 50% -10%, rgba(37, 99, 235, 0.40) 0%, rgba(29, 78, 216, 0.20) 45%, transparent 75%),
-    /* Electric cyan stage laser beam (Top-left overhead rig #06b6d4) */
-    radial-gradient(circle at 10% 12%, rgba(6, 182, 212, 0.32) 0%, rgba(2, 132, 199, 0.18) 32%, transparent 62%),
-    /* Cyber violet / hot magenta stage spotlight cone (Top-right rig #c026d3 / #9333ea) */
-    radial-gradient(circle at 90% 14%, rgba(192, 38, 211, 0.30) 0%, rgba(147, 51, 234, 0.18) 36%, transparent 62%),
-    /* Warm keynote spotlight amber / gold podium beam (#f59e0b) */
-    radial-gradient(circle at 26% 52%, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.09) 30%, transparent 56%),
-    /* Intense royal sapphire floor wash & crowd aura (#2563eb / #9333ea) */
-    radial-gradient(circle at 84% 82%, rgba(37, 99, 235, 0.28) 0%, rgba(147, 51, 234, 0.16) 35%, transparent 60%),
-    /* Neon stage laser cross-beam flares cutting through arena haze */
-    linear-gradient(125deg, transparent 0%, rgba(6, 182, 212, 0.10) 26%, rgba(192, 38, 211, 0.09) 48%, rgba(37, 99, 235, 0.10) 70%, transparent 100%),
-    /* Bottom proscenium stage ramp glow */
-    radial-gradient(ellipse 85% 32% at 50% 105%, rgba(6, 182, 212, 0.20) 0%, rgba(37, 99, 235, 0.14) 40%, transparent 72%);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    /* Tech luminescent 28px micro-dot matrix */
+    radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    /* Luminous cosmic stage caustic - Center royal sapphire floodlight */
+    radial-gradient(ellipse 65% 40% at 50% -6%, rgba(37, 99, 235, 0.22) 0%, rgba(29, 78, 216, 0.08) 45%, transparent 75%),
+    /* Luminous cosmic azure wash (Top left) */
+    radial-gradient(circle at 12% 8%, rgba(14, 165, 233, 0.14) 0%, transparent 55%),
+    /* Pure deep indigo caustic (Top right) */
+    radial-gradient(circle at 88% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 55%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 /* ==========================================================================
-   ATMOSPHERIC AMBIENT DRIFT: Living Concert Haze & Keynote Aura
+   ATMOSPHERIC AMBIENT DRIFT: Living Cosmic Depth & Keynote Aura
    Smooth multi-point breathing animation providing spatial depth
    ========================================================================== */
 
-/* LIGHT MODE: Subtle Ambient Caustic Waves */
+/* LIGHT MODE: Crisp Ambient Prism Wash */
 body::after {
   content: '';
   position: fixed;
@@ -333,25 +319,22 @@ body::after {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 22% 28%, rgba(56, 189, 248, 0.13) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 45% at 78% 36%, rgba(249, 115, 22, 0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 55% at 52% 76%, rgba(139, 92, 246, 0.09) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 45% at 82% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
-  filter: blur(65px);
+    radial-gradient(ellipse 60% 50% at 25% 25%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 75% 35%, rgba(99, 102, 241, 0.04) 0%, transparent 65%);
+  filter: blur(80px);
   animation: ambientAuroraDrift 28s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-  opacity: 0.92;
+  opacity: 0.7;
 }
 
-/* DARK MODE: Stage Concert Haze with Intense Bioluminescent Drift */
+/* DARK MODE: Cosmic Stage Glow with Refined Luminous Depth */
 :root[data-theme="dark"] body::after {
   background:
-    radial-gradient(ellipse 55% 45% at 18% 24%, rgba(6, 182, 212, 0.24) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 50% at 82% 32%, rgba(192, 38, 211, 0.22) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 55% at 50% 64%, rgba(37, 99, 235, 0.26) 0%, transparent 70%),
-    radial-gradient(ellipse 45% 45% at 72% 86%, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
-  filter: blur(75px);
+    radial-gradient(ellipse 55% 45% at 20% 20%, rgba(14, 165, 233, 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 80% 25%, rgba(99, 102, 241, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 55% at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
   animation: ambientAuroraDrift 24s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-  opacity: 1;
+  opacity: 0.85;
 }
 
 @keyframes ambientAuroraDrift {
@@ -359,13 +342,13 @@ body::after {
     transform: translate(0, 0) scale(1) rotate(0deg);
   }
   33% {
-    transform: translate(-3%, 2.5%) scale(1.05) rotate(1deg);
+    transform: translate(-2%, 2%) scale(1.03) rotate(0.8deg);
   }
   66% {
-    transform: translate(2.5%, -2%) scale(0.96) rotate(-1deg);
+    transform: translate(2%, -1.5%) scale(0.97) rotate(-0.8deg);
   }
   100% {
-    transform: translate(-1.5%, 3%) scale(1.03) rotate(0.5deg);
+    transform: translate(-1%, 2.5%) scale(1.02) rotate(0.4deg);
   }
 }
 

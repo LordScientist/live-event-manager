@@ -6,7 +6,7 @@
 .event-updates-page {
   position: relative;
   min-height: 100vh;
-  background-color: var(--color-bg-canvas, #fafafb);
+  background-color: transparent;
   overflow-x: hidden;
   padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
 }
@@ -32,31 +32,6 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
-}
-
-/* ── Decorative Background Shapes matching Figma Frame 1:11 ──────────────── */
-.updates-decor-top-right {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 170px;
-  height: auto;
-  pointer-events: none;
-  z-index: 0;
-  user-select: none;
-  opacity: 0.95;
-}
-
-.updates-decor-bottom-right {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 190px;
-  height: auto;
-  pointer-events: none;
-  z-index: 0;
-  user-select: none;
-  opacity: 0.85;
 }
 
 /* ── Main Container Wrap ─────────────────────────────────────────────────── */
@@ -416,7 +391,7 @@
   inset: 0;
   background-color: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(4px);
-  z-index: 100;
+  z-index: 110;
   display: flex;
   align-items: center;
   justify-content: center;

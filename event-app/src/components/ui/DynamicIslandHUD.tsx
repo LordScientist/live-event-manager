@@ -186,7 +186,12 @@ export const DynamicIslandHUD: React.FC = () => {
 
       {/* ── State 2: ALERT PILL (Sudden Room Shift Incoming) ── */}
       {islandState === 'alert' && (
-        <div className="island-alert-wrap" onClick={() => setIslandState('expanded')}>
+        <button
+          type="button"
+          className="island-alert-wrap"
+          onClick={() => setIslandState('expanded')}
+          aria-label="Room shift alert: Tap to view venue transition details"
+        >
           <div className="island-alert-leading">
             <div className="island-alert-icon-pulse">
               <Megaphone size={16} aria-hidden="true" />
@@ -196,16 +201,20 @@ export const DynamicIslandHUD: React.FC = () => {
 
           <div className="island-alert-text">
             <span className="island-alert-diff">
-              <span className="island-venue-old">{activeBroadcast?.oldVenue || 'Room 102'}</span>
+              <span className="island-venue-old" title={activeBroadcast?.oldVenue || 'Room 102'}>
+                {activeBroadcast?.oldVenue || 'Room 102'}
+              </span>
               <ArrowRight size={13} className="island-arrow-icon" aria-hidden="true" />
-              <span className="island-venue-new">{activeBroadcast?.newVenue || 'Main Amphitheater'}</span>
+              <span className="island-venue-new" title={activeBroadcast?.newVenue || 'Main Amphitheater'}>
+                {activeBroadcast?.newVenue || 'Main Amphitheater'}
+              </span>
             </span>
           </div>
 
           <div className="island-alert-trailing">
             <span className="island-alert-tap-hint">Tap for Diff</span>
           </div>
-        </div>
+        </button>
       )}
 
       {/* ── State 3: EXPANDED CARD (3D Tactile Broadcast Modal) ── */}

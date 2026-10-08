@@ -8,12 +8,13 @@
   display: flex;
   flex-direction: column;
   background-color: transparent;
+  padding-top: calc(54px + env(safe-area-inset-top, 0px)); /* Clearance for floating Dynamic Island HUD */
 }
 
 /* Sticky Frosted Glass Top Header */
 .user-header {
   position: sticky;
-  top: 0;
+  top: calc(54px + env(safe-area-inset-top, 0px));
   z-index: 40;
   backdrop-filter: blur(28px) saturate(200%);
   -webkit-backdrop-filter: blur(28px) saturate(200%);
@@ -340,6 +341,16 @@
 
 :root[data-theme="dark"] .mobile-bottom-nav {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 360px) {
+  .mobile-bottom-nav {
+    left: 8px;
+    right: 8px;
+    height: 58px;
+    padding: 0 4px;
+    border-radius: 18px;
+  }
 }
 
 /* Center 3D Floating Action Button in Mobile Dock (Image 1 Inspiration) */

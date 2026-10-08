@@ -10,8 +10,6 @@ import {
 } from 'lucide-react';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
-import decorTopRight from '../../assets/accessibility-decor-top-right.png';
-import decorBottomRight from '../../assets/accessibility-decor-bottom-right.png';
 import './EventAccessibilityPage.css';
 
 interface AccessibilityOption {
@@ -109,19 +107,6 @@ export const EventAccessibilityPage: React.FC = () => {
 
   return (
     <div className="event-accessibility-screen">
-      {/* Decorative Brand Corner Graphics matching Figma Node 1:8 */}
-      <img
-        src={decorTopRight}
-        alt=""
-        aria-hidden="true"
-        className="event-acc-decor-tr"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        aria-hidden="true"
-        className="event-acc-decor-br"
-      />
 
       <div className="event-acc-container">
         {/* 1. Top Navigation Bar */}

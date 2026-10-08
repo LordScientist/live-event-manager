@@ -8,7 +8,6 @@ import {
   Minimize2,
   AlertTriangle,
   CheckCircle2,
-  Bell,
   ArrowRight,
   ShieldCheck,
   Accessibility,
@@ -16,13 +15,18 @@ import {
   Layers,
   Play,
   Pause,
-  Sparkles
+  Sparkles,
+  Volume2,
+  MapPin
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MascotGuide } from '../../components/presentation/MascotGuide';
+import { DynamicIslandHUD } from '../../components/ui/DynamicIslandHUD';
+import {
+  triggerLiveBroadcastShift,
+  DYNAMIC_ISLAND_STATES
+} from '../../services/presentationService';
 import lcIcon from '../../assets/lc-icon.png';
-import decorTopRight from '../../assets/updates-decor-top-right.png';
-import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
 import './PresentationPage.css';
 
 interface Slide {
@@ -36,8 +40,8 @@ interface Slide {
 const SLIDE_MASCOT_COMMENTS = [
   "Ever tried moving 300 students when a room changes 20 minutes before start through 6 muted group chats? Pure chaos! Live Connect stops the blackout.",
   "No ticket scalpers, no 20-page forms, no payment spam. We built a laser-focused coordination engine for the actual day.",
-  "Speaker on Friday, Volunteer on Saturday, Attendee on Sunday? Your login handles all your roles without locked accounts!",
-  "Watch this: Organizer edits Room 204 to Great Hall, and BAM—an urgent Venue Shift banner lands on attendee screens instantly!",
+  "Floating Dynamic Island HUD + Role Decoupling! The HUD floats persistently with 3 spring physics states while your login seamlessly handles Speaker, Volunteer, or Attendee passes.",
+  "Watch this: Organizer shifts Room 102 to Main Amphitheater, and BAM—Dynamic Island fires a Web Audio chime and reveals the before/after room diff in under 10 seconds!",
   "Public venue specs so nobody guesses ramps. Private intake so nobody has to broadcast medical needs to group chats.",
   "0 missed rooms, 0 confused speakers, and 1 single shared truth. That's how we run flawless campus events!"
 ];
@@ -48,6 +52,21 @@ export const PresentationPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isAutoplay, setIsAutoplay] = useState(false);
+  const [selectedIslandState, setSelectedIslandState] = useState<'compact' | 'alert' | 'expanded'>('alert');
+  const [broadcastSimulated, setBroadcastSimulated] = useState(false);
+
+  const handleTestBroadcast = (source: string) => {
+    setBroadcastSimulated(true);
+    triggerLiveBroadcastShift({
+      id: `shift-demo-${Date.now()}`,
+      eventName: 'KNUST Tech Conference 2026',
+      oldVenue: 'Room 102 (Great Hall)',
+      newVenue: 'Main Amphitheater • Hall A',
+      reason: `Presentation Demo (${source}): Keynote shifted to Main Amphitheater due to 115% capacity. Web Audio chime & venue diff active.`,
+      timestamp: 'Just now (live keynote demo)',
+      urgency: 'high'
+    });
+  };
 
   const handleClose = useCallback(() => {
     if (accountType === 'manager') {
@@ -231,68 +250,165 @@ export const PresentationPage: React.FC = () => {
       )
     },
 
-    // SLIDE 3: How the System Works
+    // SLIDE 3: Zero Blackouts Architecture
     {
       id: 3,
-      tag: '03. THE ARCHITECTURE',
-      title: 'Two Sides, One Clean Pipeline',
-      subtitle: 'Your account is who you are. Your role is what you do at a particular event.',
+      tag: '03. ZERO BLACKOUTS',
+      title: 'Zero Blackouts Architecture: Dynamic Island HUD & Role Decoupling',
+      subtitle: 'Floating real-time broadcast HUD with spring physics & decoupled identity. Your account is who you are, your role is what you do.',
       render: () => (
         <div className="slide-layout">
           <div className="slide-content-text">
             <p className="lead-punch">
-              A foundational decision: account role is not event role.
+              Zero blackouts requires an ambient broadcast surface that cannot be muted or missed.
             </p>
             <p className="narrative-p">
-              On most old systems, if you sign up as a regular user, you are stuck there forever. But in real life, roles change every weekend.
+              Traditional campus notifications fail when it matters most: announcements get muted in six different WhatsApp groups, buried under memes, or sent to unread email inboxes.
             </p>
             <p className="narrative-p">
-              You could be a Keynote Speaker at the Tech Summit on Friday.
+              Live Connect eliminates blackouts through the <strong>Dynamic Island Live Broadcast HUD</strong>: an ambient top-docked capsule powered by Emil Kowalski-style spring physics. It operates across <strong>3 distinct states</strong>:
             </p>
+            <ul className="narrative-list">
+              <li>
+                <strong>1. Compact Ambient:</strong> A silent pill under 40px height with a pulsing live beacon that monitors campus feeds with zero idle battery drain.
+              </li>
+              <li>
+                <strong>2. Sudden Alert:</strong> Springs open with <code>cubic-bezier(0.175, 0.885, 0.32, 1.275)</code> and fires a synthetic Web Audio chime when an auditorium relocates.
+              </li>
+              <li>
+                <strong>3. 3D Expanded Diff:</strong> Expands with one tap into a full interactive glass modal showing side-by-side previous vs new venue diffs and walking routes.
+              </li>
+            </ul>
             <p className="narrative-p">
-              A Volunteer helping at the entrance on Saturday.
+              Coupled with our decoupled identity architecture, a single user profile fluidly handles Speaker, Volunteer, or Attendee roles across different events without account lock-in.
             </p>
-            <p className="narrative-p">
-              And just a curious Attendee sitting in the crowd on Sunday.
-            </p>
-            <p className="narrative-p">
-              Live Connect keeps role tied to the registration, not locked to the user account. That means one login handles your whole campus life.
-            </p>
+            <div className="voice-pullquote">
+              "The Dynamic Island provides a single shared source of live truth—broadcasts arrive in under 10 seconds."
+            </div>
           </div>
 
           <div className="slide-visual-col">
-            <div className="pipeline-card">
-              <div className="pipeline-header">
-                <Layers size={18} className="pipeline-icon" />
-                <span>The Live Connect Decoupling Model</span>
+            {/* 3-State Interactive Dynamic Island Architecture Showcase */}
+            <div className="pres-island-states-card">
+              <div className="pres-card-header">
+                <Radio size={18} className="pipeline-icon" />
+                <span>Dynamic Island Live HUD • 3-State Engine</span>
               </div>
 
-              <div className="user-box">
-                <div className="user-box__title">Single User Profile (Alex Rivera)</div>
-                <div className="user-box__meta">Name, Email, Phone, Base Organization</div>
+              {/* State Tab Switcher */}
+              <div className="pres-island-states-nav" role="tablist">
+                {DYNAMIC_ISLAND_STATES.map((st) => (
+                  <button
+                    key={st.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selectedIslandState === st.id}
+                    className={`pres-island-state-tab ${selectedIslandState === st.id ? 'pres-island-state-tab--active' : ''}`}
+                    onClick={() => setSelectedIslandState(st.id)}
+                  >
+                    <span>{st.name}</span>
+                  </button>
+                ))}
               </div>
 
-              <div className="arrow-down">
-                <div className="arrow-line"></div>
-                <span>Registers into different events</span>
-              </div>
+              {/* State Interactive Preview */}
+              {(() => {
+                const activeSpec = DYNAMIC_ISLAND_STATES.find((s) => s.id === selectedIslandState) || DYNAMIC_ISLAND_STATES[0];
+                return (
+                  <div className="pres-island-state-detail">
+                    {/* Visual Mockup of the State */}
+                    <div className="pres-island-visual-mockup">
+                      {activeSpec.id === 'compact' && (
+                        <div className="mockup-compact-pill">
+                          <Radio size={14} className="mockup-icon-live" />
+                          <span className="mockup-text">Live Connect Broadcast Radar</span>
+                          <span className="mockup-live-chip">LIVE</span>
+                        </div>
+                      )}
+                      {activeSpec.id === 'alert' && (
+                        <div className="mockup-alert-pill">
+                          <span className="mockup-urgency-chip">ROOM SHIFT</span>
+                          <span className="mockup-diff-text">
+                            Room 102 → <span className="mockup-highlight">Main Amphitheater</span>
+                          </span>
+                          <span className="mockup-tap-chip">Tap for Diff</span>
+                        </div>
+                      )}
+                      {activeSpec.id === 'expanded' && (
+                        <div className="mockup-expanded-card">
+                          <div className="mockup-diff-header">
+                            <span className="mockup-sync-badge">AUDITORIUM RELOCATED</span>
+                            <span className="mockup-sub10s">&lt; 10s SYNC</span>
+                          </div>
+                          <div className="mockup-diff-row">
+                            <div className="mockup-diff-node mockup-diff-node--old">
+                              <span className="node-label">PREVIOUS ROOM</span>
+                              <span className="node-venue">Room 102 (Great Hall)</span>
+                              <span className="node-tag node-tag--relocated">RELOCATED</span>
+                            </div>
+                            <div className="mockup-diff-arrow">→</div>
+                            <div className="mockup-diff-node mockup-diff-node--new">
+                              <span className="node-label">NEW VENUE NOW</span>
+                              <span className="node-venue">Main Amphitheater</span>
+                              <span className="node-tag node-tag--live">LIVE NOW</span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
 
-              <div className="event-roles-grid">
-                <div className="event-role-chip event-role-chip--speaker">
-                  <span className="chip-badge">Speaker</span>
-                  <strong>Tech Summit 2026</strong>
-                  <p>Gets AV prep notifications</p>
-                </div>
-                <div className="event-role-chip event-role-chip--volunteer">
-                  <span className="chip-badge">Volunteer</span>
-                  <strong>Campus Hackathon</strong>
-                  <p>Gets logistics check-in times</p>
-                </div>
-                <div className="event-role-chip event-role-chip--attendee">
-                  <span className="chip-badge">Participant</span>
-                  <strong>AI Career Day</strong>
-                  <p>Gets room and schedule shifts</p>
-                </div>
+                    <div className="pres-island-meta">
+                      <div className="pres-meta-row">
+                        <span className="pres-meta-label">Spring Physics:</span>
+                        <code className="pres-meta-code">{activeSpec.springPhysics}</code>
+                      </div>
+                      <div className="pres-meta-row">
+                        <span className="pres-meta-label">Campus Delivery:</span>
+                        <span className="pres-meta-val">{activeSpec.latency}</span>
+                      </div>
+                    </div>
+
+                    <ul className="pres-spec-bullets">
+                      {activeSpec.techHighlights.map((hl, i) => (
+                        <li key={i}>
+                          <CheckCircle2 size={13} className="bullet-check" />
+                          <span>{hl}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })()}
+
+              {/* Live Test Trigger Button */}
+              <div className="pres-test-trigger-wrapper">
+                <button
+                  type="button"
+                  className="pres-test-trigger-btn luminous-bloom"
+                  onClick={() => handleTestBroadcast('Chapter 3 Showcase')}
+                >
+                  <Radio size={15} className="animate-pulse" />
+                  <span>Broadcast Room Shift (Test Live HUD)</span>
+                </button>
+                {broadcastSimulated && (
+                  <div className="pres-test-feedback">
+                    <Sparkles size={13} className="feedback-sparkle" />
+                    <span>Live broadcast dispatched! Look at the top Dynamic Island HUD bouncing & chiming ⬆️</span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Compact Decoupling Architecture Card */}
+            <div className="pres-decoupling-mini-card">
+              <div className="pres-decoupling-header">
+                <Layers size={15} />
+                <span>Decoupled Role Pipeline: Single Profile (Alex Rivera)</span>
+              </div>
+              <div className="pres-decoupling-badges">
+                <span className="pres-role-badge pres-role-badge--speaker">Speaker: Tech Summit 2026</span>
+                <span className="pres-role-badge pres-role-badge--volunteer">Volunteer: Campus Hackathon</span>
+                <span className="pres-role-badge pres-role-badge--attendee">Participant: AI Career Day</span>
               </div>
             </div>
           </div>
@@ -300,66 +416,115 @@ export const PresentationPage: React.FC = () => {
       )
     },
 
-    // SLIDE 4: What Happens When Plans Change
+    // SLIDE 4: Day-Of Companion Experience & Room Diff Engine
     {
       id: 4,
-      tag: '04. THE ENGINE',
-      title: 'What Happens When Details Change',
-      subtitle: 'One edit by the organizer creates one audit record and delivers priority notifications to the exact people affected.',
+      tag: '04. DAY-OF EXPERIENCE',
+      title: 'Day-Of Companion Experience & Room Diff Engine',
+      subtitle: 'Sub-10s room shift alerts, synthetic Web Audio chime, and instant before/after venue diffs.',
       render: () => (
         <div className="slide-layout">
           <div className="slide-content-text">
             <p className="lead-punch">
-              Here is the exact chain reaction.
+              On event day, three questions must be answered in under five seconds.
             </p>
             <p className="narrative-p">
-              The organizer opens the Event Hub and edits the location from Auditorium B to Central Hall.
+              Participants do not have time to dig through 10-page PDF schedules. They need instant answers to three things:
+              <em> 1) What is live right now? 2) Where do I need to be? 3) Did anything shift?</em>
             </p>
             <p className="narrative-p">
-              They do not need to draft a long email. They do not need to forward anything to six group admins. They just tap Save.
+              When an organizer edits a location from <strong>Room 102</strong> to <strong>Main Amphitheater</strong>, the <strong>Live Connect Room Diff Engine</strong> springs into action:
             </p>
-            <p className="narrative-p">
-              The system writes an immutable log entry. Then it checks who is registered for that session.
-            </p>
-            <p className="narrative-p">
-              Within seconds, an orange Venue Shift card appears at the top of Today's Queue on the participant screen. Unread counter updates. Direct link points straight to the new room.
-            </p>
+            <ul className="narrative-list">
+              <li>
+                <strong>Immutable Audit Diff:</strong> Computes the structural delta between previous room and new venue, highlighting exact walking transitions and capacity notes.
+              </li>
+              <li>
+                <strong>Sub-10s Dispatch:</strong> Dispatches priority broadcasts directly to attendee viewports before anyone wanders in the heat.
+              </li>
+              <li>
+                <strong>Synthetic Web Audio Chime:</strong> Zero audio downloads or network buffers. Synthesizes a crisp dual-tone sine wave (D5 587.33 Hz → A5 880 Hz) completely offline.
+              </li>
+            </ul>
             <div className="voice-pullquote">
-              "No guessing. No conflicting messages. Everyone looks at the same screen and sees the exact same truth."
+              "Traditional campus group chats and buried emails fail during live events. The Dynamic Island provides a single shared source of live truth."
             </div>
           </div>
 
           <div className="slide-visual-col">
-            <div className="flow-steps-card">
-              <div className="flow-step">
-                <div className="flow-step__number">1</div>
-                <div className="flow-step__content">
-                  <div className="flow-step__title">Manager Updates Venue</div>
-                  <div className="flow-step__desc">Single field edit inside Event Management Hub</div>
-                </div>
-                <Radio size={16} className="flow-step__icon" />
+            {/* Visual Room Diff Engine Card */}
+            <div className="pres-room-diff-showcase-card">
+              <div className="pres-card-header">
+                <MapPin size={18} className="pipeline-icon" />
+                <span>Live Room Diff Engine • Relocation Radar</span>
               </div>
 
-              <div className="flow-connector"></div>
-
-              <div className="flow-step">
-                <div className="flow-step__number">2</div>
-                <div className="flow-step__content">
-                  <div className="flow-step__title">System Filters Affected Crowd</div>
-                  <div className="flow-step__desc">Matches attendees, speakers, and staff registered to that slot</div>
+              {/* Before vs After Diff Nodes */}
+              <div className="pres-diff-node-container">
+                <div className="pres-diff-box pres-diff-box--old">
+                  <span className="pres-diff-sub">PREVIOUS ROOM</span>
+                  <strong className="pres-diff-title">Room 102 (Great Hall)</strong>
+                  <span className="pres-diff-status pres-diff-status--relocated">RELOCATED • 115% CAP</span>
                 </div>
-                <Layers size={16} className="flow-step__icon" />
+
+                <div className="pres-diff-arrow-col">
+                  <ArrowRight size={20} className="pres-diff-arrow-icon" />
+                  <span className="pres-diff-arrow-label">&lt; 10s DIFF</span>
+                </div>
+
+                <div className="pres-diff-box pres-diff-box--new">
+                  <span className="pres-diff-sub">NEW VENUE NOW</span>
+                  <strong className="pres-diff-title">Main Amphitheater • Hall A</strong>
+                  <span className="pres-diff-status pres-diff-status--live">LIVE NOW • VERIFIED</span>
+                </div>
               </div>
 
-              <div className="flow-connector"></div>
+              {/* Relocation Justification Card */}
+              <div className="pres-diff-rationale-box">
+                <span className="pres-diff-rationale-tag">Verified Organizer Rationale:</span>
+                <p className="pres-diff-rationale-text">
+                  "Room 102 reached 115% capacity. All keynote attendees and speakers shift immediately to Main Amphitheater. Induction audio loop active."
+                </p>
+              </div>
 
-              <div className="flow-step flow-step--highlight">
-                <div className="flow-step__number">3</div>
-                <div className="flow-step__content">
-                  <div className="flow-step__title">Priority Dispatch to Today's Queue</div>
-                  <div className="flow-step__desc">Orange border card lands at the very top of attendee notifications</div>
+              {/* Synthetic Web Audio Chime Engine Visualizer */}
+              <div className="pres-chime-visualizer-card">
+                <div className="pres-chime-header">
+                  <Volume2 size={16} className="pres-chime-icon" />
+                  <span>Synthetic Web Audio Chime Engine (100% Offline)</span>
                 </div>
-                <Bell size={16} className="flow-step__icon" />
+                <div className="pres-chime-waveform">
+                  <span className="chime-freq-chip">Tone 1: 587.33 Hz (D5)</span>
+                  <div className="chime-bars" aria-hidden="true">
+                    <span className="chime-bar chime-bar--1" />
+                    <span className="chime-bar chime-bar--2" />
+                    <span className="chime-bar chime-bar--3" />
+                    <span className="chime-bar chime-bar--4" />
+                    <span className="chime-bar chime-bar--5" />
+                  </div>
+                  <span className="chime-freq-chip">Tone 2: 880.00 Hz (A5)</span>
+                </div>
+                <p className="pres-chime-spec-text">
+                  Zero MP3/WAV assets • &lt; 4ms latency • Synthesized via Web Audio API oscillators
+                </p>
+              </div>
+
+              {/* Live Test Broadcast Trigger */}
+              <div className="pres-test-trigger-wrapper">
+                <button
+                  type="button"
+                  className="pres-test-trigger-btn luminous-bloom"
+                  onClick={() => handleTestBroadcast('Chapter 4 Room Diff Engine')}
+                >
+                  <Radio size={15} className="animate-pulse" />
+                  <span>Fire Room Diff Shift & Audio Chime</span>
+                </button>
+                {broadcastSimulated && (
+                  <div className="pres-test-feedback">
+                    <Sparkles size={13} className="feedback-sparkle" />
+                    <span>Broadcast dispatched! Dual-tone chime sounded & Dynamic Island updated ⬆️</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -489,6 +654,9 @@ export const PresentationPage: React.FC = () => {
 
   return (
     <div className="presentation-viewport">
+      {/* Floating Dynamic Island Live Broadcast HUD for real-time presentation demos */}
+      <DynamicIslandHUD />
+
       {/* macOS Fluid Aurora Mesh Background for dynamic refraction */}
       <div className="macos-mesh-bg" aria-hidden="true">
         <div className="macos-mesh-blob macos-mesh-blob--blue" />
@@ -497,19 +665,6 @@ export const PresentationPage: React.FC = () => {
         <div className="macos-mesh-blob macos-mesh-blob--cyan" />
       </div>
 
-      {/* Background Decors */}
-      <img
-        src={decorTopRight}
-        alt=""
-        className="pres-decor-top"
-        aria-hidden="true"
-      />
-      <img
-        src={decorBottomRight}
-        alt=""
-        className="pres-decor-bottom"
-        aria-hidden="true"
-      />
 
       {/* macOS Frosted Glass Titlebar Header */}
       <header className="presentation-header macos-glass-header">
