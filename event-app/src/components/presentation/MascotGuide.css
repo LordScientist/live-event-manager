@@ -130,16 +130,9 @@
 }
 
 /* ── Interactive Mascot Character ────────────────────────────────────────── */
-.mascot-character {
+.mascot-character-wrapper {
   position: relative;
-  width: 84px;
-  height: 92px;
-  cursor: pointer;
   pointer-events: auto;
-  user-select: none;
-  animation: mascotHover 3.2s ease-in-out infinite;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
 }
 
 .mascot-character:hover {

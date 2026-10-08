@@ -15,7 +15,8 @@ import {
   Radio,
   Layers,
   Play,
-  Pause
+  Pause,
+  Sparkles
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { MascotGuide } from '../../components/presentation/MascotGuide';
@@ -31,6 +32,15 @@ interface Slide {
   subtitle: string;
   render: () => React.ReactNode;
 }
+
+const SLIDE_MASCOT_COMMENTS = [
+  "Ever tried moving 300 students when a room changes 20 minutes before start through 6 muted group chats? Pure chaos! Live Connect stops the blackout.",
+  "No ticket scalpers, no 20-page forms, no payment spam. We built a laser-focused coordination engine for the actual day.",
+  "Speaker on Friday, Volunteer on Saturday, Attendee on Sunday? Your login handles all your roles without locked accounts!",
+  "Watch this: Organizer edits Room 204 to Great Hall, and BAM—an urgent Venue Shift banner lands on attendee screens instantly!",
+  "Public venue specs so nobody guesses ramps. Private intake so nobody has to broadcast medical needs to group chats.",
+  "0 missed rooms, 0 confused speakers, and 1 single shared truth. That's how we run flawless campus events!"
+];
 
 export const PresentationPage: React.FC = () => {
   const navigate = useNavigate();
@@ -569,6 +579,13 @@ export const PresentationPage: React.FC = () => {
             <div className="slide-header-block">
               <h1 className="slide-title">{current.title}</h1>
               <p className="slide-subtitle">{current.subtitle}</p>
+              <div className="slide-mascot-comment-bar">
+                <span className="mascot-comment-pill">
+                  <Sparkles size={12} className="mascot-bar-sparkle" />
+                  <span>Codi says</span>
+                </span>
+                <span className="mascot-bar-text">"{SLIDE_MASCOT_COMMENTS[currentSlide]}"</span>
+              </div>
             </div>
 
             {/* Slide Body */}

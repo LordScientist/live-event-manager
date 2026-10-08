@@ -1,15 +1,15 @@
 /* ==========================================================================
-   INTERACTIVE ONBOARDING WALKTHROUGH (TOUR)
-   Game-like perk onboarding modal with clean SaaS design system styling
+   INTERACTIVE ONBOARDING WALKTHROUGH WITH CODI TOY MASCOT
+   Game-like perk onboarding featuring Codi's presentation dialogue & commentary
    ========================================================================== */
 
 .tour-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background-color: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background-color: rgba(15, 23, 42, 0.68);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,21 +29,27 @@
 .tour-modal {
   position: relative;
   width: 100%;
-  max-width: 520px;
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl, 20px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  max-width: 580px;
+  background-color: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.2);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: tourSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: tourSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root[data-theme="dark"] .tour-modal {
+  background-color: #131b2e;
+  border-color: #1e293b;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 30px rgba(37, 99, 235, 0.15);
 }
 
 @keyframes tourSlideUp {
   from {
     opacity: 0;
-    transform: translateY(16px) scale(0.97);
+    transform: translateY(18px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -54,9 +60,14 @@
 /* ── Header & Progress ───────────────────────────────────────────────────── */
 .tour-modal__header {
   position: relative;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid var(--color-border);
-  background-color: var(--color-bg-canvas);
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--color-bg-canvas, #fafafb);
+}
+
+:root[data-theme="dark"] .tour-modal__header {
+  background-color: #0f172a;
+  border-bottom-color: #1e293b;
 }
 
 .tour-progress-bar {
@@ -65,13 +76,17 @@
   left: 0;
   right: 0;
   height: 4px;
-  background-color: var(--color-border);
+  background-color: var(--color-border, #e2e8f0);
   overflow: hidden;
+}
+
+:root[data-theme="dark"] .tour-progress-bar {
+  background-color: #1e293b;
 }
 
 .tour-progress-bar__fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), #60a5fa);
+  background: linear-gradient(90deg, #ea580c, #f97316, #2563eb);
   transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -81,13 +96,26 @@
   justify-content: space-between;
 }
 
+.tour-header-meta__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tour-step-counter {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-muted, #64748b);
+  letter-spacing: 0.04em;
+}
+
 .tour-close-btn {
   background: transparent;
   border: none;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #64748b);
   cursor: pointer;
   padding: 4px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,18 +123,18 @@
 }
 
 .tour-close-btn:hover {
-  background-color: var(--color-bg-subtle);
-  color: var(--color-text-main);
+  background-color: var(--color-bg-subtle, #f1f5f9);
+  color: var(--color-text-main, #0f172a);
 }
 
 /* ── Perk Badges ─────────────────────────────────────────────────────────── */
 .tour-perk-badge {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   padding: 4px 12px;
-  border-radius: var(--radius-full);
+  border-radius: 9999px;
   display: inline-flex;
   align-items: center;
   line-height: 1;
@@ -142,106 +170,218 @@
   border: 1px solid rgba(234, 88, 12, 0.25);
 }
 
-/* ── Body Content ────────────────────────────────────────────────────────── */
+/* ── Body Content & Mascot Layout ────────────────────────────────────────── */
 .tour-modal__body {
-  padding: 24px 24px 16px;
+  padding: 22px 24px 18px;
   display: flex;
   flex-direction: column;
+  gap: 18px;
 }
 
-.tour-icon-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: var(--radius-xl, 16px);
+/* Codi Avatar + Speech Bubble Container */
+.tour-mascot-section {
+  display: grid;
+  grid-template-columns: 86px 1fr;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.tour-mascot-avatar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.tour-mascot-hint {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-primary, #2563eb);
+  text-align: center;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+/* Speech Bubble Delivering the Presentation commentary */
+.tour-speech-bubble {
+  position: relative;
+  background-color: var(--color-bg-canvas, #f8fafc);
+  border: 1.5px solid var(--color-border, #e2e8f0);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  animation: bubblePopIn 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+:root[data-theme="dark"] .tour-speech-bubble {
+  background-color: #1a233a;
+  border-color: #2d3b5e;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes bubblePopIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tail pointing towards Codi (left side) */
+.tour-speech-tail {
+  position: absolute;
+  top: 36px;
+  left: -8px;
+  width: 14px;
+  height: 14px;
+  background-color: var(--color-bg-canvas, #f8fafc);
+  border-left: 1.5px solid var(--color-border, #e2e8f0);
+  border-bottom: 1.5px solid var(--color-border, #e2e8f0);
+  transform: rotate(45deg);
+}
+
+:root[data-theme="dark"] .tour-speech-tail {
+  background-color: #1a233a;
+  border-left-color: #2d3b5e;
+  border-bottom-color: #2d3b5e;
+}
+
+.tour-speech-bubble__header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  transition: transform 0.2s ease;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
 }
 
-.tour-icon-wrap--blue {
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15), rgba(96, 165, 250, 0.15));
-  color: #2563eb;
-}
-
-.tour-icon-wrap--purple {
-  background: linear-gradient(135deg, rgba(147, 51, 234, 0.15), rgba(192, 132, 252, 0.15));
-  color: #9333ea;
-}
-
-.tour-icon-wrap--amber {
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(251, 191, 36, 0.15));
-  color: #d97706;
-}
-
-.tour-icon-wrap--emerald {
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.15), rgba(52, 211, 153, 0.15));
-  color: #059669;
-}
-
-.tour-icon-wrap--orange {
-  background: linear-gradient(135deg, rgba(234, 88, 12, 0.15), rgba(251, 146, 60, 0.15));
-  color: #ea580c;
-}
-
-.tour-title {
-  font-size: 20px;
+.tour-speech-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
   font-weight: 800;
-  color: var(--color-text-main);
-  margin: 0 0 6px;
-  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #ea580c;
+  background-color: rgba(234, 88, 12, 0.1);
+  padding: 3px 9px;
+  border-radius: 9999px;
 }
 
-.tour-subtitle {
-  font-size: 13px;
+.tour-sparkle-icon {
+  animation: sparkleTwinkle 2s infinite ease-in-out;
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.25) rotate(20deg);
+    opacity: 1;
+  }
+}
+
+.tour-step-tagline {
+  font-size: 11px;
   font-weight: 600;
-  color: var(--color-primary);
-  margin: 0 0 12px;
+  color: var(--color-text-muted, #64748b);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.tour-desc {
-  font-size: 14px;
-  color: var(--color-text-secondary);
+.tour-speech-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--color-text-main, #0f172a);
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+:root[data-theme="dark"] .tour-speech-title {
+  color: #f8fafc;
+}
+
+.tour-speech-text {
+  font-size: 13px;
+  color: var(--color-text-secondary, #334155);
   line-height: 1.5;
-  margin: 0 0 16px;
+  margin: 0;
 }
 
-.tour-highlights {
+:root[data-theme="dark"] .tour-speech-text {
+  color: #cbd5e1;
+}
+
+/* ── Takeaways Card ──────────────────────────────────────────────────────── */
+.tour-takeaways-card {
+  background-color: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: 14px;
+  padding: 12px 16px;
+}
+
+:root[data-theme="dark"] .tour-takeaways-card {
+  background-color: #0f172a;
+  border-color: #1e293b;
+}
+
+.tour-takeaways-heading {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted, #64748b);
+  margin: 0 0 8px 0;
+}
+
+.tour-takeaways-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  background-color: var(--color-bg-canvas);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg, 12px);
-  padding: 12px 14px;
+  gap: 7px;
 }
 
-.tour-highlight-item {
+.tour-takeaway-item {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 13px;
-  color: var(--color-text-secondary);
-  line-height: 1.4;
+  font-size: 12.5px;
+  color: var(--color-text-secondary, #475569);
+  line-height: 1.35;
 }
 
-.tour-highlight-icon {
-  color: var(--color-success);
-  margin-top: 2px;
+:root[data-theme="dark"] .tour-takeaway-item {
+  color: #94a3b8;
+}
+
+.tour-takeaway-icon {
+  color: #10b981;
+  margin-top: 1px;
   flex-shrink: 0;
 }
 
 /* ── Footer & Navigation ─────────────────────────────────────────────────── */
 .tour-modal__footer {
   padding: 16px 24px 20px;
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-bg-canvas);
+  border-top: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--color-bg-canvas, #fafafb);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+:root[data-theme="dark"] .tour-modal__footer {
+  background-color: #0f172a;
+  border-top-color: #1e293b;
 }
 
 .tour-step-dots {
@@ -253,22 +393,25 @@
 .tour-dot {
   width: 8px;
   height: 8px;
-  border-radius: var(--radius-full);
-  background-color: var(--color-border);
+  border-radius: 9999px;
+  background-color: var(--color-border, #e2e8f0);
   border: none;
   cursor: pointer;
   padding: 0;
   transition: all 0.2s ease;
 }
 
+:root[data-theme="dark"] .tour-dot {
+  background-color: #334155;
+}
+
 .tour-dot--active {
   width: 22px;
-  background-color: var(--color-primary);
+  background-color: #ea580c !important;
 }
 
 .tour-dot--completed {
-  background-color: var(--color-primary-light);
-  border: 1px solid var(--color-primary);
+  background-color: rgba(234, 88, 12, 0.4);
 }
 
 .tour-actions {
@@ -283,7 +426,25 @@
   gap: 8px;
 }
 
-@media (max-width: 480px) {
+/* ── Mobile Responsive Adjustments ───────────────────────────────────────── */
+@media (max-width: 580px) {
+  .tour-mascot-section {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .tour-mascot-avatar-col {
+    flex-direction: row;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .tour-speech-tail {
+    top: -7px;
+    left: 40px;
+    transform: rotate(135deg);
+  }
+
   .tour-modal__footer {
     flex-direction: column;
     align-items: stretch;

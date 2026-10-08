@@ -173,6 +173,25 @@
   box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
 }
 
+.header-codi-btn {
+  background-color: #eff6ff;
+  border-color: #93c5fd;
+  color: #2563eb;
+}
+
+:root[data-theme="dark"] .header-codi-btn {
+  background-color: rgba(37, 99, 235, 0.15);
+  border-color: #3b82f6;
+  color: #60a5fa;
+}
+
+.header-codi-btn:hover {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
 .header-pres-btn__label {
   display: none;
 }

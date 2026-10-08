@@ -13,6 +13,7 @@ import {
   Clock
 } from 'lucide-react';
 import { Button } from './Button';
+import { CodiToyAvatar } from '../presentation/CodiToyAvatar';
 import './InteractiveTour.css';
 
 interface TourStep {
@@ -21,8 +22,9 @@ interface TourStep {
   perkColor: 'blue' | 'purple' | 'amber' | 'emerald' | 'orange';
   title: string;
   subtitle: string;
-  description: string;
-  highlightPoints: string[];
+  codiHeadline: string;
+  codiComment: string;
+  codiTakeaways: string[];
   icon: React.ReactNode;
 }
 
@@ -31,75 +33,80 @@ const TOUR_STEPS: TourStep[] = [
     id: 1,
     perkBadge: 'Perk 01: Zero Blackouts',
     perkColor: 'blue',
-    icon: <Radio size={28} />,
-    title: 'Welcome to Live Connect',
-    subtitle: 'Event coordination without the group chat chaos',
-    description:
-      'When an event detail shifts 20 minutes before start time, everyone sees the exact same updated reality instantly—no missed WhatsApp messages or confused attendees.',
-    highlightPoints: [
-      'Instant broadcast banners for venue and room changes',
-      'One shared truth for organizers, speakers, and attendees',
-      'Clean mobile view designed for quick checks on the move'
+    icon: <Radio size={22} />,
+    title: 'The Campus Spark',
+    subtitle: 'Real-time coordination without group chat chaos',
+    codiHeadline: 'The WhatsApp Nightmare Ends Here!',
+    codiComment:
+      "Ever tried moving 300 students when a room changes 20 minutes before kickoff through 6 muted group chats? Pure chaos! In Live Connect, the moment an organizer edits a room, everyone's screen shifts simultaneously in under 10 seconds. Zero blackouts!",
+    codiTakeaways: [
+      'Instant broadcast banners for sudden venue & room shifts',
+      'One shared truth across organizers, speakers, and attendees',
+      'Zero frantic phone calls or guessing where to go'
     ]
   },
   {
     id: 2,
     perkBadge: 'Perk 02: Multi-Role Power',
     perkColor: 'purple',
-    icon: <Layers size={28} />,
-    title: 'One Account, Flexible Roles',
+    icon: <Layers size={22} />,
+    title: 'One Account, Any Role',
     subtitle: 'Your account is who you are, your role is what you do',
-    description:
-      'You are never locked into a single rigid account type. You can attend as a Guest today, help as a Volunteer tomorrow, or present as a Speaker next week.',
-    highlightPoints: [
-      'Role belongs to your event registration, not your login',
-      'Pre-filled profile saves your details across all events',
-      'Role-specific instructions and duties provided directly in your pass'
+    codiHeadline: 'You Are Who You Are, Not Just One Rigid Role!',
+    codiComment:
+      'Most campus platforms lock you down into a rigid account type. Not us! Your login is simply you. You can speak on Friday, volunteer on Saturday, and attend on Sunday—all from one single account without ever creating multiple logins!',
+    codiTakeaways: [
+      'Your role belongs to each event pass, never your login identity',
+      'One-click switch to Manager mode to organize your own events',
+      'Pre-filled profile saves your details across all registrations'
     ]
   },
   {
     id: 3,
-    perkBadge: 'Perk 03: Live Companion',
+    perkBadge: 'Perk 03: Live Companion Hub',
     perkColor: 'amber',
-    icon: <Clock size={28} />,
-    title: 'Your Day-of Event Hub',
-    subtitle: 'Answering the 3 vital questions without scrolling',
-    description:
-      'On event day, your live companion page stays anchored to: 1) What is happening right now? 2) Where do I need to be? 3) Has anything changed?',
-    highlightPoints: [
-      'Pulsing live indicators for sessions in progress',
-      'Automatic room comparisons if an auditorium changes',
-      'One-tap digital badge and quick schedule timeline'
+    icon: <Clock size={22} />,
+    title: 'Day-Of Radar',
+    subtitle: 'The 3 critical questions answered in seconds',
+    codiHeadline: 'Your Live Radar on Event Day!',
+    codiComment:
+      "On event day, nobody has time to dig through 10-page PDF schedules. Your Live Companion hub answers the only three things you care about: 1) What's live right now? 2) Where do I need to be? 3) Did anything shift? Instant answers without scrolling!",
+    codiTakeaways: [
+      'Pulsing live indicators for current sessions in progress',
+      'Automatic room comparison diffs if an auditorium shifts',
+      'One-tap digital badge ready at the check-in door'
     ]
   },
   {
     id: 4,
     perkBadge: 'Perk 04: Built-in Inclusivity',
     perkColor: 'emerald',
-    icon: <Accessibility size={28} />,
-    title: 'Inclusive by Design',
-    subtitle: 'Accommodations and dietary needs handled upfront',
-    description:
-      'Wheelchair access, sign language interpretation, sensory quiet rooms, and dietary requirements are verified early so every participant is supported.',
-    highlightPoints: [
-      'Transparent venue accessibility checklist on every event page',
-      'Confidential accommodation request flow during signup',
-      'Dietary tags surfaced straight to event organizers'
+    icon: <Accessibility size={22} />,
+    title: 'Inclusivity by Design',
+    subtitle: 'Public venue clarity, private personal dignity',
+    codiHeadline: 'Dignity for Every Single Participant!',
+    codiComment:
+      'Nobody should ever have to broadcast private medical or accessibility needs in a giant group chat just to get a ramp or dietary meal. We publish venue accessibility specs upfront and handle your personal accommodations confidentially.',
+    codiTakeaways: [
+      'Verified wheelchair ramps and audio accessibility specs',
+      'Confidential intake for sensory, mobility, and ASL requests',
+      'Dietary tags routed straight to event catering'
     ]
   },
   {
     id: 5,
-    perkBadge: 'Mission Complete: Ready to Roll',
+    perkBadge: 'Mission Complete: Ready to Roll!',
     perkColor: 'orange',
-    icon: <Sparkles size={28} />,
+    icon: <Sparkles size={22} />,
     title: "You're All Set!",
-    subtitle: 'Want to dive deeper into the Live Connect story?',
-    description:
-      "You now know how Live Connect keeps everyone synchronized. If you'd like to explore our design principles, architecture, and the complete vision, check out the interactive presentation deck.",
-    highlightPoints: [
-      'Explore the interactive pitch presentation anytime',
-      'Switch between Participant and Manager modes in the header',
-      'Discover upcoming university and community events right now'
+    subtitle: 'Join Codi in the complete presentation deck',
+    codiHeadline: 'Want the Full Architectural Story?',
+    codiComment:
+      "You now know the core magic of Live Connect! If you'd like to explore our full interactive presentation deck, battle-tested design decisions, and deep product architecture, come join me in our cinematic pitch deck!",
+    codiTakeaways: [
+      'Interactive 6-part presentation with animated slide deck',
+      'Explore university and community events right now',
+      'Switch to Manager mode anytime to host your own events'
     ]
   }
 ];
@@ -108,6 +115,8 @@ export const InteractiveTour: React.FC = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const [isWaving, setIsWaving] = useState(false);
+  const [commentaryKey, setCommentaryKey] = useState(0);
 
   useEffect(() => {
     // Only activate for fresh users who registered and haven't finished the tour
@@ -115,7 +124,21 @@ export const InteractiveTour: React.FC = () => {
     if (isPending) {
       setIsOpen(true);
     }
+
+    // Support manual trigger from UI or console
+    const handleManualOpen = () => {
+      setCurrentStepIndex(0);
+      setIsOpen(true);
+    };
+
+    window.addEventListener('open-codi-tour', handleManualOpen);
+    return () => window.removeEventListener('open-codi-tour', handleManualOpen);
   }, []);
+
+  useEffect(() => {
+    // Re-trigger bubble pop animation when step changes
+    setCommentaryKey((prev) => prev + 1);
+  }, [currentStepIndex]);
 
   const completeTour = () => {
     localStorage.removeItem('fresh_signup_tour_pending');
@@ -142,13 +165,23 @@ export const InteractiveTour: React.FC = () => {
     navigate('/presentation');
   };
 
+  const handleMascotClick = () => {
+    setIsWaving(true);
+    setTimeout(() => setIsWaving(false), 900);
+  };
+
   if (!isOpen) return null;
 
   const currentStep = TOUR_STEPS[currentStepIndex];
   const isFinalStep = currentStepIndex === TOUR_STEPS.length - 1;
 
   return (
-    <div className="tour-overlay" role="dialog" aria-modal="true" aria-label="Interactive App Walkthrough">
+    <div
+      className="tour-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Codi Mascot Onboarding Walkthrough"
+    >
       <div className="tour-modal">
         {/* Top Header / Progress Track */}
         <div className="tour-modal__header">
@@ -159,9 +192,14 @@ export const InteractiveTour: React.FC = () => {
             />
           </div>
           <div className="tour-header-meta">
-            <span className={`tour-perk-badge tour-perk-badge--${currentStep.perkColor}`}>
-              {currentStep.perkBadge}
-            </span>
+            <div className="tour-header-meta__left">
+              <span className={`tour-perk-badge tour-perk-badge--${currentStep.perkColor}`}>
+                {currentStep.perkBadge}
+              </span>
+              <span className="tour-step-counter">
+                {currentStepIndex + 1} of {TOUR_STEPS.length}
+              </span>
+            </div>
             <button
               type="button"
               className="tour-close-btn"
@@ -174,23 +212,51 @@ export const InteractiveTour: React.FC = () => {
           </div>
         </div>
 
-        {/* Step Body */}
+        {/* Step Body Featuring Codi the Toy Companion */}
         <div className="tour-modal__body">
-          <div className={`tour-icon-wrap tour-icon-wrap--${currentStep.perkColor}`}>
-            {currentStep.icon}
+          {/* Codi Avatar and Dialogue Section */}
+          <div className="tour-mascot-section">
+            <div className="tour-mascot-avatar-col">
+              <CodiToyAvatar
+                size="md"
+                isWaving={isWaving}
+                onClick={handleMascotClick}
+                title="I'm Codi! Click me to say hi!"
+              />
+              <span className="tour-mascot-hint">Click me to wave!</span>
+            </div>
+
+            {/* Mascot Speech Bubble delivering the Presentation commentary */}
+            <div key={commentaryKey} className="tour-speech-bubble">
+              <div className="tour-speech-bubble__header">
+                <span className="tour-speech-tag">
+                  <Sparkles size={13} className="tour-sparkle-icon" />
+                  <span>Codi's Commentary</span>
+                </span>
+                <span className="tour-step-tagline">{currentStep.subtitle}</span>
+              </div>
+
+              <h3 className="tour-speech-title">{currentStep.codiHeadline}</h3>
+              <p className="tour-speech-text">{currentStep.codiComment}</p>
+
+              {/* Triangle Tail pointing toward Codi */}
+              <div className="tour-speech-tail" aria-hidden="true" />
+            </div>
           </div>
 
-          <h2 className="tour-title">{currentStep.title}</h2>
-          <p className="tour-subtitle">{currentStep.subtitle}</p>
-          <p className="tour-desc">{currentStep.description}</p>
-
-          <div className="tour-highlights">
-            {currentStep.highlightPoints.map((point, idx) => (
-              <div key={idx} className="tour-highlight-item">
-                <CheckCircle2 size={16} className="tour-highlight-icon" />
-                <span>{point}</span>
-              </div>
-            ))}
+          {/* Key Insights / Architecture Takeaways */}
+          <div className="tour-takeaways-card">
+            <h4 className="tour-takeaways-heading">
+              <span>Why this matters for your campus experience</span>
+            </h4>
+            <div className="tour-takeaways-list">
+              {currentStep.codiTakeaways.map((point, idx) => (
+                <div key={idx} className="tour-takeaway-item">
+                  <CheckCircle2 size={16} className="tour-takeaway-icon" />
+                  <span>{point}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -201,9 +267,15 @@ export const InteractiveTour: React.FC = () => {
               <button
                 key={i}
                 type="button"
-                className={`tour-dot ${i === currentStepIndex ? 'tour-dot--active' : i < currentStepIndex ? 'tour-dot--completed' : ''}`}
+                className={`tour-dot ${
+                  i === currentStepIndex
+                    ? 'tour-dot--active'
+                    : i < currentStepIndex
+                    ? 'tour-dot--completed'
+                    : ''
+                }`}
                 onClick={() => setCurrentStepIndex(i)}
-                aria-label={`Go to step ${i + 1}`}
+                aria-label={`Jump to step ${i + 1}`}
               />
             ))}
           </div>
@@ -230,7 +302,7 @@ export const InteractiveTour: React.FC = () => {
                   onClick={handleGoToPresentation}
                   leftIcon={<Presentation size={15} />}
                 >
-                  Go to Presentation
+                  Go to Presentation with Codi
                 </Button>
                 <Button
                   type="button"
@@ -249,7 +321,7 @@ export const InteractiveTour: React.FC = () => {
                 onClick={handleNext}
                 rightIcon={<ArrowRight size={14} />}
               >
-                Next
+                Next Perk
               </Button>
             )}
           </div>

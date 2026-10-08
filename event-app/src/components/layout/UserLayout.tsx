@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Home, CalendarCheck, Bell, User, ArrowRightLeft, Presentation } from 'lucide-react';
+import { Home, CalendarCheck, Bell, User, ArrowRightLeft, Presentation, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { InteractiveTour } from '../ui/InteractiveTour';
@@ -66,15 +66,27 @@ export const UserLayout: React.FC = () => {
           {/* Actions & Role Switcher */}
           <div className="user-header__actions">
             {(isAuthenticated || Boolean(currentUser?.id)) && (
-              <Link
-                to="/presentation"
-                className="header-pres-btn"
-                title="Why Live Connect? Product Story and Presentation Deck"
-                aria-label="Why Live Connect? Product Story and Presentation Deck"
-              >
-                <Presentation size={17} aria-hidden="true" />
-                <span className="header-pres-btn__label">Why Live Connect?</span>
-              </Link>
+              <>
+                <button
+                  type="button"
+                  className="header-pres-btn header-codi-btn"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-codi-tour'))}
+                  title="Meet Codi: Companion Guide & App Perks"
+                  aria-label="Meet Codi: Companion Guide & App Perks"
+                >
+                  <Sparkles size={16} aria-hidden="true" />
+                  <span className="header-pres-btn__label">Meet Codi</span>
+                </button>
+                <Link
+                  to="/presentation"
+                  className="header-pres-btn"
+                  title="Why Live Connect? Product Story and Presentation Deck"
+                  aria-label="Why Live Connect? Product Story and Presentation Deck"
+                >
+                  <Presentation size={17} aria-hidden="true" />
+                  <span className="header-pres-btn__label">Why Live Connect?</span>
+                </Link>
+              </>
             )}
             <ThemeToggle size="sm" />
             <button

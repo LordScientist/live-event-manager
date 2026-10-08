@@ -97,14 +97,25 @@ export const UserHomePage: React.FC = () => {
           </div>
           <div className="user-home-header__quick-actions">
             {(isAuthenticated || Boolean(currentUser?.id)) && (
-              <Link
-                to="/presentation"
-                className="user-home-pres-btn"
-                title="Why Live Connect? Product Story and Presentation Deck"
-                aria-label="Why Live Connect? Product Story and Presentation Deck"
-              >
-                <Presentation size={19} aria-hidden="true" />
-              </Link>
+              <>
+                <button
+                  type="button"
+                  className="user-home-pres-btn user-home-codi-btn"
+                  onClick={() => window.dispatchEvent(new CustomEvent('open-codi-tour'))}
+                  title="Codi's Companion Guide & App Perks"
+                  aria-label="Codi's Companion Guide & App Perks"
+                >
+                  <Sparkles size={18} aria-hidden="true" />
+                </button>
+                <Link
+                  to="/presentation"
+                  className="user-home-pres-btn"
+                  title="Why Live Connect? Product Story and Presentation Deck"
+                  aria-label="Why Live Connect? Product Story and Presentation Deck"
+                >
+                  <Presentation size={19} aria-hidden="true" />
+                </Link>
+              </>
             )}
             <ThemeToggle size="sm" />
             <Link to="/notifications" className="user-home-bell-btn" aria-label="View notifications">
