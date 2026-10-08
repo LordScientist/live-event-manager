@@ -178,7 +178,7 @@
 }
 
 .manager-event-card:hover {
-  transform: translateY(-3px) scale(1.005);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-3px) scale(1.005);
   border-color: rgba(37, 99, 235, 0.45);
   box-shadow: var(--glass-shadow-md);
 }

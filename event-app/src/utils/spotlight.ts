@@ -5,7 +5,7 @@
  */
 
 export function initCardSpotlights(): () => void {
-  const selector = '.card, .event-card, .stat-card, .overview-stat-card, .my-event-card-item, .active-event-quicklink, .category-bento-tile';
+  const selector = '.card, .event-card, .stat-card, .overview-stat-card, .my-event-card-item, .active-event-quicklink, .category-bento-tile, .manager-event-card';
 
   const handlePointerMove = (e: PointerEvent) => {
     const cards = document.querySelectorAll<HTMLElement>(selector);
