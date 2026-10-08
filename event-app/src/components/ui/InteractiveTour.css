@@ -1,20 +1,21 @@
 /* ==========================================================================
    INTERACTIVE ONBOARDING WALKTHROUGH WITH CODI TOY MASCOT
-   Game-like perk onboarding featuring Codi's presentation dialogue & commentary
+   macOS-Inspired Frosted Glassmorphism (Sonoma / Sequoia Keynote Window)
    ========================================================================== */
 
+/* ── Fullscreen Backdrop ─────────────────────────────────────────────────── */
 .tour-overlay {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background-color: rgba(15, 23, 42, 0.68);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background-color: rgba(10, 15, 29, 0.65);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
-  animation: tourFadeIn 0.25s ease-out;
+  padding: 20px;
+  animation: tourFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes tourFadeIn {
@@ -26,30 +27,98 @@
   }
 }
 
-.tour-modal {
+/* ── Ambient Aurora Mesh Lighting (Subtle organic refraction) ────────────── */
+.macos-tour-mesh-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.macos-tour-mesh-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(55px);
+  opacity: 0.38;
+  animation: tourMeshFloat 8s ease-in-out infinite alternate;
+}
+
+:root[data-theme="dark"] .macos-tour-mesh-blob {
+  opacity: 0.26;
+}
+
+.macos-tour-mesh-blob--blue {
+  width: 320px;
+  height: 320px;
+  top: -80px;
+  left: -60px;
+  background: radial-gradient(circle, #3b82f6 0%, rgba(59, 130, 246, 0) 70%);
+}
+
+.macos-tour-mesh-blob--amber {
+  width: 280px;
+  height: 280px;
+  bottom: -60px;
+  right: -50px;
+  background: radial-gradient(circle, #f97316 0%, rgba(249, 115, 22, 0) 70%);
+  animation-delay: -3s;
+}
+
+.macos-tour-mesh-blob--purple {
+  width: 250px;
+  height: 250px;
+  top: 35%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #8b5cf6 0%, rgba(139, 92, 246, 0) 70%);
+  animation-delay: -5s;
+}
+
+@keyframes tourMeshFloat {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1.18) translate(18px, -18px);
+  }
+}
+
+/* ── macOS Glassmorphic Window Container ─────────────────────────────────── */
+.tour-modal.macos-window {
   position: relative;
   width: 100%;
-  max-width: 580px;
-  background-color: var(--color-bg-surface, #ffffff);
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  max-width: 620px;
+  background-color: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(48px) saturate(220%);
+  -webkit-backdrop-filter: blur(48px) saturate(220%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 24px;
+  box-shadow:
+    0 32px 84px rgba(0, 0, 0, 0.22),
+    0 1px 3px rgba(0, 0, 0, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  animation: tourSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: tourSlideUp 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
 }
 
-:root[data-theme="dark"] .tour-modal {
-  background-color: #131b2e;
-  border-color: #1e293b;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55), 0 0 30px rgba(37, 99, 235, 0.15);
+:root[data-theme="dark"] .tour-modal.macos-window {
+  background-color: rgba(18, 26, 44, 0.78);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
 }
 
 @keyframes tourSlideUp {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.97);
+    transform: translateY(24px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -57,17 +126,20 @@
   }
 }
 
-/* ── Header & Progress ───────────────────────────────────────────────────── */
+/* ── Window Header & Traffic Lights ──────────────────────────────────────── */
 .tour-modal__header {
   position: relative;
-  padding: 18px 24px 14px;
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
-  background-color: var(--color-bg-canvas, #fafafb);
+  padding: 16px 22px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 2;
 }
 
 :root[data-theme="dark"] .tour-modal__header {
-  background-color: #0f172a;
-  border-bottom-color: #1e293b;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 
 .tour-progress-bar {
@@ -75,31 +147,95 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 4px;
-  background-color: var(--color-border, #e2e8f0);
+  height: 3.5px;
+  background-color: rgba(0, 0, 0, 0.05);
   overflow: hidden;
 }
 
 :root[data-theme="dark"] .tour-progress-bar {
-  background-color: #1e293b;
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .tour-progress-bar__fill {
   height: 100%;
-  background: linear-gradient(90deg, #ea580c, #f97316, #2563eb);
-  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  background: linear-gradient(90deg, #ea580c 0%, #f97316 50%, #3b82f6 100%);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.5);
 }
 
 .tour-header-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
 }
 
 .tour-header-meta__left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+}
+
+.tour-header-meta__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* macOS Traffic Lights (Window dots) */
+.macos-traffic-lights {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-right: 4px;
+}
+
+.macos-traffic-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.macos-traffic-dot:hover {
+  transform: scale(1.12);
+}
+
+.macos-traffic-dot--close {
+  background-color: #ff5f56;
+  border: 0.5px solid #e0443e;
+}
+
+.macos-traffic-dot--minimize {
+  background-color: #ffbd2e;
+  border: 0.5px solid #dea123;
+  cursor: default;
+}
+
+.macos-traffic-dot--zoom {
+  background-color: #27c93f;
+  border: 0.5px solid #1aab29;
+}
+
+.macos-traffic-glyph {
+  font-size: 8px;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.55);
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+}
+
+.macos-traffic-lights:hover .macos-traffic-glyph {
+  opacity: 0.9;
 }
 
 .tour-step-counter {
@@ -109,12 +245,36 @@
   letter-spacing: 0.04em;
 }
 
+/* Direct Shortcut to Full Presentation Deck */
+.tour-deck-shortcut-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 9px;
+  font-size: 11.5px;
+  font-weight: 700;
+  background-color: rgba(234, 88, 12, 0.12);
+  color: #ea580c;
+  border: 1px solid rgba(234, 88, 12, 0.3);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.tour-deck-shortcut-btn:hover {
+  background-color: #ea580c;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+}
+
 .tour-close-btn {
   background: transparent;
   border: none;
   color: var(--color-text-muted, #64748b);
   cursor: pointer;
-  padding: 4px;
+  padding: 5px;
   border-radius: 9999px;
   display: flex;
   align-items: center;
@@ -123,51 +283,87 @@
 }
 
 .tour-close-btn:hover {
-  background-color: var(--color-bg-subtle, #f1f5f9);
+  background-color: rgba(0, 0, 0, 0.06);
   color: var(--color-text-main, #0f172a);
 }
 
-/* ── Perk Badges ─────────────────────────────────────────────────────────── */
+:root[data-theme="dark"] .tour-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+/* ── Perk Badges (Frosted glass pills) ───────────────────────────────────── */
 .tour-perk-badge {
   font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  padding: 4px 12px;
+  padding: 4px 11px;
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
   line-height: 1;
+  backdrop-filter: blur(8px);
 }
 
 .tour-perk-badge--blue {
-  background-color: rgba(37, 99, 235, 0.12);
+  background-color: rgba(37, 99, 235, 0.14);
   color: #2563eb;
-  border: 1px solid rgba(37, 99, 235, 0.25);
+  border: 1px solid rgba(37, 99, 235, 0.28);
+}
+
+:root[data-theme="dark"] .tour-perk-badge--blue {
+  background-color: rgba(59, 130, 246, 0.18);
+  color: #60a5fa;
+  border-color: rgba(96, 165, 250, 0.35);
 }
 
 .tour-perk-badge--purple {
-  background-color: rgba(147, 51, 234, 0.12);
+  background-color: rgba(147, 51, 234, 0.14);
   color: #9333ea;
-  border: 1px solid rgba(147, 51, 234, 0.25);
+  border: 1px solid rgba(147, 51, 234, 0.28);
+}
+
+:root[data-theme="dark"] .tour-perk-badge--purple {
+  background-color: rgba(168, 85, 247, 0.18);
+  color: #c084fc;
+  border-color: rgba(192, 132, 252, 0.35);
 }
 
 .tour-perk-badge--amber {
-  background-color: rgba(217, 119, 6, 0.12);
+  background-color: rgba(217, 119, 6, 0.14);
   color: #d97706;
-  border: 1px solid rgba(217, 119, 6, 0.25);
+  border: 1px solid rgba(217, 119, 6, 0.28);
+}
+
+:root[data-theme="dark"] .tour-perk-badge--amber {
+  background-color: rgba(245, 158, 11, 0.18);
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.35);
 }
 
 .tour-perk-badge--emerald {
-  background-color: rgba(5, 150, 105, 0.12);
+  background-color: rgba(5, 150, 105, 0.14);
   color: #059669;
-  border: 1px solid rgba(5, 150, 105, 0.25);
+  border: 1px solid rgba(5, 150, 105, 0.28);
+}
+
+:root[data-theme="dark"] .tour-perk-badge--emerald {
+  background-color: rgba(16, 185, 129, 0.18);
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.35);
 }
 
 .tour-perk-badge--orange {
-  background-color: rgba(234, 88, 12, 0.12);
+  background-color: rgba(234, 88, 12, 0.14);
   color: #ea580c;
-  border: 1px solid rgba(234, 88, 12, 0.25);
+  border: 1px solid rgba(234, 88, 12, 0.3);
+}
+
+:root[data-theme="dark"] .tour-perk-badge--orange {
+  background-color: rgba(249, 115, 22, 0.18);
+  color: #fb923c;
+  border-color: rgba(251, 146, 60, 0.35);
 }
 
 /* ── Body Content & Mascot Layout ────────────────────────────────────────── */
@@ -176,12 +372,14 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+  position: relative;
+  z-index: 2;
 }
 
 /* Codi Avatar + Speech Bubble Container */
 .tour-mascot-section {
   display: grid;
-  grid-template-columns: 86px 1fr;
+  grid-template-columns: 88px 1fr;
   gap: 18px;
   align-items: flex-start;
 }
@@ -196,34 +394,40 @@
 
 .tour-mascot-hint {
   font-size: 10px;
-  font-weight: 600;
-  color: var(--color-primary, #2563eb);
+  font-weight: 700;
+  color: #ea580c;
   text-align: center;
-  opacity: 0.85;
+  opacity: 0.9;
   white-space: nowrap;
 }
 
-/* Speech Bubble Delivering the Presentation commentary */
+/* Speech Bubble Delivering the Presentation commentary (Liquid Glass) */
 .tour-speech-bubble {
   position: relative;
-  background-color: var(--color-bg-canvas, #f8fafc);
-  border: 1.5px solid var(--color-border, #e2e8f0);
-  border-radius: 16px;
-  padding: 16px 18px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  animation: bubblePopIn 0.3s cubic-bezier(0.34, 1.4, 0.64, 1);
+  background-color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
+  padding: 18px 20px;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  animation: bubblePopIn 0.32s cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 :root[data-theme="dark"] .tour-speech-bubble {
-  background-color: #1a233a;
-  border-color: #2d3b5e;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
 
 @keyframes bubblePopIn {
   from {
     opacity: 0;
-    transform: translateY(8px) scale(0.98);
+    transform: translateY(8px) scale(0.97);
   }
   to {
     opacity: 1;
@@ -238,23 +442,23 @@
   left: -8px;
   width: 14px;
   height: 14px;
-  background-color: var(--color-bg-canvas, #f8fafc);
-  border-left: 1.5px solid var(--color-border, #e2e8f0);
-  border-bottom: 1.5px solid var(--color-border, #e2e8f0);
+  background-color: rgba(255, 255, 255, 0.78);
+  border-left: 1px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
   transform: rotate(45deg);
 }
 
 :root[data-theme="dark"] .tour-speech-tail {
-  background-color: #1a233a;
-  border-left-color: #2d3b5e;
-  border-bottom-color: #2d3b5e;
+  background-color: rgba(28, 38, 58, 0.9);
+  border-left-color: rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
 }
 
 .tour-speech-bubble__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   gap: 8px;
 }
 
@@ -267,8 +471,8 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #ea580c;
-  background-color: rgba(234, 88, 12, 0.1);
-  padding: 3px 9px;
+  background-color: rgba(234, 88, 12, 0.12);
+  padding: 3px 10px;
   border-radius: 9999px;
 }
 
@@ -297,12 +501,12 @@
 }
 
 .tour-speech-title {
-  font-size: 16px;
+  font-size: 16.5px;
   font-weight: 800;
   color: var(--color-text-main, #0f172a);
   margin: 0 0 6px 0;
   line-height: 1.25;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
 }
 
 :root[data-theme="dark"] .tour-speech-title {
@@ -312,7 +516,7 @@
 .tour-speech-text {
   font-size: 13px;
   color: var(--color-text-secondary, #334155);
-  line-height: 1.5;
+  line-height: 1.55;
   margin: 0;
 }
 
@@ -320,41 +524,49 @@
   color: #cbd5e1;
 }
 
-/* ── Takeaways Card ──────────────────────────────────────────────────────── */
+/* ── Takeaways Card (Frosted glass panel) ─────────────────────────────────── */
 .tour-takeaways-card {
-  background-color: var(--color-bg-surface, #ffffff);
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 14px;
-  padding: 12px 16px;
+  background-color: rgba(255, 255, 255, 0.52);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.02),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
 }
 
 :root[data-theme="dark"] .tour-takeaways-card {
-  background-color: #0f172a;
-  border-color: #1e293b;
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .tour-takeaways-heading {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-text-muted, #64748b);
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
 }
 
 .tour-takeaways-list {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 .tour-takeaway-item {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 9px;
   font-size: 12.5px;
   color: var(--color-text-secondary, #475569);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 :root[data-theme="dark"] .tour-takeaway-item {
@@ -367,21 +579,24 @@
   flex-shrink: 0;
 }
 
-/* ── Footer & Navigation ─────────────────────────────────────────────────── */
+/* ── Footer & Navigation (Frosted Dock style) ────────────────────────────── */
 .tour-modal__footer {
-  padding: 16px 24px 20px;
-  border-top: 1px solid var(--color-border, #e2e8f0);
-  background-color: var(--color-bg-canvas, #fafafb);
+  padding: 16px 24px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.45);
+  background-color: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
+  z-index: 2;
 }
 
 :root[data-theme="dark"] .tour-modal__footer {
-  background-color: #0f172a;
-  border-top-color: #1e293b;
+  background-color: rgba(255, 255, 255, 0.03);
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
 .tour-step-dots {
@@ -394,24 +609,25 @@
   width: 8px;
   height: 8px;
   border-radius: 9999px;
-  background-color: var(--color-border, #e2e8f0);
+  background-color: rgba(0, 0, 0, 0.15);
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root[data-theme="dark"] .tour-dot {
-  background-color: #334155;
+  background-color: rgba(255, 255, 255, 0.2);
 }
 
 .tour-dot--active {
   width: 22px;
   background-color: #ea580c !important;
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.45);
 }
 
 .tour-dot--completed {
-  background-color: rgba(234, 88, 12, 0.4);
+  background-color: rgba(234, 88, 12, 0.45);
 }
 
 .tour-actions {

@@ -182,8 +182,15 @@ export const InteractiveTour: React.FC = () => {
       aria-modal="true"
       aria-label="Codi Mascot Onboarding Walkthrough"
     >
-      <div className="tour-modal">
-        {/* Top Header / Progress Track */}
+      <div className="tour-modal macos-window">
+        {/* macOS Aurora Fluid Mesh Background */}
+        <div className="macos-tour-mesh-bg" aria-hidden="true">
+          <div className="macos-tour-mesh-blob macos-tour-mesh-blob--blue" />
+          <div className="macos-tour-mesh-blob macos-tour-mesh-blob--amber" />
+          <div className="macos-tour-mesh-blob macos-tour-mesh-blob--purple" />
+        </div>
+
+        {/* Top Header / Progress Track with macOS Window Chrome */}
         <div className="tour-modal__header">
           <div className="tour-progress-bar">
             <div
@@ -193,6 +200,31 @@ export const InteractiveTour: React.FC = () => {
           </div>
           <div className="tour-header-meta">
             <div className="tour-header-meta__left">
+              {/* macOS Traffic Lights Controls */}
+              <div className="macos-traffic-lights" aria-label="macOS Window Controls">
+                <button
+                  type="button"
+                  className="macos-traffic-dot macos-traffic-dot--close"
+                  onClick={completeTour}
+                  title="Close onboarding"
+                  aria-label="Close onboarding"
+                >
+                  <span className="macos-traffic-glyph">✕</span>
+                </button>
+                <span className="macos-traffic-dot macos-traffic-dot--minimize" title="Minimize">
+                  <span className="macos-traffic-glyph">−</span>
+                </span>
+                <button
+                  type="button"
+                  className="macos-traffic-dot macos-traffic-dot--zoom"
+                  onClick={handleGoToPresentation}
+                  title="Open Full Presentation Deck"
+                  aria-label="Open Full Presentation Deck"
+                >
+                  <span className="macos-traffic-glyph">⤢</span>
+                </button>
+              </div>
+
               <span className={`tour-perk-badge tour-perk-badge--${currentStep.perkColor}`}>
                 {currentStep.perkBadge}
               </span>
@@ -200,15 +232,27 @@ export const InteractiveTour: React.FC = () => {
                 {currentStepIndex + 1} of {TOUR_STEPS.length}
               </span>
             </div>
-            <button
-              type="button"
-              className="tour-close-btn"
-              onClick={completeTour}
-              aria-label="Skip walkthrough"
-              title="Skip walkthrough"
-            >
-              <X size={18} />
-            </button>
+
+            <div className="tour-header-meta__right">
+              <button
+                type="button"
+                className="tour-deck-shortcut-btn"
+                onClick={handleGoToPresentation}
+                title="Explore Full Presentation Deck"
+              >
+                <Presentation size={13} />
+                <span>Full Deck</span>
+              </button>
+              <button
+                type="button"
+                className="tour-close-btn"
+                onClick={completeTour}
+                aria-label="Skip walkthrough"
+                title="Skip walkthrough"
+              >
+                <X size={16} />
+              </button>
+            </div>
           </div>
         </div>
 
