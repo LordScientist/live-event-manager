@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { EventCard } from '../../components/events/EventCard';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { registrationService } from '../../services/registrationService';
@@ -56,31 +57,6 @@ export const MyEventsPage: React.FC = () => {
       isMounted = false;
     };
   }, [currentUser.id]);
-
-  // Format date matching Figma Node 1:10: "Oct 18,2026 - 9:00 AM"
-  const formatFigmaDate = (dateString: string) => {
-    const d = new Date(dateString);
-    const month = d.toLocaleDateString('en-US', { month: 'short' });
-    const day = d.getDate();
-    const year = d.getFullYear();
-    const time = d.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-    return `${month} ${day},${year} - ${time}`;
-  };
-
-  // Determine badge type matching Figma mockup: Registered | Open | Pending
-  const getBadgeConfig = (status: string, eventStatus?: string) => {
-    if (status === 'pending') {
-      return { label: 'Pending', className: 'my-event-badge--pending' };
-    }
-    if (eventStatus === 'open') {
-      return { label: 'Open', className: 'my-event-badge--open' };
-    }
-    return { label: 'Registered', className: 'my-event-badge--registered' };
-  };
 
   // Filtering based on tab & optional search
   const filteredItems = useMemo(() => {
@@ -163,38 +139,19 @@ export const MyEventsPage: React.FC = () => {
           </div>
         ) : filteredItems.length > 0 ? (
           <div className="my-events-list" role="list">
-            {filteredItems.map(({ registration, event }) => {
+            {filteredItems.map(({ registration, event, roleName }) => {
               const isApproved = registration.status === 'approved';
-              const badge = getBadgeConfig(registration.status, event.registration_status);
-              const destinationUrl = isApproved
-                ? `/my-events/${event.id}`
-                : `/events/${event.id}`;
 
               return (
-                <Link
+                <EventCard
                   key={registration.id}
-                  to={destinationUrl}
-                  className="my-event-card-item"
-                  role="listitem"
-                >
-                  <img
-                    src={event.cover_image}
-                    alt={event.name}
-                    className="my-event-card-thumb"
-                    loading="lazy"
-                  />
-                  <div className="my-event-card-body">
-                    <h3 className="my-event-card-title">{event.name}</h3>
-                    <span className="my-event-card-date">
-                      {formatFigmaDate(event.start_date)}
-                    </span>
-                    <div className="my-event-card-badge-wrap">
-                      <span className={`my-event-badge ${badge.className}`}>
-                        {badge.label}
-                      </span>
-                    </div>
-                  </div>
-                </Link>
+                  variant="compact"
+                  event={{
+                    ...event,
+                    registration_status: isApproved ? 'registered' : 'pending',
+                    user_role_name: roleName
+                  }}
+                />
               );
             })}
           </div>

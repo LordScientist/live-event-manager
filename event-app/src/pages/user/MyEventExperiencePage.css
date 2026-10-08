@@ -165,49 +165,42 @@
 
 .highlight-card {
   box-sizing: border-box;
-  background-color: #f2f3f5;
-  border: 1.5px solid transparent;
-  border-radius: 16px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl, 16px);
   padding: 20px;
   transition: all 0.22s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
   position: relative;
 }
 
 :root[data-theme="dark"] .highlight-card {
-  background-color: #172136;
-  border-color: #1e293b;
+  background-color: var(--color-bg-surface);
+  border-color: var(--color-border);
 }
 
-/* ── Required Orange Hover State ────────────────────────────────────────── */
 .highlight-card:hover {
-  background-color: #f8dcca; /* Soft peach/orange */
-  border-color: #f97316; /* Vibrant orange outline */
+  border-color: var(--color-primary);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
-}
-
-:root[data-theme="dark"] .highlight-card:hover {
-  background-color: rgba(249, 115, 22, 0.16);
-  border-color: #f97316;
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* Next Up Card */
 .highlight-card--next {
-  border-left: 4px solid #ea580c;
+  border-left: 4px solid var(--color-primary);
 }
 
-/* Latest Update Card matching Figma Frame 1:11 Alert Card */
+/* Latest Update Card matching urgent alert pattern */
 .highlight-card--update {
-  background-color: #f8dcca;
-  border: 1px solid rgba(234, 88, 12, 0.25);
-  border-left: 4px solid #ff2625;
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  border-left: 4px solid var(--color-warning);
 }
 
 :root[data-theme="dark"] .highlight-card--update {
-  background-color: #2a1f1b;
-  border-color: rgba(249, 115, 22, 0.3);
+  background-color: rgba(217, 119, 6, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  border-left-color: var(--color-warning);
 }
 
 .highlight-card__badge {
@@ -325,41 +318,40 @@
   align-items: flex-start;
   gap: 14px;
   padding: 16px 18px;
-  background-color: #f2f3f5;
-  border: 1.5px solid transparent;
-  border-radius: 16px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl, 16px);
   transition: all 0.22s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 :root[data-theme="dark"] .timeline-item {
-  background-color: #172136;
-  border-color: #1e293b;
+  background-color: var(--color-bg-surface);
+  border-color: var(--color-border);
 }
 
-/* ── Timeline Item Orange Hover State ───────────────────────────────────── */
 .timeline-item:hover {
-  background-color: #f8dcca;
-  border-color: #f97316;
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
-}
-
-:root[data-theme="dark"] .timeline-item:hover {
-  background-color: rgba(249, 115, 22, 0.16);
-  border-color: #f97316;
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .timeline-item--changed {
-  background-color: #f8dcca;
-  border: 1px solid rgba(234, 88, 12, 0.25);
+  background-color: var(--color-warning-bg);
+  border-color: var(--color-warning-border);
+  border-left: 4px solid var(--color-warning);
+}
+
+:root[data-theme="dark"] .timeline-item--changed {
+  background-color: rgba(217, 119, 6, 0.12);
+  border-color: rgba(245, 158, 11, 0.3);
+  border-left-color: var(--color-warning);
 }
 
 .timeline-time {
   font-size: 13px;
   font-weight: 800;
-  color: var(--color-text-main, #0b132b);
+  color: var(--color-text-main);
   white-space: nowrap;
   padding-top: 2px;
 }
@@ -376,18 +368,20 @@
 .timeline-title {
   font-size: 15px;
   font-weight: 700;
-  color: var(--color-text-main, #0b132b);
+  color: var(--color-text-main);
   margin: 0 0 4px 0;
 }
 
 .change-indicator-pill {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 800;
-  background-color: #ff2625;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  background-color: var(--color-error);
   color: #ffffff;
-  padding: 2px 6px;
-  border-radius: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -397,7 +391,7 @@
   align-items: center;
   gap: 5px;
   font-size: 12px;
-  color: var(--color-text-secondary, #475569);
+  color: var(--color-text-secondary);
 }
 
 /* ── Sidebar Cards ──────────────────────────────────────────────────────── */
@@ -409,28 +403,21 @@
 
 .sidebar-action-card {
   box-sizing: border-box;
-  background-color: #f2f3f5;
-  border: 1.5px solid transparent;
-  border-radius: 16px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl, 16px);
   padding: 18px 20px;
   transition: all 0.22s ease-in-out;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 :root[data-theme="dark"] .sidebar-action-card {
-  background-color: #172136;
-  border-color: #1e293b;
+  background-color: var(--color-bg-surface);
+  border-color: var(--color-border);
 }
 
 .sidebar-action-card:hover {
-  background-color: #f8dcca;
-  border-color: #f97316;
+  border-color: var(--color-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
-}
-
-:root[data-theme="dark"] .sidebar-action-card:hover {
-  background-color: rgba(249, 115, 22, 0.16);
-  border-color: #f97316;
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Building } from 'lucide-react';
+import { Calendar, Clock, MapPin, Building, ChevronRight, User } from 'lucide-react';
 import { Card, CardContent } from '../ui/Card';
 import { StatusBadge } from '../ui/StatusBadge';
 import type { StatusType } from '../ui/StatusBadge';
@@ -12,18 +12,28 @@ export interface EventCardProps {
   event: EventWithMeta;
   actionUrl?: string;
   actionLabel?: string;
+  variant?: 'grid' | 'compact';
 }
 
-export const EventCard: React.FC<EventCardProps> = ({ event, actionUrl, actionLabel }) => {
+export const EventCard: React.FC<EventCardProps> = ({
+  event,
+  actionUrl,
+  actionLabel,
+  variant = 'grid'
+}) => {
+  const startDate = new Date(event.start_date);
+  const monthAbbr = startDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
+  const dayNum = startDate.toLocaleDateString('en-US', { day: 'numeric' });
+
   // Format date: "October 18, 2026"
-  const formattedDate = new Date(event.start_date).toLocaleDateString('en-US', {
+  const formattedDate = startDate.toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric'
   });
 
   // Format time: "09:00 AM"
-  const formattedTime = new Date(event.start_date).toLocaleTimeString('en-US', {
+  const formattedTime = startDate.toLocaleTimeString('en-US', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: true
@@ -53,8 +63,42 @@ export const EventCard: React.FC<EventCardProps> = ({ event, actionUrl, actionLa
   const destinationUrl = actionUrl || (event.registration_status === 'registered' ? `/my-events/${event.id}` : `/events/${event.id}`);
   const buttonLabel = actionLabel || (event.registration_status === 'registered' ? 'Open Event' : 'View Event');
 
+  if (variant === 'compact') {
+    return (
+      <Card variant="interactive" className="event-card event-card--compact">
+        <div className="event-card__compact-date">
+          <span className="event-card__date-month">{monthAbbr}</span>
+          <span className="event-card__date-day">{dayNum}</span>
+        </div>
+        <div className="event-card__compact-info">
+          <div className="event-card__compact-header">
+            <span className="event-card__category">{event.category}</span>
+            <StatusBadge status={badgeConfig.status} label={badgeConfig.label} />
+          </div>
+          <h4 className="event-card__compact-title">
+            <Link to={destinationUrl} className="event-card__title-link">
+              {event.name}
+            </Link>
+          </h4>
+          <div className="event-card__compact-meta">
+            <span><Clock size={13} aria-hidden="true" /> {formattedTime}</span>
+            <span><MapPin size={13} aria-hidden="true" /> {event.venue}</span>
+            {event.user_role_name && (
+              <span className="event-card__role-pill">
+                <User size={12} aria-hidden="true" /> {event.user_role_name}
+              </span>
+            )}
+          </div>
+        </div>
+        <Link to={destinationUrl} className="event-card__compact-arrow" aria-label={`Open ${event.name}`}>
+          <ChevronRight size={20} aria-hidden="true" />
+        </Link>
+      </Card>
+    );
+  }
+
   return (
-    <Card variant="interactive" className="event-card">
+    <Card variant="interactive" className="event-card event-card--grid">
       {/* Cover Image with Category & Status Overlay */}
       <div className="event-card__image-wrapper">
         <img
@@ -63,6 +107,10 @@ export const EventCard: React.FC<EventCardProps> = ({ event, actionUrl, actionLa
           className="event-card__image"
           loading="lazy"
         />
+        <div className="event-card__date-overlay">
+          <span className="event-card__date-month">{monthAbbr}</span>
+          <span className="event-card__date-day">{dayNum}</span>
+        </div>
         <div className="event-card__badges">
           <span className="event-card__category">{event.category}</span>
           <div className="event-card__status-wrap">

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 import { Card, CardContent } from '../../components/ui/Card';
+import { StatusBadge } from '../../components/ui/StatusBadge';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { scheduleService } from '../../services/scheduleService';
@@ -127,9 +128,7 @@ export const MyEventExperiencePage: React.FC = () => {
       <header className="experience-header">
         <div className="experience-header__top">
           <span className="experience-category">{event.category}</span>
-          <span className="live-status-pill">
-            <span className="live-status-dot" /> Live Experience
-          </span>
+          <StatusBadge status="live" size="md" label="Happening Today" />
         </div>
         <h1 className="experience-event-name">{event.name}</h1>
         <div className="experience-role-callout">

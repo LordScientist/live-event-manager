@@ -156,6 +156,7 @@ export const UserHomePage: React.FC = () => {
               <span>Your Active Event</span>
             </span>
             <StatusBadge
+              size="md"
               status={activeEventData.registration.status === 'approved' ? 'approved' : 'pending'}
               label={
                 activeEventData.registration.status === 'approved'

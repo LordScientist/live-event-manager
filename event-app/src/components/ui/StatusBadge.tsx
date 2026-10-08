@@ -17,6 +17,7 @@ export interface StatusBadgeProps {
   status: StatusType;
   label?: string;
   className?: string;
+  size?: 'sm' | 'md';
 }
 
 const DEFAULT_LABELS: Record<StatusType, string> = {
@@ -35,13 +36,15 @@ const DEFAULT_LABELS: Record<StatusType, string> = {
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   label,
+  size = 'sm',
   className = ''
 }) => {
   const displayLabel = label || DEFAULT_LABELS[status] || status;
+  const isPulsing = status === 'live' || status === 'warning';
 
   return (
-    <span className={`status-badge status-badge--${status} ${className}`.trim()}>
-      <span className="status-badge__dot" aria-hidden="true" />
+    <span className={`status-badge status-badge--${status} status-badge--${size} ${className}`.trim()}>
+      <span className={`status-badge__dot ${isPulsing ? 'status-badge__dot--pulse' : ''}`} aria-hidden="true" />
       <span className="status-badge__text">{displayLabel}</span>
     </span>
   );

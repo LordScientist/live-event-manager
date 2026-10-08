@@ -97,6 +97,9 @@ export const SignUpPage: React.FC = () => {
         organization: formData.organization.trim() || undefined,
         job_title: formData.jobTitle.trim() || undefined
       });
+      // Flag as a fresh user so the interactive onboarding tour activates
+      localStorage.setItem('fresh_signup_tour_pending', 'true');
+      localStorage.removeItem('has_completed_tour');
       setIsSubmitting(false);
       navigate('/');
     }, 400);

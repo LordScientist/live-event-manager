@@ -215,7 +215,7 @@
   border-radius: var(--radius-sm);
 }
 
-/* Category Filter Pills Wrap matching Figma frame 1:6 */
+/* Category Filter Pills Wrap matching Dribbble inspiration */
 .user-home-categories {
   margin-top: 20px;
   margin-bottom: 24px;
@@ -223,14 +223,21 @@
 
 .categories-grid-wrap {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 2px 8px 2px;
+  gap: 10px;
+}
+
+.categories-grid-wrap::-webkit-scrollbar {
+  display: none;
 }
 
 .category-pill {
-  padding: 8px 22px;
+  padding: 8px 20px;
   background-color: var(--color-bg-surface);
-  border: 1.5px solid #111827;
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-full);
   font-size: 14px;
   font-weight: 500;
@@ -238,27 +245,26 @@
   cursor: pointer;
   transition: all 0.15s ease;
   min-height: 40px;
-}
-
-:root[data-theme="dark"] .category-pill {
-  border-color: var(--color-border);
-  background-color: var(--color-bg-surface);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .category-pill:hover {
   background-color: var(--color-bg-subtle);
+  border-color: var(--color-border-hover);
+  transform: translateY(-1px);
 }
 
 .category-pill--active {
-  background-color: #0C139D !important;
-  color: #ffffff !important;
-  border-color: #0C139D !important;
-  font-weight: 700 !important;
+  background-color: var(--color-primary) !important;
+  color: var(--color-primary-text, #ffffff) !important;
+  border-color: var(--color-primary) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 :root[data-theme="dark"] .category-pill--active {
-  background-color: #2563eb !important;
-  border-color: #2563eb !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
 }
 
 /* Section Header: Featured Events + See all */

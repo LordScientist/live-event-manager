@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Home, CalendarCheck, Bell, User, ArrowRightLeft, Presentation } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { InteractiveTour } from '../ui/InteractiveTour';
 import lcIcon from '../../assets/lc-icon.png';
 import './UserLayout.css';
 
@@ -96,6 +97,9 @@ export const UserLayout: React.FC = () => {
       <main className="user-layout__main">
         <Outlet />
       </main>
+
+      {/* Interactive Walkthrough for Fresh Users */}
+      <InteractiveTour />
 
       {/* Mobile Bottom Navigation (Home | My Events | Notifications | Profile) */}
       <nav className="mobile-bottom-nav mobile-only" aria-label="Mobile Navigation">
