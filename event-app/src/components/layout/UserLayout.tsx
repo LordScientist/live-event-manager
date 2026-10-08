@@ -24,7 +24,7 @@ export const UserLayout: React.FC = () => {
 
       {/* Top Header */}
       <header className="user-header">
-        <div className="container user-header__inner">
+        <div className="user-header__inner">
           <Link to="/" className="user-header__brand" aria-label="Live Connect Home">
             <img src={lcIcon} alt="Live Connect" className="brand-logo-img" />
             <div className="brand-text">

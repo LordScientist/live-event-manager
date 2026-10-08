@@ -39,7 +39,7 @@ export const ManagerLayout: React.FC = () => {
 
       {/* Top Header */}
       <header className="manager-header">
-        <div className="manager-header__inner container">
+        <div className="manager-header__inner">
           <Link to="/manager" className="manager-header__brand" aria-label="Live Connect Organizer Console">
             <img src={lcIcon} alt="Live Connect" className="brand-logo-img" />
             <div className="brand-text">
