@@ -13,9 +13,12 @@ import {
   ShieldCheck,
   Accessibility,
   Radio,
-  Layers
+  Layers,
+  Play,
+  Pause
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { MascotGuide } from '../../components/presentation/MascotGuide';
 import lcIcon from '../../assets/lc-icon.png';
 import decorTopRight from '../../assets/updates-decor-top-right.png';
 import decorBottomRight from '../../assets/updates-decor-bottom-right.png';
@@ -34,6 +37,7 @@ export const PresentationPage: React.FC = () => {
   const { accountType } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isAutoplay, setIsAutoplay] = useState(false);
 
   const handleClose = useCallback(() => {
     if (accountType === 'manager') {
@@ -51,7 +55,7 @@ export const PresentationPage: React.FC = () => {
     setCurrentSlide((prev) => (prev > 0 ? prev - 1 : prev));
   }, []);
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
       setIsFullscreen(true);
@@ -61,16 +65,31 @@ export const PresentationPage: React.FC = () => {
       }
       setIsFullscreen(false);
     }
-  };
+  }, []);
+
+  // Autoplay slideshow timer
+  useEffect(() => {
+    if (!isAutoplay) return;
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev < 5 ? prev + 1 : 0));
+    }, 7500);
+    return () => clearInterval(timer);
+  }, [isAutoplay]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
         nextSlide();
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         prevSlide();
+      } else if (e.key === ' ' && (e.target as HTMLElement).tagName !== 'BUTTON') {
+        e.preventDefault();
+        setIsAutoplay((prev) => !prev);
+      } else if (e.key.toLowerCase() === 'f' && (e.target as HTMLElement).tagName !== 'BUTTON') {
+        e.preventDefault();
+        toggleFullscreen();
       } else if (e.key === 'Escape') {
         if (!document.fullscreenElement) {
           handleClose();
@@ -80,7 +99,7 @@ export const PresentationPage: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [nextSlide, prevSlide, handleClose]);
+  }, [nextSlide, prevSlide, handleClose, toggleFullscreen]);
 
   const slides: Slide[] = [
     // SLIDE 1: The Raw Problem
@@ -504,9 +523,19 @@ export const PresentationPage: React.FC = () => {
         <div className="presentation-header__actions">
           <button
             type="button"
+            className={`pres-action-btn ${isAutoplay ? 'pres-action-btn--autoplay-active' : ''}`}
+            onClick={() => setIsAutoplay((prev) => !prev)}
+            title={isAutoplay ? 'Pause Slideshow (Space)' : 'Play Slideshow (Space)'}
+            aria-label="Toggle Autoplay Slideshow"
+          >
+            {isAutoplay ? <Pause size={15} /> : <Play size={15} />}
+            <span className="autoplay-label">{isAutoplay ? 'Pause' : 'Autoplay'}</span>
+          </button>
+          <button
+            type="button"
             className="pres-action-btn"
             onClick={toggleFullscreen}
-            title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen Presentation'}
+            title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen Presentation (F)'}
             aria-label="Toggle Fullscreen"
           >
             {isFullscreen ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
@@ -515,7 +544,7 @@ export const PresentationPage: React.FC = () => {
             type="button"
             className="pres-action-btn pres-action-btn--close"
             onClick={handleClose}
-            title="Exit Presentation"
+            title="Exit Presentation (Esc)"
             aria-label="Exit Presentation"
           >
             <X size={18} />
@@ -524,10 +553,11 @@ export const PresentationPage: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Slide Deck Canvas */}
+      {/* Main Slide Deck Canvas with Cinematic Ambient Lighting */}
       <main className="presentation-stage">
+        <div className="stage-spotlight" aria-hidden="true" />
         <div className="slide-card-container">
-          <div className="slide-card">
+          <div className="slide-card" key={currentSlide}>
             {/* Slide Header */}
             <div className="slide-top-meta">
               <span className="slide-tag-pill">{current.tag}</span>
@@ -549,12 +579,20 @@ export const PresentationPage: React.FC = () => {
         </div>
       </main>
 
-      {/* Bottom Controls Bar */}
+      {/* Codi the Animated Toy Mascot Companion */}
+      <MascotGuide currentSlide={currentSlide} />
+
+      {/* Bottom Controls Bar with Keyboard HUD */}
       <footer className="presentation-footer">
         <div className="pres-footer__left">
           <span className="pres-running-title">
             Live Connect Architecture & Purpose Walkthrough
           </span>
+          <div className="pres-keyboard-hud desktop-only">
+            <span>[ ← / → Navigate ]</span>
+            <span>[ Space {isAutoplay ? 'Pause' : 'Play'} ]</span>
+            <span>[ F Fullscreen ]</span>
+          </div>
         </div>
 
         <div className="pres-footer__center">

@@ -1,0 +1,269 @@
+/* ==========================================================================
+   CODI MASCOT GUIDE: ANIMATED TOY COMPANION FOR PRESENTATION
+   Cinematic interactive animations, floating physics, and speech bubbles
+   ========================================================================== */
+
+.mascot-container {
+  position: fixed;
+  bottom: 84px;
+  right: 28px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mascot-container--minimized {
+  bottom: 80px;
+}
+
+/* ── Speech Bubble ───────────────────────────────────────────────────────── */
+.mascot-bubble {
+  position: relative;
+  width: 290px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl, 16px);
+  padding: 16px 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  pointer-events: auto;
+  animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom right;
+}
+
+@keyframes bubblePop {
+  0% {
+    opacity: 0;
+    transform: scale(0.7) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.mascot-bubble__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.mascot-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.mascot-sparkle {
+  animation: sparkleTwinkle 2s infinite ease-in-out;
+}
+
+@keyframes sparkleTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.3) rotate(20deg); opacity: 1; }
+}
+
+.mascot-bubble__toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.mascot-bubble__toggle-btn:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-main);
+}
+
+.mascot-bubble__title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.mascot-bubble__text {
+  font-size: 12.5px;
+  color: var(--color-text-secondary);
+  line-height: 1.45;
+  margin: 0 0 10px 0;
+}
+
+.mascot-bubble__tip {
+  font-size: 10.5px;
+  color: var(--color-text-muted);
+  border-top: 1px dashed var(--color-border);
+  padding-top: 8px;
+  font-weight: 500;
+}
+
+/* Speech bubble triangular tail pointing to mascot */
+.mascot-bubble__tail {
+  position: absolute;
+  bottom: -8px;
+  right: 32px;
+  width: 16px;
+  height: 16px;
+  background-color: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  transform: rotate(45deg);
+}
+
+/* ── Interactive Mascot Character ────────────────────────────────────────── */
+.mascot-character {
+  position: relative;
+  width: 84px;
+  height: 92px;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  animation: mascotHover 3.2s ease-in-out infinite;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.18));
+}
+
+.mascot-character:hover {
+  transform: scale(1.08) translateY(-4px);
+}
+
+.mascot-character:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-full);
+}
+
+@keyframes mascotHover {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+.mascot-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Mascot Thruster Glow */
+.mascot-thruster-glow {
+  animation: thrusterPulse 1.6s ease-in-out infinite alternate;
+  transform-origin: center;
+}
+
+@keyframes thrusterPulse {
+  0% { opacity: 0.3; rx: 22px; }
+  100% { opacity: 0.8; rx: 30px; }
+}
+
+/* Reactor Core Pulse */
+.mascot-core {
+  animation: corePulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes corePulse {
+  0% { transform: scale(0.92); opacity: 0.7; }
+  100% { transform: scale(1.08); opacity: 1; }
+}
+
+/* LED Eyes Blinking */
+.mascot-eye {
+  animation: eyeBlink 4s infinite;
+  transform-origin: center;
+}
+
+@keyframes eyeBlink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+/* Antenna Waves Animation */
+.antenna-wave {
+  animation: wavePulse 1.8s ease-out infinite;
+  transform-origin: 60px 14px;
+}
+
+.antenna-wave--2 {
+  animation-delay: 0.6s;
+}
+
+@keyframes wavePulse {
+  0% { opacity: 0.8; transform: scale(0.85); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+/* Waving Arm on Click */
+.mascot-character--wave .mascot-arm--right {
+  animation: waveArm 0.8s ease-in-out;
+  transform-origin: 90px 70px;
+}
+
+@keyframes waveArm {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-35deg); }
+  50% { transform: rotate(-10deg); }
+  75% { transform: rotate(-30deg); }
+}
+
+/* Maximize button when minimized */
+.mascot-maximize-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border: 2px solid var(--color-bg-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s ease;
+}
+
+.mascot-maximize-btn:hover {
+  transform: scale(1.15);
+}
+
+/* ── Mobile Viewports ────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .mascot-container {
+    bottom: 74px;
+    right: 14px;
+  }
+
+  .mascot-bubble {
+    width: 250px;
+    padding: 12px 14px;
+  }
+
+  .mascot-character {
+    width: 68px;
+    height: 76px;
+  }
+}
