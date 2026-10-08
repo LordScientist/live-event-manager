@@ -62,81 +62,81 @@
   --color-accent: #0284c7;
   --color-accent-light: #f0f9ff;
 
-  /* Background Colors */
-  --color-bg-canvas: #f8fafc;
-  --color-bg-surface: #ffffff;
+  /* Background Colors (Federico Pian warm stone / travertine canvas) */
+  --color-bg-canvas: #e7e4df;
+  --color-bg-surface: rgba(255, 255, 255, 0.78);
   --color-surface: var(--color-bg-surface);
-  --color-bg-subtle: #f1f5f9;
+  --color-bg-subtle: rgba(235, 231, 225, 0.82);
   --color-surface-subtle: var(--color-bg-subtle);
-  --color-bg-muted: #e2e8f0;
+  --color-bg-muted: #dcd7ce;
 
-  /* Text Colors */
-  --color-text-main: #0f172a;
-  --color-text-secondary: #334155;
-  --color-text-muted: #64748b;
-  --color-text-subtle: #94a3b8;
+  /* Text Colors (Federico Pian deep onyx & warm stone typography) */
+  --color-text-main: #17191a;
+  --color-text-secondary: #505050;
+  --color-text-muted: #767675;
+  --color-text-subtle: #9e9d9a;
   --color-text-inverse: #ffffff;
 
-  /* Border Colors */
-  --color-border: #e2e8f0;
-  --color-border-hover: #cbd5e1;
-  --color-border-focus: #2563eb;
+  /* Border Colors (Federico Pian hairline definition) */
+  --color-border: rgba(0, 0, 0, 0.1);
+  --color-border-hover: rgba(0, 0, 0, 0.18);
+  --color-border-focus: #17191a;
 
   /* Semantic Feedback States */
   /* Success */
   --color-success: #059669;
-  --color-success-bg: #ecfdf5;
-  --color-success-border: #a7f3d0;
+  --color-success-bg: rgba(5, 150, 105, 0.12);
+  --color-success-border: rgba(5, 150, 105, 0.28);
   --color-success-text: #065f46;
 
   /* Warning */
   --color-warning: #d97706;
-  --color-warning-bg: #fffbeb;
-  --color-warning-border: #fde68a;
+  --color-warning-bg: rgba(217, 119, 6, 0.12);
+  --color-warning-border: rgba(217, 119, 6, 0.28);
   --color-warning-text: #92400e;
 
   /* Error / Danger */
   --color-error: #dc2626;
   --color-error-hover: #b91c1c;
-  --color-error-bg: #fef2f2;
-  --color-error-border: #fecaca;
+  --color-error-bg: rgba(220, 38, 38, 0.10);
+  --color-error-border: rgba(220, 38, 38, 0.28);
   --color-error-text: #991b1b;
 
   /* Information */
   --color-info: #0284c7;
-  --color-info-bg: #f0f9ff;
-  --color-info-border: #bae6fd;
+  --color-info-bg: rgba(2, 132, 199, 0.10);
+  --color-info-border: rgba(2, 132, 199, 0.28);
   --color-info-text: #075985;
 
   /* Disabled State */
-  --color-disabled-bg: #f1f5f9;
-  --color-disabled-text: #94a3b8;
-  --color-disabled-border: #e2e8f0;
+  --color-disabled-bg: rgba(231, 228, 223, 0.6);
+  --color-disabled-text: #9e9d9a;
+  --color-disabled-border: rgba(0, 0, 0, 0.08);
 
   /* Focus & Elevation */
-  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px var(--color-primary);
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --focus-ring: 0 0 0 2px #e7e4df, 0 0 0 4px #17191a;
+  --shadow-sm: 0 1px 3px 0 rgba(23, 25, 26, 0.04);
+  --shadow-md: 0 4px 12px -1px rgba(23, 25, 26, 0.07), 0 2px 4px -2px rgba(23, 25, 26, 0.04);
+  --shadow-lg: 0 14px 28px -4px rgba(23, 25, 26, 0.09), 0 4px 8px -4px rgba(23, 25, 26, 0.04);
 
-  /* 2026 Polished Crystal Glass System Tokens (Light Mode) */
-  --glass-bg-base: rgba(255, 255, 255, 0.80);
+  /* 2026 Tactile Frosted Glass System Tokens (Light Mode - Federico Pian Tone) */
+  --glass-bg-base: rgba(245, 243, 239, 0.78);
   --glass-bg-elevated: rgba(255, 255, 255, 0.92);
-  --glass-bg-subtle: rgba(255, 255, 255, 0.58);
-  --glass-border: rgba(226, 232, 240, 0.85);
-  --glass-border-subtle: rgba(226, 232, 240, 0.50);
-  --glass-border-highlight: rgba(255, 255, 255, 0.95);
-  --glass-blur: blur(20px) saturate(180%);
-  --glass-blur-heavy: blur(36px) saturate(190%);
-  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --glass-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  --glass-shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
-  --glass-shadow-lg: 0 20px 48px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --glass-bg-subtle: rgba(237, 234, 228, 0.62);
+  --glass-border: rgba(0, 0, 0, 0.09);
+  --glass-border-subtle: rgba(0, 0, 0, 0.05);
+  --glass-border-highlight: rgba(255, 255, 255, 0.90);
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-blur-heavy: blur(36px) saturate(180%);
+  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.90);
+  --glass-shadow-sm: 0 2px 8px rgba(23, 25, 26, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --glass-shadow-md: 0 8px 24px -4px rgba(23, 25, 26, 0.07), 0 2px 6px -1px rgba(23, 25, 26, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --glass-shadow-lg: 0 20px 48px -8px rgba(23, 25, 26, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
 /* ==========================================================================
-   DARK MODE - LIVE EVENT ARENA & CONCERT OBSIDIAN STAGE
-   Deep obsidian canvas (#070913) + Luminous stage elevation hierarchy
+   DARK MODE - FEDERICO PIAN WARM VELVET GRAPHITE PALETTE
+   Velvety graphite charcoal (#262626) + Luminous titanium silver typography
    ========================================================================== */
 :root[data-theme="dark"],
 .dark {
@@ -150,33 +150,33 @@
   --color-primary-text: #ffffff;
 
   /* Secondary & Accent Colors */
-  --color-secondary: #1e293b;
-  --color-secondary-hover: #334155;
-  --color-secondary-text: #f8fafc;
+  --color-secondary: #333333;
+  --color-secondary-hover: #444444;
+  --color-secondary-text: #f1f1f1;
   --color-accent: #38bdf8;
   --color-accent-light: rgba(56, 189, 248, 0.14);
 
-  /* Background Colors (Deep obsidian canvas with luminous stage elevation hierarchy) */
-  --color-bg-canvas: #070913;       /* Deep obsidian/midnight stage canvas */
-  --color-bg-surface: #0e1526;      /* Rich elevated dark slate card/surface */
+  /* Background Colors (Federico Pian warm graphite charcoal canvas) */
+  --color-bg-canvas: #262626;       /* Exact Federico Pian dark canvas */
+  --color-bg-surface: #2e2e2e;      /* Elevated warm graphite surface */
   --color-surface: var(--color-bg-surface);
-  --color-bg-subtle: #141d33;       /* Interactive / hover background */
+  --color-bg-subtle: #363636;       /* Interactive / hover background */
   --color-surface-subtle: var(--color-bg-subtle);
-  --color-bg-muted: #1c2742;        /* Recessed wells / muted pills */
+  --color-bg-muted: #424242;        /* Recessed wells / muted pills */
 
-  /* Text Colors (Refined contrast, zero harsh ocular glare) */
-  --color-text-main: #f8fafc;       /* Crisp slate-50 */
-  --color-text-secondary: #cbd5e1;  /* Balanced slate-300 */
-  --color-text-muted: #94a3b8;      /* Legible slate-400 */
-  --color-text-subtle: #64748b;     /* Slate-500 */
-  --color-text-inverse: #070913;
+  /* Text Colors (Federico Pian titanium white & mineral slate) */
+  --color-text-main: #f1f1f1;       /* Crisp titanium silver */
+  --color-text-secondary: #a0a09f;  /* Exact Federico Pian secondary slate */
+  --color-text-muted: #787877;      /* Refined neutral slate */
+  --color-text-subtle: #5a5a59;     /* Deep stone */
+  --color-text-inverse: #262626;
 
-  /* Border Colors (Refined subtle definition) */
-  --color-border: #1e293b;
-  --color-border-hover: #334155;
-  --color-border-focus: #3b82f6;
+  /* Border Colors (Federico Pian hsla(0, 0%, 100%, 0.2)) */
+  --color-border: hsla(0, 0%, 100%, 0.16);
+  --color-border-hover: hsla(0, 0%, 100%, 0.28);
+  --color-border-focus: #ffffff;
 
-  /* Semantic Feedback States (Vibrant & readable on dark backgrounds) */
+  /* Semantic Feedback States */
   --color-success: #10b981;
   --color-success-bg: rgba(16, 185, 129, 0.14);
   --color-success-border: rgba(16, 185, 129, 0.32);
@@ -198,37 +198,41 @@
   --color-info-border: rgba(14, 165, 233, 0.32);
   --color-info-text: #7dd3fc;
 
-  --color-disabled-bg: #121829;
-  --color-disabled-text: #64748b;
-  --color-disabled-border: #1e293b;
+  --color-disabled-bg: #222222;
+  --color-disabled-text: #787877;
+  --color-disabled-border: hsla(0, 0%, 100%, 0.10);
 
   /* Focus & Elevation */
-  --focus-ring: 0 0 0 2px #070913, 0 0 0 4px #3b82f6;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.55);
-  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.65), 0 2px 6px -2px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.75), 0 4px 10px -2px rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 2px #262626, 0 0 0 4px #ffffff;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.55), 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.65), 0 4px 10px -2px rgba(0, 0, 0, 0.4);
 
-  /* 2026 Polished Crystal Glass System Tokens (Dark Mode) */
-  --glass-bg-base: rgba(14, 21, 38, 0.72);
-  --glass-bg-elevated: rgba(18, 27, 48, 0.84);
-  --glass-bg-subtle: rgba(14, 21, 38, 0.48);
-  --glass-border: rgba(255, 255, 255, 0.10);
-  --glass-border-subtle: rgba(255, 255, 255, 0.06);
-  --glass-border-highlight: rgba(255, 255, 255, 0.22);
-  --glass-blur: blur(20px) saturate(180%);
-  --glass-blur-heavy: blur(36px) saturate(190%);
-  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  --glass-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --glass-shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.70), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  /* 2026 Tactile Frosted Glass System Tokens (Dark Mode - Federico Pian Tone) */
+  --glass-bg-base: rgba(38, 38, 38, 0.76);
+  --glass-bg-elevated: rgba(48, 48, 48, 0.86);
+  --glass-bg-subtle: rgba(38, 38, 38, 0.50);
+  --glass-border: hsla(0, 0%, 100%, 0.16);
+  --glass-border-subtle: hsla(0, 0%, 100%, 0.08);
+  --glass-border-highlight: hsla(0, 0%, 100%, 0.28);
+  --glass-blur: blur(20px) saturate(160%);
+  --glass-blur-heavy: blur(36px) saturate(180%);
+  --glass-sheen: inset 0 1px 0 hsla(0, 0%, 100%, 0.18);
+  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 hsla(0, 0%, 100%, 0.14);
+  --glass-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 hsla(0, 0%, 100%, 0.18);
+  --glass-shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.55), inset 0 1px 0 hsla(0, 0%, 100%, 0.22);
 }
 
-/* Smooth Theme Switching Transitions */
+/* Smooth Theme Switching Transitions (Matching Federico Pian 0.3s cubic-bezier) */
+html {
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 html.theme-transitioning,
 html.theme-transitioning *,
 html.theme-transitioning *::before,
 html.theme-transitioning *::after {
-  transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease !important;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   transition-delay: 0s !important;
 }
 
@@ -255,22 +259,23 @@ body {
   overflow-x: hidden;
   width: 100%;
   background-color: var(--color-bg-canvas);
-  background-image: radial-gradient(120% 80% at 50% -6%, #ffffff 0%, #f8fafc 55%, #f1f5f9 100%);
+  background-image: radial-gradient(120% 80% at 50% -6%, #efece6 0%, #e7e4df 60%, #ded9d0 100%);
   background-attachment: fixed;
   position: relative;
 }
 
 :root[data-theme="dark"] body {
   background-color: var(--color-bg-canvas);
-  background-image: radial-gradient(120% 80% at 50% -8%, #0d1224 0%, #070913 60%, #04050a 100%);
+  background-image: radial-gradient(120% 80% at 50% -8%, #313131 0%, #262626 58%, #1d1d1d 100%);
   background-attachment: fixed;
 }
 
 /* ==========================================================================
-   AMBIENT SPATIAL BACKGROUND: Stage Spotlights, Micro-Dot Matrix & Caustics
+   AMBIENT SPATIAL BACKGROUND: Federico Pian 3D Shader Caustics & Micro-Dots
+   data-color1="255,150,85" (coral), data-color2="185,60,100" (plum), data-color3="2,141,234" (azure)
    ========================================================================== */
 
-/* LIGHT MODE: Pure Crisp Daylight Keynote Canvas (#f8fafc) */
+/* LIGHT MODE: Warm Stone / Travertine Canvas with Subtle Coral & Sky Caustics */
 body::before {
   content: '';
   position: fixed;
@@ -279,37 +284,37 @@ body::before {
   z-index: 0;
   background-image:
     /* Subtle 28px micro-dot matrix grid */
-    radial-gradient(circle, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
-    /* Pure daylight keynote overhead skylight (Center flood) */
-    radial-gradient(ellipse 75% 42% at 50% -5%, rgba(56, 189, 248, 0.09) 0%, rgba(37, 99, 235, 0.03) 45%, transparent 70%),
-    /* Soft ambient sky prism (Top left) */
-    radial-gradient(circle at 10% 12%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
-    /* Gentle soft violet-indigo prism (Top right) */
-    radial-gradient(circle at 90% 14%, rgba(99, 102, 241, 0.04) 0%, transparent 50%);
+    radial-gradient(circle, rgba(23, 25, 26, 0.04) 1px, transparent 1px),
+    /* Overhead warm travertine & coral skylight */
+    radial-gradient(ellipse 75% 42% at 50% -5%, rgba(255, 150, 85, 0.08) 0%, rgba(185, 60, 100, 0.03) 45%, transparent 70%),
+    /* Soft cyan/sky prism (Top left) */
+    radial-gradient(circle at 10% 12%, rgba(2, 141, 234, 0.05) 0%, transparent 50%),
+    /* Gentle peach/coral prism (Top right) */
+    radial-gradient(circle at 90% 14%, rgba(255, 150, 85, 0.06) 0%, transparent 50%);
   background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
   background-attachment: fixed;
 }
 
-/* DARK MODE: Ultra-Clean Obsidian Canvas (#070913) & Luminous Cosmic Stage Caustics */
+/* DARK MODE: Velvety Graphite Canvas with Luminous Warm Stage Caustics */
 :root[data-theme="dark"] body::before {
   background-image:
     /* Tech luminescent 28px micro-dot matrix */
-    radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    /* Luminous cosmic stage caustic - Center royal sapphire floodlight */
-    radial-gradient(ellipse 65% 40% at 50% -6%, rgba(37, 99, 235, 0.22) 0%, rgba(29, 78, 216, 0.08) 45%, transparent 75%),
-    /* Luminous cosmic azure wash (Top left) */
-    radial-gradient(circle at 12% 8%, rgba(14, 165, 233, 0.14) 0%, transparent 55%),
-    /* Pure deep indigo caustic (Top right) */
-    radial-gradient(circle at 88% 10%, rgba(99, 102, 241, 0.12) 0%, transparent 55%);
+    radial-gradient(circle, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    /* Warm coral-plum stage floodlight */
+    radial-gradient(ellipse 65% 40% at 50% -6%, rgba(255, 150, 85, 0.15) 0%, rgba(185, 60, 100, 0.08) 45%, transparent 75%),
+    /* Luminous azure wash (Top left) */
+    radial-gradient(circle at 12% 8%, rgba(2, 141, 234, 0.13) 0%, transparent 55%),
+    /* Warm amber-coral caustic (Top right) */
+    radial-gradient(circle at 88% 10%, rgba(255, 150, 85, 0.11) 0%, transparent 55%);
   background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
 }
 
 /* ==========================================================================
-   ATMOSPHERIC AMBIENT DRIFT: Living Cosmic Depth & Keynote Aura
+   ATMOSPHERIC AMBIENT DRIFT: Living Organic Depth & Keynote Aura
    Smooth multi-point breathing animation providing spatial depth
    ========================================================================== */
 
-/* LIGHT MODE: Crisp Ambient Prism Wash */
+/* LIGHT MODE: Warm Ambient Prism Wash */
 body::after {
   content: '';
   position: fixed;
@@ -319,19 +324,19 @@ body::after {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 60% 50% at 25% 25%, rgba(56, 189, 248, 0.05) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 45% at 75% 35%, rgba(99, 102, 241, 0.04) 0%, transparent 65%);
+    radial-gradient(ellipse 60% 50% at 25% 25%, rgba(255, 150, 85, 0.05) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 75% 35%, rgba(185, 60, 100, 0.035) 0%, transparent 65%);
   filter: blur(80px);
   animation: ambientAuroraDrift 28s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   opacity: 0.7;
 }
 
-/* DARK MODE: Cosmic Stage Glow with Refined Luminous Depth */
+/* DARK MODE: Graphite Stage Glow with Federico Caustic Depth */
 :root[data-theme="dark"] body::after {
   background:
-    radial-gradient(ellipse 55% 45% at 20% 20%, rgba(14, 165, 233, 0.10) 0%, transparent 65%),
-    radial-gradient(ellipse 50% 50% at 80% 25%, rgba(99, 102, 241, 0.09) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 55% at 50% 50%, rgba(37, 99, 235, 0.12) 0%, transparent 70%);
+    radial-gradient(ellipse 55% 45% at 20% 20%, rgba(2, 141, 234, 0.11) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 80% 25%, rgba(185, 60, 100, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 55% at 50% 50%, rgba(255, 150, 85, 0.12) 0%, transparent 70%);
   filter: blur(80px);
   animation: ambientAuroraDrift 24s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
   opacity: 0.85;
@@ -354,6 +359,75 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   body::after {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   FEDERICO PIAN TACTILE NOISE & GLASS OVERLAY (.glass-overlay)
+   Authentic organic film grain & subtle dark mode vignette
+   ========================================================================== */
+.glass-overlay {
+  height: 100%;
+  left: 0;
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  transform: translateZ(0);
+  width: 100%;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.glass-overlay::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  transform: translateZ(0);
+}
+
+:root[data-theme="dark"] .glass-overlay,
+.dark .glass-overlay {
+  background: hsla(0, 0%, 7%, 0.4);
+}
+
+@media only screen and (min-width: 1024px) {
+  :root[data-theme="dark"] .glass-overlay,
+  .dark .glass-overlay {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+:root[data-theme="dark"] .glass-overlay::after,
+.dark .glass-overlay::after {
+  opacity: 0.065;
+  animation: noiseGrain 2s steps(3) infinite both;
+  display: block;
+}
+
+@keyframes noiseGrain {
+  0% { transform: translateZ(0); }
+  10% { transform: translate3d(-5%, -5%, 0); }
+  20% { transform: translate3d(-10%, 5%, 0); }
+  30% { transform: translate3d(5%, -10%, 0); }
+  40% { transform: translate3d(-5%, 15%, 0); }
+  50% { transform: translate3d(-10%, 5%, 0); }
+  60% { transform: translate3d(15%, 0, 0); }
+  70% { transform: translate3d(10%, 0, 0); }
+  80% { transform: translate3d(-15%, 0, 0); }
+  90% { transform: translate3d(10%, 5%, 0); }
+  100% { transform: translate3d(15%, 8%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-theme="dark"] .glass-overlay::after,
+  .dark .glass-overlay::after {
     animation: none;
   }
 }

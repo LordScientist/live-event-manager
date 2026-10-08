@@ -6,7 +6,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/lc-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content="#e7e4df" />
     <title>LIVE CONNECT</title>
     <!-- 2026 Modern Aesthetic Typography: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,7 +23,7 @@
           if (theme === 'dark') {
             document.documentElement.classList.add('dark');
             var meta = document.querySelector('meta[name="theme-color"]');
-            if (meta) meta.setAttribute('content', '#0b0f19');
+            if (meta) meta.setAttribute('content', '#262626');
           }
         } catch (e) {}
       })();
@@ -31,6 +31,7 @@
   </head>
   <body>
     <div id="root"></div>
+    <div class="glass-overlay" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -545,7 +545,7 @@
   min-height: 100vh;
   justify-content: flex-start;
   padding: 0;
-  background-color: #FAF9F9;
+  background-color: var(--color-bg-canvas);
   overflow-x: hidden;
 }
 
