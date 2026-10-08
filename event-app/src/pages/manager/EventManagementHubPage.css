@@ -8,6 +8,9 @@
   flex-direction: column;
   gap: var(--space-6);
   padding-bottom: var(--space-16);
+  max-width: 1040px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 /* Hub Header */
