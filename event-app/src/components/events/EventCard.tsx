@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, MapPin, Building, ChevronRight, User } from 'lucide-react';
+import { Calendar, Clock, MapPin, Building, ChevronRight, User, Heart } from 'lucide-react';
 import { Card, CardContent } from '../ui/Card';
 import { StatusBadge } from '../ui/StatusBadge';
 import type { StatusType } from '../ui/StatusBadge';
@@ -21,6 +21,7 @@ export const EventCard: React.FC<EventCardProps> = ({
   actionLabel,
   variant = 'grid'
 }) => {
+  const [isBookmarked, setIsBookmarked] = useState(false);
   const startDate = new Date(event.start_date);
   const monthAbbr = startDate.toLocaleDateString('en-US', { month: 'short' }).toUpperCase();
   const dayNum = startDate.toLocaleDateString('en-US', { day: 'numeric' });
@@ -118,6 +119,22 @@ export const EventCard: React.FC<EventCardProps> = ({
           <span className="event-card__date-month">{monthAbbr}</span>
           <span className="event-card__date-day">{dayNum}</span>
         </div>
+
+        {/* Top-Right Frosted Favorite / Bookmark Button (Image 1 Inspiration) */}
+        <button
+          type="button"
+          className={`event-card__favorite-btn ${isBookmarked ? 'event-card__favorite-btn--active' : ''}`}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsBookmarked(!isBookmarked);
+          }}
+          aria-label={isBookmarked ? 'Remove bookmark' : 'Bookmark event'}
+          title={isBookmarked ? 'Bookmarked' : 'Bookmark event'}
+        >
+          <Heart size={15} fill={isBookmarked ? '#ef4444' : 'none'} color={isBookmarked ? '#ef4444' : '#ffffff'} />
+        </button>
+
         <div className="event-card__badges">
           <span className="event-card__category">{event.category}</span>
           <div className="event-card__status-wrap">
@@ -127,6 +144,18 @@ export const EventCard: React.FC<EventCardProps> = ({
       </div>
 
       <CardContent className="event-card__content">
+        {/* Tactile Attendees Pill (Image 1 Inspiration: "150+ Joined") */}
+        <div className="event-card__attendees-pill">
+          <div className="attendee-avatars" aria-hidden="true">
+            <span className="attendee-avatar attendee-avatar--blue">J</span>
+            <span className="attendee-avatar attendee-avatar--amber">S</span>
+            <span className="attendee-avatar attendee-avatar--emerald">D</span>
+          </div>
+          <span className="attendee-count-text">
+            {event.registered_count ? `${event.registered_count}+ Joined` : '120+ Joined'}
+          </span>
+        </div>
+
         <h3 className="event-card__title">
           <Link to={destinationUrl} className="event-card__title-link">
             {event.name}
@@ -157,12 +186,13 @@ export const EventCard: React.FC<EventCardProps> = ({
           </div>
         </div>
 
-        {/* View Event Button */}
+        {/* View Event Button with 3D Luminous Bloom */}
         <div className="event-card__footer">
           <Link to={destinationUrl} style={{ width: '100%' }}>
             <Button
               variant={event.registration_status === 'registered' ? 'primary' : 'secondary'}
               size="md"
+              className={event.registration_status === 'registered' ? 'luminous-bloom' : ''}
               style={{ width: '100%' }}
             >
               {buttonLabel}

@@ -1,6 +1,20 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Bell, Sparkles, Calendar, MapPin, ArrowRight, Radio, Presentation } from 'lucide-react';
+import {
+  Search,
+  Bell,
+  Sparkles,
+  Calendar,
+  MapPin,
+  ArrowRight,
+  Radio,
+  Presentation,
+  Mic,
+  Laptop,
+  GraduationCap,
+  Briefcase,
+  HeartHandshake
+} from 'lucide-react';
 import { EventCard } from '../../components/events/EventCard';
 import { Button } from '../../components/ui/Button';
 import { StatusBadge } from '../../components/ui/StatusBadge';
@@ -14,6 +28,22 @@ import './UserHomePage.css';
 
 const CATEGORIES = ['All', 'Conference', 'Workshop', 'Seminar', 'Career', 'Community'] as const;
 type Category = typeof CATEGORIES[number];
+
+interface CategoryConfig {
+  id: Category;
+  label: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  accentColor: 'blue' | 'cyan' | 'amber' | 'purple' | 'emerald' | 'orange';
+}
+
+const CATEGORY_ITEMS: CategoryConfig[] = [
+  { id: 'All', label: 'All', icon: Sparkles, accentColor: 'blue' },
+  { id: 'Conference', label: 'Conference', icon: Mic, accentColor: 'cyan' },
+  { id: 'Workshop', label: 'Workshop', icon: Laptop, accentColor: 'amber' },
+  { id: 'Seminar', label: 'Seminar', icon: GraduationCap, accentColor: 'purple' },
+  { id: 'Career', label: 'Career', icon: Briefcase, accentColor: 'emerald' },
+  { id: 'Community', label: 'Community', icon: HeartHandshake, accentColor: 'orange' },
+];
 
 export const UserHomePage: React.FC = () => {
   const { currentUser, isAuthenticated } = useAuth();
@@ -160,7 +190,7 @@ export const UserHomePage: React.FC = () => {
 
       {/* Quicklink Dashboard Card: Shows your current / registered event with quick actions */}
       {activeEventData && (
-        <section className="active-event-quicklink" aria-label="Current Event Dashboard">
+        <section className="active-event-quicklink card-stacked-deck" aria-label="Current Event Dashboard">
           <div className="active-event-quicklink__header">
             <span className="active-event-quicklink__tag">
               <span className="beacon-pulse" style={{ marginRight: '6px' }} />
@@ -199,7 +229,7 @@ export const UserHomePage: React.FC = () => {
 
           <div className="active-event-quicklink__actions">
             <Link to={`/my-events/${activeEventData.event.id}`}>
-              <Button variant="primary" size="sm" rightIcon={<ArrowRight size={14} />}>
+              <Button variant="primary" size="sm" className="luminous-bloom" rightIcon={<ArrowRight size={14} />}>
                 Open Event Hub
               </Button>
             </Link>
@@ -217,19 +247,32 @@ export const UserHomePage: React.FC = () => {
         </section>
       )}
 
-      {/* Categories Bar matching Figma frame 1:6 */}
+      {/* 3D Bento Category Tiles (Inspired by Image 1 "Choose Category's" & Image 2) */}
       <section className="user-home-categories" aria-label="Event Categories">
+        <div className="categories-header-row">
+          <h2 className="categories-header-title">Choose Category</h2>
+          <span className="categories-header-tag">Tactile Explorer</span>
+        </div>
         <div className="categories-grid-wrap">
-          {CATEGORIES.map((category) => (
-            <button
-              key={category}
-              type="button"
-              className={`category-pill ${selectedCategory === category ? 'category-pill--active' : ''}`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
-            </button>
-          ))}
+          {CATEGORY_ITEMS.map(({ id, label, icon: Icon, accentColor }) => {
+            const isActive = selectedCategory === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                className={`category-bento-tile category-bento-tile--${accentColor} ${
+                  isActive ? 'category-bento-tile--active' : ''
+                }`}
+                onClick={() => setSelectedCategory(id)}
+              >
+                <div className="category-bento-tile__icon-wrap">
+                  <Icon size={18} />
+                </div>
+                <span className="category-bento-tile__label">{label}</span>
+                {isActive && <div className="category-bento-tile__active-halo" />}
+              </button>
+            );
+          })}
         </div>
       </section>
 

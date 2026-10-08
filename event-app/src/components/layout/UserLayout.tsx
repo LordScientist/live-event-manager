@@ -113,7 +113,7 @@ export const UserLayout: React.FC = () => {
       {/* Interactive Walkthrough for Fresh Users */}
       <InteractiveTour />
 
-      {/* Mobile Bottom Navigation (Home | My Events | Notifications | Profile) */}
+      {/* Mobile Bottom Navigation (Floating Frosted Dock matching Image 1) */}
       <nav className="mobile-bottom-nav mobile-only" aria-label="Mobile Navigation">
         <NavLink
           to="/"
@@ -130,6 +130,18 @@ export const UserLayout: React.FC = () => {
           <CalendarCheck size={20} aria-hidden="true" />
           <span>My Events</span>
         </NavLink>
+
+        {/* Center 3D Floating Action Button (Image 1 Inspiration) */}
+        <button
+          type="button"
+          className="mobile-nav-center-btn luminous-bloom"
+          onClick={() => window.dispatchEvent(new CustomEvent('open-codi-tour'))}
+          aria-label="Codi Mascot Companion & Guide"
+          title="Meet Codi Mascot Companion"
+        >
+          <Sparkles size={20} />
+        </button>
+
         <NavLink
           to="/notifications"
           className={({ isActive }) => `mobile-nav-item ${isActive ? 'mobile-nav-item--active' : ''}`}

@@ -4,6 +4,7 @@ export interface EventWithMeta extends Event {
   organizer_name: string;
   registration_status?: 'open' | 'closing_soon' | 'full' | 'registered' | 'pending';
   user_role_name?: string;
+  registered_count?: number;
 }
 
 export const MOCK_EVENTS: EventWithMeta[] = [

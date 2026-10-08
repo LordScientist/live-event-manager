@@ -319,10 +319,37 @@
   color: var(--color-text-main);
 }
 
-/* Category Filter Pills: Liquid frosted glass with specular border */
+/* 3D Bento Category Tiles (Inspired by Image 1 & 2) */
 .user-home-categories {
-  margin-top: 20px;
-  margin-bottom: 24px;
+  margin-top: 24px;
+  margin-bottom: 28px;
+}
+
+.categories-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.categories-header-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text-main);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.categories-header-tag {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  background: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
 }
 
 .categories-grid-wrap {
@@ -330,14 +357,120 @@
   overflow-x: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding: 4px 2px 8px 2px;
-  gap: 10px;
+  padding: 6px 4px 14px 4px;
+  gap: 12px;
 }
 
 .categories-grid-wrap::-webkit-scrollbar {
   display: none;
 }
 
+/* Tactile 3D Squircle Bento Tile */
+.category-bento-tile {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 18px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+:root[data-theme="dark"] .category-bento-tile {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.category-bento-tile:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+:root[data-theme="dark"] .category-bento-tile:hover {
+  border-color: rgba(96, 165, 250, 0.55);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.category-bento-tile__icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border-subtle);
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.category-bento-tile__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-main);
+  transition: color 0.2s ease;
+}
+
+/* Active State with Luminous Glow (like Image 1 "Hobbies" and Image 2 "Scientist") */
+.category-bento-tile--active {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+.category-bento-tile--active .category-bento-tile__label {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+.category-bento-tile--active .category-bento-tile__icon-wrap {
+  background: rgba(255, 255, 255, 0.22) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: #ffffff !important;
+}
+
+/* Cyan accent tile (Scientist style from Image 2) */
+.category-bento-tile--cyan.category-bento-tile--active {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+  box-shadow: 0 10px 26px rgba(2, 132, 199, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Amber accent tile */
+.category-bento-tile--amber.category-bento-tile--active {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%) !important;
+  box-shadow: 0 10px 26px rgba(217, 119, 6, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Purple accent tile */
+.category-bento-tile--purple.category-bento-tile--active {
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
+  box-shadow: 0 10px 26px rgba(124, 58, 237, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Emerald accent tile */
+.category-bento-tile--emerald.category-bento-tile--active {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 10px 26px rgba(5, 150, 105, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Orange accent tile */
+.category-bento-tile--orange.category-bento-tile--active {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%) !important;
+  box-shadow: 0 10px 26px rgba(234, 88, 12, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Backward-compatible pill */
 .category-pill {
   padding: 8px 20px;
   background-color: var(--glass-bg-base);
@@ -371,10 +504,6 @@
   font-weight: 700 !important;
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
   transform: translateY(-1px);
-}
-
-:root[data-theme="dark"] .category-pill--active {
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
 }
 
 /* Section Header: Featured Events + See all */

@@ -4,13 +4,13 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl, 20px);
-  box-shadow: var(--glass-shadow-sm);
+  border-radius: var(--radius-xl, 24px);
+  box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
   overflow: hidden;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.25s ease,
-              background-color 0.25s ease;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              background-color 0.22s ease;
   position: relative;
 }
 
@@ -25,20 +25,104 @@
 }
 
 .event-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(37, 99, 235, 0.45);
-  box-shadow: var(--glass-shadow-md);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 20px 48px -10px rgba(37, 99, 235, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 :root[data-theme="dark"] .event-card {
   background-color: var(--glass-bg-base);
   border-color: var(--glass-border);
-  box-shadow: var(--glass-shadow-sm);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 2px rgba(0, 0, 0, 0.4);
 }
 
 :root[data-theme="dark"] .event-card:hover {
-  border-color: rgba(96, 165, 250, 0.55);
-  box-shadow: var(--glass-shadow-md), 0 0 20px rgba(59, 130, 246, 0.15);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 24px 56px -10px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+/* Top-Right Favorite / Bookmark Button (Image 1 Inspiration) */
+.event-card__favorite-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.event-card__favorite-btn:hover {
+  transform: scale(1.1);
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
+}
+
+.event-card__favorite-btn--active {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.6) !important;
+}
+
+/* Tactile Attendee Counter Pill (Image 1 Inspiration: "150+ Joined") */
+.event-card__attendees-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  margin-bottom: 8px;
+  border-radius: var(--radius-full);
+  background: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  width: fit-content;
+}
+
+.attendee-avatars {
+  display: flex;
+  align-items: center;
+}
+
+.attendee-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 9px;
+  font-weight: 800;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: -5px;
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.attendee-avatar:first-child {
+  margin-left: 0;
+}
+
+.attendee-avatar--blue { background: #3b82f6; }
+.attendee-avatar--amber { background: #f59e0b; }
+.attendee-avatar--emerald { background: #10b981; }
+
+.attendee-count-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  letter-spacing: 0.01em;
 }
 
 .event-card--grid {
