@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from './Button';
 import { CodiToyAvatar } from '../presentation/CodiToyAvatar';
+import { triggerConfetti } from '../../utils/confetti';
 import './InteractiveTour.css';
 
 interface TourStep {
@@ -138,7 +139,12 @@ export const InteractiveTour: React.FC = () => {
   useEffect(() => {
     // Re-trigger bubble pop animation when step changes
     setCommentaryKey((prev) => prev + 1);
-  }, [currentStepIndex]);
+
+    // 2026 Celebration Microinteraction: Trigger confetti on reaching the final step
+    if (isOpen && currentStepIndex === TOUR_STEPS.length - 1) {
+      triggerConfetti(0.5, 0.45);
+    }
+  }, [currentStepIndex, isOpen]);
 
   const completeTour = () => {
     localStorage.removeItem('fresh_signup_tour_pending');
@@ -150,6 +156,7 @@ export const InteractiveTour: React.FC = () => {
     if (currentStepIndex < TOUR_STEPS.length - 1) {
       setCurrentStepIndex((prev) => prev + 1);
     } else {
+      triggerConfetti(0.5, 0.5);
       completeTour();
     }
   };
@@ -161,6 +168,7 @@ export const InteractiveTour: React.FC = () => {
   };
 
   const handleGoToPresentation = () => {
+    triggerConfetti(0.5, 0.4);
     completeTour();
     navigate('/presentation');
   };

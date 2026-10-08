@@ -20,6 +20,7 @@ import { useAuth } from '../../context/AuthContext';
 import { eventService } from '../../services/eventService';
 import type { EventWithMeta } from '../../services/eventService';
 import { registrationService } from '../../services/registrationService';
+import { triggerConfetti } from '../../utils/confetti';
 import './EventRegistrationPage.css';
 
 type RoleOption = 'Participant' | 'Volunteer' | 'Speaker';
@@ -132,6 +133,7 @@ export const EventRegistrationPage: React.FC = () => {
     setIsSubmitting(false);
     setFinalStatus(statusResult);
     setRegistrationSubmitted(true);
+    triggerConfetti(0.5, 0.4);
   };
 
   // SUCCESS SCREEN (Prompt Section 14)

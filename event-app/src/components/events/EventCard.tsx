@@ -66,13 +66,15 @@ export const EventCard: React.FC<EventCardProps> = ({
   if (variant === 'compact') {
     return (
       <Card variant="interactive" className="event-card event-card--compact">
+        {/* Left: Distinct Date Block */}
         <div className="event-card__compact-date">
           <span className="event-card__date-month">{monthAbbr}</span>
           <span className="event-card__date-day">{dayNum}</span>
         </div>
+
+        {/* Center: Info Column (Guaranteed Zero Overlaps) */}
         <div className="event-card__compact-info">
           <div className="event-card__compact-header">
-            <span className="event-card__category">{event.category}</span>
             <StatusBadge status={badgeConfig.status} label={badgeConfig.label} />
           </div>
           <h4 className="event-card__compact-title">
@@ -83,6 +85,9 @@ export const EventCard: React.FC<EventCardProps> = ({
           <div className="event-card__compact-meta">
             <span><Clock size={13} aria-hidden="true" /> {formattedTime}</span>
             <span><MapPin size={13} aria-hidden="true" /> {event.venue}</span>
+          </div>
+          <div className="event-card__compact-tags">
+            <span className="event-card__compact-category">{event.category}</span>
             {event.user_role_name && (
               <span className="event-card__role-pill">
                 <User size={12} aria-hidden="true" /> {event.user_role_name}
@@ -90,6 +95,8 @@ export const EventCard: React.FC<EventCardProps> = ({
             )}
           </div>
         </div>
+
+        {/* Right: Chevron Link Action */}
         <Link to={destinationUrl} className="event-card__compact-arrow" aria-label={`Open ${event.name}`}>
           <ChevronRight size={20} aria-hidden="true" />
         </Link>

@@ -91,7 +91,7 @@ export const UserHomePage: React.FC = () => {
           <div className="user-home-greeting">
             <span className="user-home-greeting__salutation">{salutation},</span>
             <h1 className="user-home-greeting__name">
-              {currentUser.first_name || 'Jonathan'}
+              <span className="text-gradient-shimmer">{currentUser.first_name || 'Jonathan'}</span>
               <span className="greeting-wave" aria-hidden="true">👋</span>
             </h1>
           </div>
@@ -163,6 +163,7 @@ export const UserHomePage: React.FC = () => {
         <section className="active-event-quicklink" aria-label="Current Event Dashboard">
           <div className="active-event-quicklink__header">
             <span className="active-event-quicklink__tag">
+              <span className="beacon-pulse" style={{ marginRight: '6px' }} />
               <Radio size={14} />
               <span>Your Active Event</span>
             </span>

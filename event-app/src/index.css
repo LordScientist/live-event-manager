@@ -356,3 +356,107 @@ a:hover {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   2026 JAWDROPPING AESTHETIC ENHANCEMENTS
+   Interactive Cursor Spotlights, Bento Utilities & Kinetic Typography
+   ========================================================================== */
+
+/* ── Interactive Dynamic Spotlight Glow on Frosted Glass ─────────────────── */
+.card,
+.event-card,
+.stat-card,
+.overview-stat-card,
+.my-event-card-item {
+  position: relative;
+}
+
+.card::after,
+.event-card::after,
+.stat-card::after,
+.overview-stat-card::after,
+.my-event-card-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(37, 99, 235, 0.08),
+    transparent 65%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 2;
+}
+
+:root[data-theme="dark"] .card::after,
+:root[data-theme="dark"] .event-card::after,
+:root[data-theme="dark"] .stat-card::after,
+:root[data-theme="dark"] .overview-stat-card::after,
+:root[data-theme="dark"] .my-event-card-item::after {
+  background: radial-gradient(
+    420px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(96, 165, 250, 0.16),
+    transparent 65%
+  );
+}
+
+.card:hover::after,
+.event-card:hover::after,
+.stat-card:hover::after,
+.overview-stat-card:hover::after,
+.my-event-card-item:hover::after {
+  opacity: 1;
+}
+
+/* ── 2026 Kinetic Shimmer Text ───────────────────────────────────────────── */
+.text-gradient-shimmer {
+  background: linear-gradient(135deg, var(--color-text-main) 0%, #3b82f6 50%, #f97316 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  animation: shimmerText 6s ease-in-out infinite alternate;
+}
+
+:root[data-theme="dark"] .text-gradient-shimmer {
+  background: linear-gradient(135deg, #ffffff 0%, #60a5fa 50%, #fb923c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes shimmerText {
+  0% {
+    background-position: 0% center;
+  }
+  100% {
+    background-position: 100% center;
+  }
+}
+
+/* ── 2026 Pulsing Live Beacon Indicator ──────────────────────────────────── */
+.beacon-pulse {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: beaconPing 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes beaconPing {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+

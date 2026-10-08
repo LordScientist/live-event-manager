@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
@@ -23,6 +23,7 @@ import { LoginPage } from './pages/auth/LoginPage';
 import { OnboardingPage } from './pages/auth/OnboardingPage';
 import { SplashScreen } from './pages/auth/SplashScreen';
 import { PresentationPage } from './pages/presentation/PresentationPage';
+import { initCardSpotlights } from './utils/spotlight';
 
 /**
  * Route protection: Unauthenticated visitors are routed to /signup
@@ -52,6 +53,10 @@ const PublicOnlyRoute: React.FC<{ children: React.ReactNode }> = ({ children }) 
 };
 
 export const App: React.FC = () => {
+  useEffect(() => {
+    return initCardSpotlights();
+  }, []);
+
   return (
     <ThemeProvider>
       <AuthProvider>

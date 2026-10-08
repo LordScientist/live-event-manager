@@ -90,7 +90,7 @@ export const MyEventsPage: React.FC = () => {
             alt="Live Connect"
             className="my-events-header-logo"
           />
-          <h1 className="my-events-title">My Events</h1>
+          <h1 className="my-events-title text-gradient-shimmer">My Events</h1>
         </header>
 
         {/* 2. Top Segmented Control Tabs matching Figma Node 1:10 */}
