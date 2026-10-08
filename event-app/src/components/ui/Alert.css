@@ -1,12 +1,25 @@
+/* ==========================================================================
+   ALERT COMPONENT - macOS Frosted Translucent Banner
+   Liquid blur with colored specular glow and squircle contours
+   ========================================================================== */
+
 .alert {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
   padding: var(--space-4);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg, 14px);
   border: 1px solid transparent;
   margin-bottom: var(--space-4);
   text-align: left;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  transition: all 0.2s ease;
+}
+
+:root[data-theme="dark"] .alert {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .alert__icon {
@@ -24,49 +37,94 @@
   font-size: var(--text-base);
   font-weight: 600;
   margin-bottom: var(--space-1);
+  letter-spacing: -0.01em;
 }
 
 .alert__content {
   font-size: var(--text-sm);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* Info */
 .alert--info {
-  background-color: var(--color-info-bg);
-  border-color: var(--color-info-border);
+  background-color: rgba(2, 132, 199, 0.09);
+  border-color: rgba(2, 132, 199, 0.28);
   color: var(--color-info-text);
+  box-shadow: 0 4px 20px rgba(2, 132, 199, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 .alert--info .alert__title {
   color: var(--color-info-text);
 }
 
+:root[data-theme="dark"] .alert--info {
+  background-color: rgba(14, 165, 233, 0.14);
+  border-color: rgba(14, 165, 233, 0.35);
+  color: #bae6fd;
+  box-shadow: 0 4px 20px rgba(14, 165, 233, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] .alert--info .alert__title {
+  color: #7dd3fc;
+}
+
 /* Success */
 .alert--success {
-  background-color: var(--color-success-bg);
-  border-color: var(--color-success-border);
+  background-color: rgba(16, 185, 129, 0.09);
+  border-color: rgba(16, 185, 129, 0.28);
   color: var(--color-success-text);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 .alert--success .alert__title {
   color: var(--color-success-text);
 }
 
+:root[data-theme="dark"] .alert--success {
+  background-color: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #a7f3d0;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] .alert--success .alert__title {
+  color: #6ee7b7;
+}
+
 /* Warning */
 .alert--warning {
-  background-color: var(--color-warning-bg);
-  border-color: var(--color-warning-border);
+  background-color: rgba(245, 158, 11, 0.09);
+  border-color: rgba(245, 158, 11, 0.28);
   color: var(--color-warning-text);
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 .alert--warning .alert__title {
   color: var(--color-warning-text);
 }
 
+:root[data-theme="dark"] .alert--warning {
+  background-color: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.35);
+  color: #fde68a;
+  box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] .alert--warning .alert__title {
+  color: #fcd34d;
+}
+
 /* Error */
 .alert--error {
-  background-color: var(--color-error-bg);
-  border-color: var(--color-error-border);
+  background-color: rgba(239, 68, 68, 0.09);
+  border-color: rgba(239, 68, 68, 0.28);
   color: var(--color-error-text);
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
 .alert--error .alert__title {
   color: var(--color-error-text);
+}
+
+:root[data-theme="dark"] .alert--error {
+  background-color: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.35);
+  color: #fecaca;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+:root[data-theme="dark"] .alert--error .alert__title {
+  color: #fca5a5;
 }

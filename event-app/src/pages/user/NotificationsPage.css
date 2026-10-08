@@ -118,34 +118,41 @@
 
 .queue-filter-pill {
   box-sizing: border-box;
-  padding: 7px 14px;
-  border-radius: 9999px;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid var(--color-border, #e2e8f0);
-  background-color: var(--color-bg-surface, #ffffff);
+  border: 1px solid var(--glass-border-subtle);
+  background-color: var(--glass-bg-base);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   color: var(--color-text-secondary, #64748b);
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
+  box-shadow: var(--glass-shadow-sm);
 }
 
 .queue-filter-pill:hover {
-  background-color: #f8dcca;
-  border-color: #f97316;
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(249, 115, 22, 0.4);
   color: #c2410c;
+  transform: translateY(-1px);
+  box-shadow: var(--glass-shadow-md);
 }
 
 .queue-filter-pill--active {
-  background-color: #0f172a;
-  color: #ffffff;
-  border-color: #0f172a;
+  background-color: var(--color-secondary) !important;
+  color: #ffffff !important;
+  border-color: var(--color-secondary) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25) !important;
 }
 
 :root[data-theme="dark"] .queue-filter-pill--active {
-  background-color: #f97316;
-  color: #ffffff;
-  border-color: #f97316;
+  background-color: #f97316 !important;
+  color: #ffffff !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35) !important;
 }
 
 /* ── Groups ─────────────────────────────────────────────────────────────── */
@@ -177,50 +184,67 @@
   gap: 16px; /* Generous 16px separation prevents card collisions */
 }
 
-/* ── Notification Cards matching Frame 1:11 design styles ───────────────── */
+/* ── Notification Cards: Liquid frosted glass with specular highlight border ─ */
 .notif-card {
   box-sizing: border-box;
   display: flex;
   align-items: flex-start;
   gap: 16px;
   padding: 20px;
-  background-color: #f2f3f5; /* Clean light grey matching Figma cards */
-  border: 1.5px solid transparent;
-  border-radius: 16px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 18px);
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: transform 0.22s ease-in-out, background-color 0.22s ease-in-out, border-color 0.22s ease-in-out, box-shadow 0.22s ease-in-out;
+  box-shadow: var(--glass-shadow-sm);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.notif-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--glass-sheen);
+  z-index: 1;
 }
 
 :root[data-theme="dark"] .notif-card {
-  background-color: #172136;
-  border-color: #1e293b;
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow-sm);
 }
 
-/* ── Orange Hover State (Reverts on mouse leave) ────────────────────────── */
+/* ── Hover State with specular border & glow ─────────────────────────────── */
 .notif-card:hover {
-  background-color: #f8dcca; /* Soft peach/orange */
-  border-color: #f97316; /* Vibrant orange outline */
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(249, 115, 22, 0.45);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.16);
+  box-shadow: var(--glass-shadow-md), 0 0 20px rgba(249, 115, 22, 0.12);
   z-index: 2;
 }
 
 :root[data-theme="dark"] .notif-card:hover {
-  background-color: rgba(249, 115, 22, 0.16);
-  border-color: #f97316;
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow: var(--glass-shadow-md), 0 0 20px rgba(249, 115, 22, 0.2);
   z-index: 2;
 }
 
 /* Unread Distinction */
 .notif-card--unread {
-  background-color: #fff6f1;
+  background-color: var(--glass-bg-base);
   border-left: 5px solid #ea580c;
 }
 
 :root[data-theme="dark"] .notif-card--unread {
-  background-color: rgba(249, 115, 22, 0.12);
+  background-color: var(--glass-bg-base);
   border-left: 5px solid #f97316;
 }
 
@@ -232,17 +256,21 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background-color: #ffffff;
+  background-color: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease-in-out;
+  box-shadow: var(--glass-shadow-sm);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root[data-theme="dark"] .notif-card__icon-wrapper {
-  background-color: #0f172a;
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border);
 }
 
 .notif-card:hover .notif-card__icon-wrapper {
@@ -375,13 +403,13 @@
   gap: 12px;
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  border-top: 1px solid var(--glass-border-subtle);
   flex-wrap: wrap;
 }
 
 :root[data-theme="dark"] .notif-card__footer,
 :root[data-theme="dark"] .notif-card__actions {
-  border-top-color: rgba(255, 255, 255, 0.08);
+  border-top-color: var(--glass-border-subtle);
 }
 
 .notif-link,
@@ -414,8 +442,10 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background-color: #ffffff;
-  border: 1px solid var(--color-border, #e2e8f0);
+  background-color: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 12px;
   font-weight: 600;
   color: var(--color-text-secondary, #475569);
@@ -424,17 +454,17 @@
   border-radius: 8px;
   transition: all 0.15s ease-in-out;
   min-height: 32px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--glass-shadow-sm);
 }
 
 :root[data-theme="dark"] .mark-read-btn {
-  background-color: #1e293b;
-  border-color: #334155;
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border);
   color: #cbd5e1;
 }
 
 .mark-read-btn:hover {
-  background-color: #f8dcca;
+  background-color: var(--glass-bg-elevated);
   border-color: #f97316;
   color: #ea580c;
 }
@@ -496,15 +526,20 @@
 /* Empty State */
 .notifications-empty {
   box-sizing: border-box;
-  background-color: #f2f3f5;
-  border-radius: 16px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-xl, 20px);
   padding: 48px 24px;
   text-align: center;
   color: var(--color-text-muted);
+  box-shadow: var(--glass-shadow-sm);
 }
 
 :root[data-theme="dark"] .notifications-empty {
-  background-color: #172136;
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
 }
 
 .notif-empty-icon {

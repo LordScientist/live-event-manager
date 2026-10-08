@@ -1,18 +1,25 @@
+/* ==========================================================================
+   BUTTON COMPONENT - macOS Squircle & Liquid Frosted Glass
+   Sonoma / Sequoia Keynote aesthetic with luminous gradients & specular sheen
+   ========================================================================== */
+
 .btn {
+  --radius-md: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-sans);
   font-weight: 500;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-md, 10px);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all 0.15s ease-in-out;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   min-height: var(--touch-target-min);
   box-sizing: border-box;
   white-space: nowrap;
   user-select: none;
+  position: relative;
 }
 
 .btn:focus-visible {
@@ -22,11 +29,13 @@
 
 .btn:disabled,
 .btn[aria-disabled="true"] {
-  background-color: var(--color-disabled-bg);
-  color: var(--color-disabled-text);
-  border-color: var(--color-disabled-border);
+  background: var(--color-disabled-bg) !important;
+  color: var(--color-disabled-text) !important;
+  border-color: var(--color-disabled-border) !important;
   cursor: not-allowed;
-  box-shadow: none;
+  box-shadow: none !important;
+  transform: none !important;
+  opacity: 0.7;
 }
 
 /* Sizes */
@@ -34,6 +43,7 @@
   font-size: var(--text-sm);
   padding: 0 var(--space-3);
   min-height: 36px;
+  border-radius: 8px;
   gap: var(--space-1);
 }
 
@@ -41,6 +51,7 @@
   font-size: var(--text-base);
   padding: 0 var(--space-4);
   min-height: 44px;
+  border-radius: var(--radius-md, 10px);
   gap: var(--space-2);
 }
 
@@ -48,56 +59,122 @@
   font-size: var(--text-lg);
   padding: 0 var(--space-6);
   min-height: 48px;
+  border-radius: 12px;
   gap: var(--space-2);
 }
 
-/* Variants */
+/* Primary - Luminous gradient with specular sheen */
 .btn--primary {
-  background-color: var(--color-primary);
-  color: var(--color-primary-text);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+  color: #ffffff;
+  border: 1px solid rgba(29, 78, 216, 0.4);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
+
 .btn--primary:hover:not(:disabled) {
-  background-color: var(--color-primary-hover);
+  background: linear-gradient(180deg, #60a5fa 0%, #1d4ed8 100%);
+  border-color: rgba(29, 78, 216, 0.6);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
 }
+
 .btn--primary:active:not(:disabled) {
-  background-color: var(--color-primary-active);
+  background: linear-gradient(180deg, #2563eb 0%, #1e40af 100%);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.3), inset 0 1px 1px rgba(0, 0, 0, 0.15);
+  transform: translateY(0);
 }
 
+/* Secondary - macOS Slate Graphite */
 .btn--secondary {
-  background-color: var(--color-secondary);
-  color: var(--color-secondary-text);
-  box-shadow: var(--shadow-sm);
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
+
 .btn--secondary:hover:not(:disabled) {
-  background-color: var(--color-secondary-hover);
+  background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
 
+.btn--secondary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Outline - Frosted glass button with blur and subtle glow */
 .btn--outline {
-  background-color: transparent;
-  border-color: var(--color-border);
+  background-color: var(--glass-bg-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   color: var(--color-text-main);
-}
-.btn--outline:hover:not(:disabled) {
-  background-color: var(--color-bg-subtle);
-  border-color: var(--color-border-hover);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
 
+.btn--outline:hover:not(:disabled) {
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 0 12px rgba(37, 99, 235, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: translateY(-1px);
+}
+
+.btn--outline:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+:root[data-theme="dark"] .btn--outline {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="dark"] .btn--outline:hover:not(:disabled) {
+  border-color: rgba(96, 165, 250, 0.5);
+  color: #60a5fa;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 16px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Ghost - Translucent hover state */
 .btn--ghost {
   background-color: transparent;
+  border-color: transparent;
   color: var(--color-text-secondary);
 }
+
 .btn--ghost:hover:not(:disabled) {
-  background-color: var(--color-bg-subtle);
+  background-color: var(--glass-bg-subtle);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--color-text-main);
+  border-color: var(--glass-border-subtle);
+  transform: translateY(-1px);
 }
 
-.btn--danger {
-  background-color: var(--color-error);
-  color: #ffffff;
+.btn--ghost:active:not(:disabled) {
+  background-color: var(--glass-bg-base);
+  transform: translateY(0);
 }
+
+/* Danger - Luminous red with specular sheen */
+.btn--danger {
+  background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: 1px solid rgba(185, 28, 28, 0.4);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
 .btn--danger:hover:not(:disabled) {
-  background-color: var(--color-error-hover);
+  background: linear-gradient(180deg, #f87171 0%, #b91c1c 100%);
+  border-color: rgba(185, 28, 28, 0.6);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn--danger:active:not(:disabled) {
+  transform: translateY(0);
+  background: linear-gradient(180deg, #dc2626 0%, #991b1b 100%);
 }
 
 /* Spinner */

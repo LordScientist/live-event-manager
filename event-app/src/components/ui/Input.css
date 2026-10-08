@@ -1,3 +1,8 @@
+/* ==========================================================================
+   FORM INPUT COMPONENT - macOS Liquid Frosted Glass
+   Translucent fields with backdrop blur, specular glow and squircle radius
+   ========================================================================== */
+
 .form-field {
   display: flex;
   flex-direction: column;
@@ -40,28 +45,53 @@
   z-index: 2;
 }
 
+/* Translucent Frosted Field Primitives */
 .input {
+  --radius-md: 10px;
   width: 100%;
   min-height: var(--touch-target-min);
   padding: var(--space-2) var(--space-3);
   font-family: var(--font-sans);
   font-size: var(--text-base);
   color: var(--color-text-main);
-  background-color: var(--color-bg-surface);
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  border-radius: var(--radius-md, 10px);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   box-sizing: border-box;
+}
+
+:root[data-theme="dark"] .input {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: var(--color-text-main);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .input:hover:not(:disabled) {
   border-color: var(--color-border-hover);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+:root[data-theme="dark"] .input:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .input:focus-visible {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: var(--focus-ring);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), inset 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+:root[data-theme="dark"] .input:focus-visible {
+  border-color: #60a5fa;
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25), 0 0 14px rgba(59, 130, 246, 0.2);
 }
 
 .input:disabled {
@@ -69,14 +99,17 @@
   color: var(--color-disabled-text);
   border-color: var(--color-disabled-border);
   cursor: not-allowed;
+  opacity: 0.65;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .input--error {
-  border-color: var(--color-error);
+  border-color: var(--color-error) !important;
 }
 
 .input--error:focus-visible {
-  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px var(--color-error);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25) !important;
 }
 
 .textarea {
@@ -87,6 +120,11 @@
 
 .select {
   cursor: pointer;
+}
+
+.select option {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-main);
 }
 
 .form-field__error {

@@ -87,16 +87,42 @@
 
 .profile-section-card {
   box-sizing: border-box;
-  background-color: var(--color-bg-surface, #ffffff);
-  border: 1px solid var(--color-border, #e2e8f0);
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: var(--glass-shadow-sm);
   overflow: hidden;
+  position: relative;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
+}
+
+.profile-section-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--glass-sheen);
+  z-index: 1;
 }
 
 :root[data-theme="dark"] .profile-section-card {
-  background-color: #172136;
-  border-color: #1e293b;
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+.profile-section-card:hover {
+  box-shadow: var(--glass-shadow-md);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+:root[data-theme="dark"] .profile-section-card:hover {
+  border-color: rgba(96, 165, 250, 0.4);
 }
 
 /* ── Profile Photo ───────────────────────────────────────────────────────── */
@@ -106,24 +132,25 @@
   gap: 16px;
   padding-bottom: 20px;
   margin-bottom: 20px;
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  border-bottom: 1px solid var(--glass-border-subtle);
   flex-wrap: wrap;
 }
 
 .profile-photo-avatar {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
-  background-color: #ea580c; /* Theme orange accent */
+  background: linear-gradient(135deg, #ea580c, #c2410c);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 800;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.3), var(--glass-shadow-sm);
 }
 
 .photo-edit-badge {
@@ -149,7 +176,7 @@
 }
 
 .profile-display-name {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--color-text-main, #0b132b);
   margin: 0 0 4px 0;
@@ -160,14 +187,15 @@
   font-size: 11px;
   font-weight: 700;
   color: #ea580c;
-  background-color: #f8dcca;
-  padding: 3px 9px;
-  border-radius: 9999px;
+  background-color: rgba(234, 88, 12, 0.12);
+  border: 1px solid rgba(234, 88, 12, 0.3);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
 
-/* ── Editable Grid & Items matching Frame 1:11 design styles ─────────────── */
+/* ── Editable Grid & Items with frosted glass panels ──────────────────────── */
 .profile-editable-grid {
   display: flex;
   flex-direction: column;
@@ -180,30 +208,34 @@
   flex-direction: column;
   gap: 6px;
   padding: 14px 18px;
-  border-radius: 14px;
-  background-color: #f2f3f5; /* Clean light grey matching Figma cards */
-  border: 1.5px solid transparent;
-  transition: all 0.22s ease-in-out;
+  border-radius: var(--radius-lg, 14px);
+  background-color: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border-subtle);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   min-width: 0;
+  box-shadow: var(--glass-shadow-sm);
+  position: relative;
 }
 
 :root[data-theme="dark"] .profile-editable-item {
-  background-color: #1e293b;
-  border-color: #334155;
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border);
 }
 
 /* ── Orange Hover State (Reverts on mouse leave) ────────────────────────── */
 .profile-editable-item:hover {
-  background-color: #f8dcca; /* Soft peach/orange */
-  border-color: #f97316; /* Vibrant orange outline */
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.14);
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(249, 115, 22, 0.45);
+  transform: translateY(-2px);
+  box-shadow: var(--glass-shadow-md), 0 0 16px rgba(249, 115, 22, 0.12);
 }
 
 :root[data-theme="dark"] .profile-editable-item:hover {
-  background-color: rgba(249, 115, 22, 0.16);
-  border-color: #f97316;
-  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25);
+  background-color: var(--glass-bg-elevated);
+  border-color: rgba(249, 115, 22, 0.55);
+  box-shadow: var(--glass-shadow-md), 0 0 16px rgba(249, 115, 22, 0.2);
 }
 
 .profile-editable-item__header {
@@ -260,14 +292,17 @@
   box-sizing: border-box;
   flex: 1;
   min-width: 0;
-  height: 38px;
-  padding: 6px 12px;
+  height: 40px;
+  padding: 6px 14px;
   font-size: 14px;
   border-radius: 10px;
   border: 1.5px solid #f97316;
-  background-color: var(--color-bg-surface, #ffffff);
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--color-text-main);
   outline: none;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .profile-inline-btn {
@@ -293,8 +328,8 @@
 }
 
 .profile-inline-btn--cancel {
-  background-color: var(--color-bg-surface, #ffffff);
-  border: 1px solid var(--color-border);
+  background-color: var(--glass-bg-subtle);
+  border: 1px solid var(--glass-border);
   color: var(--color-text-muted);
 }
 
@@ -314,8 +349,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  padding: 14px 0;
+  border-bottom: 1px solid var(--glass-border-subtle);
 }
 
 .preference-item:last-child {
@@ -393,20 +428,23 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
+  min-height: 46px;
+  padding: 12px 16px;
   box-sizing: border-box;
-  border-radius: var(--radius-md);
-  border: 1.5px solid #f97316;
-  background-color: rgba(249, 115, 22, 0.08);
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid rgba(249, 115, 22, 0.45);
+  background-color: rgba(249, 115, 22, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #ea580c;
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 700;
   text-decoration: none;
   text-align: center;
   white-space: normal;
   word-break: break-word;
-  transition: all 0.18s ease-in-out;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(249, 115, 22, 0.12);
 }
 
 .profile-deck-btn:hover,
@@ -414,14 +452,14 @@
   background-color: #ea580c;
   color: #ffffff;
   border-color: #ea580c;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(234, 88, 12, 0.3);
 }
 
 :root[data-theme="dark"] .profile-deck-btn {
   background-color: rgba(249, 115, 22, 0.15);
   color: #fb923c;
-  border-color: #fb923c;
+  border-color: rgba(251, 146, 60, 0.45);
 }
 
 :root[data-theme="dark"] .profile-deck-btn:hover,
@@ -435,8 +473,9 @@
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(4px);
+  background-color: rgba(15, 23, 42, 0.55);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,11 +485,24 @@
 
 .modal-content {
   box-sizing: border-box;
-  background-color: var(--color-bg-surface, #ffffff);
-  border: 1px solid var(--color-border);
-  border-radius: 20px;
-  padding: 24px;
+  background-color: var(--glass-bg-elevated);
+  backdrop-filter: var(--glass-blur-heavy);
+  -webkit-backdrop-filter: var(--glass-blur-heavy);
+  border: 1px solid var(--glass-border-highlight);
+  border-radius: 24px;
+  padding: 28px;
   width: 100%;
   max-width: 440px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: var(--glass-shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--glass-sheen);
 }

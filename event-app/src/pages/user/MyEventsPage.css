@@ -8,11 +8,11 @@
 .my-events-screen {
   width: 100%;
   min-height: 100vh;
-  background-color: #FAF9F9;
+  background-color: var(--color-bg-canvas, #FAF9F9);
 }
 
 :root[data-theme="dark"] .my-events-screen {
-  background-color: #0b0f19;
+  background-color: var(--color-bg-canvas, #0b0f19);
 }
 
 .my-events-container {
@@ -40,30 +40,29 @@
 .my-events-title {
   font-size: 26px;
   font-weight: 800;
-  color: #000000;
+  color: var(--color-text-main, #000000);
   margin: 0;
   line-height: 1.1;
   letter-spacing: -0.3px;
 }
 
-:root[data-theme="dark"] .my-events-title {
-  color: #ffffff;
-}
-
 /* ── 2. Segmented Control Tabs (Upcoming / Past) ────────────────────────── */
 .my-events-segmented-tabs {
   display: flex;
-  background-color: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg, 12px);
+  background-color: var(--glass-bg-subtle);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border-subtle);
+  border-radius: var(--radius-xl, 16px);
   padding: 4px;
   margin-bottom: 18px;
   position: relative;
+  box-shadow: var(--glass-shadow-sm);
 }
 
 :root[data-theme="dark"] .my-events-segmented-tabs {
-  background-color: var(--color-bg-subtle);
-  border: 1px solid var(--color-border);
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border);
 }
 
 .my-events-tab-btn {
@@ -77,35 +76,40 @@
   color: var(--color-text-muted);
   cursor: pointer;
   text-align: center;
-  transition: color 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   min-height: 44px;
+  border-radius: var(--radius-lg, 12px);
 }
 
 .my-events-tab-btn:hover {
   color: var(--color-text-main);
+  background-color: var(--glass-bg-subtle);
 }
 
 .my-events-tab-btn--active {
   color: var(--color-primary) !important;
   font-weight: 700;
+  background-color: var(--glass-bg-elevated);
+  box-shadow: var(--glass-shadow-sm);
 }
 
 :root[data-theme="dark"] .my-events-tab-btn--active {
-  color: var(--color-primary) !important;
+  color: #60a5fa !important;
+  background-color: var(--glass-bg-elevated);
 }
 
 .my-events-tab-indicator {
   position: absolute;
-  bottom: 0;
-  left: 20%;
-  right: 20%;
+  bottom: 4px;
+  left: 25%;
+  right: 25%;
   height: 3px;
   background-color: var(--color-primary);
   border-radius: var(--radius-full);
 }
 
 :root[data-theme="dark"] .my-events-tab-indicator {
-  background-color: var(--color-primary);
+  background-color: #60a5fa;
 }
 
 /* ── 3. Search Bar ───────────────────────────────────────────────────────── */
@@ -116,35 +120,46 @@
 
 .my-events-search-icon {
   position: absolute;
-  left: 12px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--color-text-muted);
   pointer-events: none;
+  z-index: 2;
 }
 
 .my-events-search-input {
   width: 100%;
-  height: 40px;
-  padding: 0 14px 0 38px;
-  border: 1px solid var(--color-border);
-  border-radius: 8px;
-  background-color: var(--color-bg-surface);
+  height: 44px;
+  padding: 0 14px 0 40px;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   color: var(--color-text-main);
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  box-sizing: border-box;
+  box-shadow: var(--glass-shadow-sm), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .my-events-search-input:focus {
   outline: none;
-  border-color: #0C139D;
-  box-shadow: 0 0 0 3px rgba(12, 19, 157, 0.12);
+  border-color: var(--color-primary);
+  background-color: var(--glass-bg-elevated);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2), var(--glass-shadow-md);
+}
+
+:root[data-theme="dark"] .my-events-search-input {
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border);
 }
 
 :root[data-theme="dark"] .my-events-search-input:focus {
   border-color: #60a5fa;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25), var(--glass-shadow-md);
 }
 
 /* ── 4. Event Cards List ─────────────────────────────────────────────────── */
@@ -158,29 +173,47 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 14px;
-  background-color: #F3F2F2;
-  border-radius: 14px;
+  padding: 16px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 18px);
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
+  box-shadow: var(--glass-shadow-sm);
   min-height: 112px;
+  position: relative;
+  overflow: hidden;
+}
+
+.my-event-card-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--glass-sheen);
+  z-index: 1;
 }
 
 .my-event-card-item:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transform: translateY(-3px);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: var(--glass-shadow-md);
 }
 
 :root[data-theme="dark"] .my-event-card-item {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--color-border);
-  box-shadow: none;
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow-sm);
 }
 
 :root[data-theme="dark"] .my-event-card-item:hover {
-  border-color: rgba(255, 255, 255, 0.18);
-  background-color: rgba(255, 255, 255, 0.07);
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: var(--glass-shadow-md), 0 0 16px rgba(59, 130, 246, 0.15);
 }
 
 .my-event-card-thumb {
@@ -263,46 +296,56 @@
 /* ── 5. Empty & Loading States ───────────────────────────────────────────── */
 .my-events-empty-state {
   text-align: center;
-  padding: 48px 16px;
-  background-color: #F3F2F2;
-  border-radius: 16px;
+  padding: 48px 20px;
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px dashed var(--glass-border);
+  border-radius: var(--radius-xl, 20px);
+  box-shadow: var(--glass-shadow-sm);
   margin-top: 12px;
+  position: relative;
 }
 
 :root[data-theme="dark"] .my-events-empty-state {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px dashed var(--color-border);
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
 }
 
 .my-events-empty-icon {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background-color: rgba(12, 19, 157, 0.08);
-  color: #0C139D;
+  background-color: rgba(37, 99, 235, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  color: var(--color-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 12px;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.15);
 }
 
 :root[data-theme="dark"] .my-events-empty-icon {
-  background-color: rgba(96, 165, 250, 0.15);
+  background-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(96, 165, 250, 0.4);
   color: #60a5fa;
 }
 
 .my-events-empty-title {
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: var(--color-text-main);
-  margin: 0 0 6px;
+  margin: 0 0 8px;
 }
 
 .my-events-empty-desc {
   font-size: 13px;
   color: var(--color-text-secondary);
   line-height: 1.45;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   max-width: 320px;
   margin-left: auto;
   margin-right: auto;
@@ -310,22 +353,21 @@
 
 .my-events-browse-link {
   display: inline-block;
-  padding: 8px 20px;
-  background-color: #0C139D;
+  padding: 10px 24px;
+  background-color: var(--color-primary);
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
-  border-radius: 9999px;
+  border-radius: var(--radius-full);
   text-decoration: none;
-  transition: background-color 0.15s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .my-events-browse-link:hover {
-  background-color: #091079;
-}
-
-:root[data-theme="dark"] .my-events-browse-link {
-  background-color: #2563eb;
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.45);
 }
 
 .my-events-loading {
@@ -337,13 +379,173 @@
 .my-events-skeleton {
   width: 100%;
   height: 110px;
-  background-color: #F3F2F2;
-  border-radius: 14px;
+  background-color: var(--glass-bg-subtle);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border-subtle);
+  border-radius: var(--radius-xl, 16px);
   animation: pulse 1.5s infinite ease-in-out;
 }
 
 :root[data-theme="dark"] .my-events-skeleton {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--glass-bg-subtle);
+}
+
+/* ── 6. Digital Pass Boarding Pass Card & Glowing QR Frame ────────────────── */
+.digital-pass-card,
+.boarding-pass-badge,
+.digital-pass {
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 22px);
+  box-shadow: var(--glass-shadow-md);
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.digital-pass-card::before,
+.boarding-pass-badge::before,
+.digital-pass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: var(--glass-sheen);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 50%);
+  z-index: 1;
+}
+
+.digital-pass-card:hover,
+.boarding-pass-badge:hover,
+.digital-pass:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glass-shadow-lg);
+  border-color: rgba(37, 99, 235, 0.45);
+}
+
+:root[data-theme="dark"] .digital-pass-card,
+:root[data-theme="dark"] .boarding-pass-badge,
+:root[data-theme="dark"] .digital-pass {
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow-md);
+}
+
+:root[data-theme="dark"] .digital-pass-card::before,
+:root[data-theme="dark"] .boarding-pass-badge::before,
+:root[data-theme="dark"] .digital-pass::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%);
+}
+
+/* Glowing QR Frame */
+.pass-qr-frame,
+.digital-pass-qr-frame,
+.qr-frame {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(37, 99, 235, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 0 24px rgba(37, 99, 235, 0.35), inset 0 0 12px rgba(37, 99, 235, 0.12);
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.pass-qr-frame:hover,
+.digital-pass-qr-frame:hover,
+.qr-frame:hover {
+  box-shadow: 0 0 32px rgba(37, 99, 235, 0.55), inset 0 0 16px rgba(37, 99, 235, 0.2);
+  transform: scale(1.02);
+}
+
+:root[data-theme="dark"] .pass-qr-frame,
+:root[data-theme="dark"] .digital-pass-qr-frame,
+:root[data-theme="dark"] .qr-frame {
+  background: rgba(15, 23, 42, 0.92);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.4), inset 0 0 14px rgba(59, 130, 246, 0.2);
+}
+
+/* ── 7. Live Companion Hub & Radar Blocks ─────────────────────────────────── */
+.companion-hub-card,
+.companion-radar-block,
+.radar-tile,
+.radar-block {
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 20px);
+  padding: 20px;
+  box-shadow: var(--glass-shadow-sm);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.companion-hub-card:hover,
+.companion-radar-block:hover,
+.radar-tile:hover,
+.radar-block:hover {
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: var(--glass-shadow-md);
+  transform: translateY(-2px);
+}
+
+:root[data-theme="dark"] .companion-hub-card,
+:root[data-theme="dark"] .companion-radar-block,
+:root[data-theme="dark"] .radar-tile,
+:root[data-theme="dark"] .radar-block {
+  background-color: var(--glass-bg-base);
+  border-color: var(--glass-border);
+  box-shadow: var(--glass-shadow-sm);
+}
+
+/* Pulsing Live Indicators */
+.radar-live-indicator,
+.live-radar-ping {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #10b981;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.radar-live-dot,
+.live-radar-ping::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #10b981;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: radarPulse 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes radarPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
 
 /* ── Mobile Breakpoint (< 360px) ─────────────────────────────────────────── */

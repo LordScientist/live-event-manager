@@ -29,11 +29,13 @@
   position: relative;
   width: 100%;
   max-width: 520px;
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 22px);
   padding: var(--space-8);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--glass-shadow-md);
 }
 
 /* Signup card - 440px mobile frame matching Figma Frame 1:3 */

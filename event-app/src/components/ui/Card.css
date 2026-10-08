@@ -1,37 +1,57 @@
+/* ==========================================================================
+   CARD COMPONENT - macOS Liquid Frosted Glassmorphism
+   Sonoma / Sequoia Keynote aesthetic with specular sheen & squircles
+   ========================================================================== */
+
 .card {
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  background-color: var(--glass-bg-base);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl, 18px);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--glass-shadow-sm);
   display: flex;
   flex-direction: column;
   min-width: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
 }
 
 .card--subtle {
-  background-color: var(--color-bg-subtle);
-  border-color: var(--color-border);
+  background-color: var(--glass-bg-subtle);
+  border-color: var(--glass-border-subtle);
   box-shadow: none;
 }
 
 .card--interactive {
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
 }
 
 .card--interactive:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: var(--color-border-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--glass-shadow-md);
+  border-color: rgba(37, 99, 235, 0.4);
+}
+
+:root[data-theme="dark"] .card--interactive:hover {
+  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: var(--glass-shadow-md), 0 0 24px rgba(59, 130, 246, 0.15);
 }
 
 .card__header {
   padding: var(--space-4) var(--space-5);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--glass-border-subtle);
+  background: rgba(255, 255, 255, 0.25);
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
+}
+
+:root[data-theme="dark"] .card__header {
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom-color: var(--glass-border-subtle);
 }
 
 .card__title {
@@ -40,6 +60,7 @@
   color: var(--color-text-main);
   margin: 0;
   word-break: break-word;
+  letter-spacing: -0.01em;
 }
 
 .card__description {
@@ -57,10 +78,15 @@
 
 .card__footer {
   padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-bg-canvas);
+  border-top: 1px solid var(--glass-border-subtle);
+  background: rgba(248, 250, 252, 0.4);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-3);
+}
+
+:root[data-theme="dark"] .card__footer {
+  background: rgba(11, 15, 25, 0.35);
+  border-top-color: var(--glass-border-subtle);
 }
