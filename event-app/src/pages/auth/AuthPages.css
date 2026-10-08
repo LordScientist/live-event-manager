@@ -10,7 +10,7 @@
   justify-content: center;
   align-items: center;
   padding: var(--space-6) var(--space-4);
-  background-color: var(--color-bg-canvas);
+  background-color: transparent;
 }
 
 .auth-page--signup {
@@ -21,7 +21,7 @@
 }
 
 :root[data-theme="dark"] .auth-page--signup {
-  background-color: var(--color-bg-canvas);
+  background-color: transparent;
 }
 
 /* ── Auth card (login / general) ──────────────────────────────────────────── */
@@ -550,7 +550,7 @@
 }
 
 :root[data-theme="dark"] .auth-page--login {
-  background-color: var(--color-bg-canvas);
+  background-color: transparent;
 }
 
 .auth-card--login {

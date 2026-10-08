@@ -5,7 +5,7 @@
   justify-content: center;
   align-items: center;
   padding: var(--space-8) var(--space-4);
-  background-color: var(--color-bg-canvas);
+  background-color: transparent;
 }
 
 .onboarding-card {

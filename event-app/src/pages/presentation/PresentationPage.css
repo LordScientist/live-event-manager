@@ -6,7 +6,7 @@
 .presentation-viewport {
   position: relative;
   min-height: 100vh;
-  background-color: var(--color-bg-canvas, #fafafb);
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
@@ -14,7 +14,7 @@
 }
 
 :root[data-theme="dark"] .presentation-viewport {
-  background-color: #0b0f19;
+  background-color: transparent;
 }
 
 /* ── Decorative Background Graphics (Aligned with Frame 1:11) ────────────── */

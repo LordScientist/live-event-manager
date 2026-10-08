@@ -2,7 +2,7 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: var(--color-bg-canvas);
+  background-color: transparent;
 }
 
 .landing-header {

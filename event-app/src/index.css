@@ -135,14 +135,14 @@
 }
 
 /* ==========================================================================
-   NICER SHADE OF DARK MODE (SaaS Midnight Obsidian & Luminous Slate)
-   Deep obsidian canvas (#0b0f19) + Elevated slate surface (#131b2e)
+   DARK MODE - LIVE EVENT ARENA & CONCERT OBSIDIAN STAGE
+   Deep obsidian canvas (#070913) + Luminous stage elevation hierarchy
    ========================================================================== */
 :root[data-theme="dark"],
 .dark {
   color-scheme: dark;
 
-  /* Primary Brand Colors (Calibrated for dark mode contrast) */
+  /* Primary Brand Colors (Calibrated for dark mode contrast & stage spotlight synergy) */
   --color-primary: #3b82f6;
   --color-primary-hover: #60a5fa;
   --color-primary-active: #2563eb;
@@ -156,20 +156,20 @@
   --color-accent: #38bdf8;
   --color-accent-light: rgba(56, 189, 248, 0.14);
 
-  /* Background Colors (Deep, elegant midnight slate with clear elevation hierarchy) */
-  --color-bg-canvas: #0b0f19;       /* Deep obsidian canvas */
-  --color-bg-surface: #131b2e;      /* Rich elevated dark slate card/surface */
+  /* Background Colors (Deep obsidian canvas with luminous stage elevation hierarchy) */
+  --color-bg-canvas: #070913;       /* Deep obsidian/midnight stage canvas */
+  --color-bg-surface: #0e1526;      /* Rich elevated dark slate card/surface */
   --color-surface: var(--color-bg-surface);
-  --color-bg-subtle: #1a243b;       /* Interactive / hover background */
+  --color-bg-subtle: #141d33;       /* Interactive / hover background */
   --color-surface-subtle: var(--color-bg-subtle);
-  --color-bg-muted: #24304d;        /* Recessed wells / muted pills */
+  --color-bg-muted: #1c2742;        /* Recessed wells / muted pills */
 
   /* Text Colors (Refined contrast, zero harsh ocular glare) */
   --color-text-main: #f8fafc;       /* Crisp slate-50 */
   --color-text-secondary: #cbd5e1;  /* Balanced slate-300 */
   --color-text-muted: #94a3b8;      /* Legible slate-400 */
   --color-text-subtle: #64748b;     /* Slate-500 */
-  --color-text-inverse: #0b0f19;
+  --color-text-inverse: #070913;
 
   /* Border Colors (Refined subtle definition) */
   --color-border: #1e293b;
@@ -198,29 +198,29 @@
   --color-info-border: rgba(14, 165, 233, 0.32);
   --color-info-text: #7dd3fc;
 
-  --color-disabled-bg: #151d2f;
+  --color-disabled-bg: #121829;
   --color-disabled-text: #64748b;
   --color-disabled-border: #1e293b;
 
   /* Focus & Elevation */
-  --focus-ring: 0 0 0 2px #0b0f19, 0 0 0 4px #3b82f6;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
-  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.7), 0 4px 10px -2px rgba(0, 0, 0, 0.45);
+  --focus-ring: 0 0 0 2px #070913, 0 0 0 4px #3b82f6;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.55);
+  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.65), 0 2px 6px -2px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.75), 0 4px 10px -2px rgba(0, 0, 0, 0.5);
 
-  /* macOS Liquid Frosted Glass System Tokens (Dark Mode) */
-  --glass-bg-base: rgba(18, 26, 44, 0.72);
-  --glass-bg-elevated: rgba(22, 32, 54, 0.82);
-  --glass-bg-subtle: rgba(18, 26, 44, 0.52);
-  --glass-border: rgba(255, 255, 255, 0.13);
-  --glass-border-subtle: rgba(255, 255, 255, 0.07);
-  --glass-border-highlight: rgba(255, 255, 255, 0.22);
+  /* macOS Liquid Frosted Glass System Tokens (Dark Mode Milled Obsidian Crystal) */
+  --glass-bg-base: rgba(14, 21, 38, 0.70);
+  --glass-bg-elevated: rgba(18, 27, 48, 0.82);
+  --glass-bg-subtle: rgba(14, 21, 38, 0.48);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-border-highlight: rgba(255, 255, 255, 0.28);
   --glass-blur: blur(28px) saturate(200%);
   --glass-blur-heavy: blur(48px) saturate(220%);
-  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  --glass-shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  --glass-shadow-md: 0 16px 38px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  --glass-shadow-lg: 0 36px 90px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  --glass-shadow-md: 0 16px 38px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  --glass-shadow-lg: 0 36px 90px rgba(0, 0, 0, 0.72), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 /* Smooth Theme Switching Transitions */
@@ -255,10 +255,22 @@ body {
   overflow-x: hidden;
   width: 100%;
   background-color: var(--color-bg-canvas);
+  background-image: radial-gradient(130% 90% at 50% -8%, #ffffff 0%, #f8fafc 52%, #f1f5f9 100%);
+  background-attachment: fixed;
   position: relative;
 }
 
-/* Ambient Spatial Background: Dot-matrix texture + Multi-spectral Bioluminescent Caustics */
+:root[data-theme="dark"] body {
+  background-color: var(--color-bg-canvas);
+  background-image: radial-gradient(130% 90% at 50% -12%, #0f1629 0%, #070913 55%, #030408 100%);
+  background-attachment: fixed;
+}
+
+/* ==========================================================================
+   AMBIENT SPATIAL BACKGROUND: Stage Spotlights, Micro-Dot Matrix & Caustics
+   ========================================================================== */
+
+/* LIGHT MODE: Crisp Daylight Campus & Keynote Arena Aesthetic */
 body::before {
   content: '';
   position: fixed;
@@ -266,28 +278,52 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background-image:
+    /* Micro-dot matrix grid */
     radial-gradient(circle, rgba(15, 23, 42, 0.055) 1.2px, transparent 1.2px),
-    radial-gradient(circle at 10% 12%, rgba(6, 182, 212, 0.14) 0%, transparent 45%),
-    radial-gradient(circle at 88% 20%, rgba(249, 115, 22, 0.12) 0%, transparent 45%),
-    radial-gradient(circle at 50% 55%, rgba(37, 99, 235, 0.13) 0%, transparent 55%),
-    radial-gradient(circle at 18% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 82% 90%, rgba(16, 185, 129, 0.1) 0%, transparent 45%);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    /* Overhead auditorium daylight keynote spotlight (Center floodlight) */
+    radial-gradient(ellipse 75% 50% at 50% -6%, rgba(56, 189, 248, 0.18) 0%, rgba(2, 132, 199, 0.08) 45%, transparent 70%),
+    /* Vibrant daylight sky / cyan stage laser rig (Top left) */
+    radial-gradient(circle at 10% 16%, rgba(2, 132, 199, 0.15) 0%, rgba(56, 189, 248, 0.08) 32%, transparent 62%),
+    /* Warm sunrise coral / amber keynote spotlight (Top right) */
+    radial-gradient(circle at 90% 18%, rgba(249, 115, 22, 0.13) 0%, rgba(251, 191, 36, 0.07) 36%, transparent 64%),
+    /* Energetic iris / violet stage caustic (Center-left wash) */
+    radial-gradient(circle at 18% 68%, rgba(139, 92, 246, 0.12) 0%, rgba(124, 58, 237, 0.05) 34%, transparent 60%),
+    /* Fresh emerald arena light (Bottom right wash) */
+    radial-gradient(circle at 84% 82%, rgba(16, 185, 129, 0.11) 0%, rgba(5, 150, 105, 0.04) 34%, transparent 58%),
+    /* Subtle angled stage horizon cross-beam flare */
+    linear-gradient(130deg, transparent 0%, rgba(56, 189, 248, 0.07) 30%, rgba(249, 115, 22, 0.06) 58%, transparent 100%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
   background-attachment: fixed;
 }
 
+/* DARK MODE: Authentic Live Event Stage & Stadium Concert Aura */
 :root[data-theme="dark"] body::before {
   background-image:
-    radial-gradient(circle, rgba(255, 255, 255, 0.08) 1.2px, transparent 1.2px),
-    radial-gradient(circle at 12% 10%, rgba(6, 182, 212, 0.22) 0%, transparent 48%),
-    radial-gradient(circle at 88% 18%, rgba(249, 115, 22, 0.18) 0%, transparent 46%),
-    radial-gradient(circle at 50% 52%, rgba(37, 99, 235, 0.25) 0%, transparent 56%),
-    radial-gradient(circle at 16% 85%, rgba(168, 85, 247, 0.22) 0%, transparent 50%),
-    radial-gradient(circle at 84% 90%, rgba(16, 185, 129, 0.18) 0%, transparent 46%);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    /* Tech luminescent micro-dot matrix */
+    radial-gradient(circle, rgba(255, 255, 255, 0.085) 1.2px, transparent 1.2px),
+    /* Overhead arena spotlight rig (Massive royal sapphire center truss #2563eb / #1d4ed8) */
+    radial-gradient(ellipse 70% 48% at 50% -10%, rgba(37, 99, 235, 0.40) 0%, rgba(29, 78, 216, 0.20) 45%, transparent 75%),
+    /* Electric cyan stage laser beam (Top-left overhead rig #06b6d4) */
+    radial-gradient(circle at 10% 12%, rgba(6, 182, 212, 0.32) 0%, rgba(2, 132, 199, 0.18) 32%, transparent 62%),
+    /* Cyber violet / hot magenta stage spotlight cone (Top-right rig #c026d3 / #9333ea) */
+    radial-gradient(circle at 90% 14%, rgba(192, 38, 211, 0.30) 0%, rgba(147, 51, 234, 0.18) 36%, transparent 62%),
+    /* Warm keynote spotlight amber / gold podium beam (#f59e0b) */
+    radial-gradient(circle at 26% 52%, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.09) 30%, transparent 56%),
+    /* Intense royal sapphire floor wash & crowd aura (#2563eb / #9333ea) */
+    radial-gradient(circle at 84% 82%, rgba(37, 99, 235, 0.28) 0%, rgba(147, 51, 234, 0.16) 35%, transparent 60%),
+    /* Neon stage laser cross-beam flares cutting through arena haze */
+    linear-gradient(125deg, transparent 0%, rgba(6, 182, 212, 0.10) 26%, rgba(192, 38, 211, 0.09) 48%, rgba(37, 99, 235, 0.10) 70%, transparent 100%),
+    /* Bottom proscenium stage ramp glow */
+    radial-gradient(ellipse 85% 32% at 50% 105%, rgba(6, 182, 212, 0.20) 0%, rgba(37, 99, 235, 0.14) 40%, transparent 72%);
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
 }
 
-/* Atmospheric Ambient Drift: Living bioluminescent aura that communicates spatial depth */
+/* ==========================================================================
+   ATMOSPHERIC AMBIENT DRIFT: Living Concert Haze & Keynote Aura
+   Smooth multi-point breathing animation providing spatial depth
+   ========================================================================== */
+
+/* LIGHT MODE: Subtle Ambient Caustic Waves */
 body::after {
   content: '';
   position: fixed;
@@ -297,29 +333,45 @@ body::after {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(circle at 30% 35%, rgba(56, 189, 248, 0.09) 0%, transparent 50%),
-    radial-gradient(circle at 70% 65%, rgba(244, 63, 94, 0.08) 0%, transparent 50%);
-  filter: blur(60px);
-  animation: ambientAuroraDrift 24s ease-in-out infinite alternate;
-  opacity: 0.85;
+    radial-gradient(ellipse 60% 50% at 22% 28%, rgba(56, 189, 248, 0.13) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 45% at 78% 36%, rgba(249, 115, 22, 0.10) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 55% at 52% 76%, rgba(139, 92, 246, 0.09) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 45% at 82% 85%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+  filter: blur(65px);
+  animation: ambientAuroraDrift 28s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  opacity: 0.92;
 }
 
+/* DARK MODE: Stage Concert Haze with Intense Bioluminescent Drift */
 :root[data-theme="dark"] body::after {
   background:
-    radial-gradient(circle at 25% 30%, rgba(56, 189, 248, 0.18) 0%, transparent 50%),
-    radial-gradient(circle at 75% 70%, rgba(244, 63, 94, 0.15) 0%, transparent 50%);
-  opacity: 0.95;
+    radial-gradient(ellipse 55% 45% at 18% 24%, rgba(6, 182, 212, 0.24) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 50% at 82% 32%, rgba(192, 38, 211, 0.22) 0%, transparent 65%),
+    radial-gradient(ellipse 65% 55% at 50% 64%, rgba(37, 99, 235, 0.26) 0%, transparent 70%),
+    radial-gradient(ellipse 45% 45% at 72% 86%, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
+  filter: blur(75px);
+  animation: ambientAuroraDrift 24s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
+  opacity: 1;
 }
 
 @keyframes ambientAuroraDrift {
   0% {
-    transform: translate(0, 0) scale(1);
+    transform: translate(0, 0) scale(1) rotate(0deg);
   }
-  50% {
-    transform: translate(-3%, 2%) scale(1.06);
+  33% {
+    transform: translate(-3%, 2.5%) scale(1.05) rotate(1deg);
+  }
+  66% {
+    transform: translate(2.5%, -2%) scale(0.96) rotate(-1deg);
   }
   100% {
-    transform: translate(2%, -3%) scale(0.97);
+    transform: translate(-1.5%, 3%) scale(1.03) rotate(0.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after {
+    animation: none;
   }
 }
 
