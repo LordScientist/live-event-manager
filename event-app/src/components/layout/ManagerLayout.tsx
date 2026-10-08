@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
+import { DynamicIslandHUD } from '../ui/DynamicIslandHUD';
 import lcIcon from '../../assets/lc-icon.png';
 import './ManagerLayout.css';
 
@@ -33,6 +34,9 @@ export const ManagerLayout: React.FC = () => {
 
   return (
     <div className="manager-layout">
+      {/* Floating Dynamic Island Live Broadcast HUD */}
+      <DynamicIslandHUD />
+
       {/* Top Header */}
       <header className="manager-header">
         <div className="manager-header__inner container">

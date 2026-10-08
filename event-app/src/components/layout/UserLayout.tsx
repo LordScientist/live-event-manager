@@ -4,6 +4,7 @@ import { Home, CalendarCheck, Bell, User, ArrowRightLeft, Presentation, Sparkles
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { InteractiveTour } from '../ui/InteractiveTour';
+import { DynamicIslandHUD } from '../ui/DynamicIslandHUD';
 import lcIcon from '../../assets/lc-icon.png';
 import './UserLayout.css';
 
@@ -18,6 +19,9 @@ export const UserLayout: React.FC = () => {
 
   return (
     <div className="user-layout">
+      {/* Floating Dynamic Island Live Broadcast HUD */}
+      <DynamicIslandHUD />
+
       {/* Top Header */}
       <header className="user-header">
         <div className="container user-header__inner">

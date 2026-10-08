@@ -243,6 +243,28 @@ export const UserHomePage: React.FC = () => {
                 Live Updates
               </Button>
             </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                window.dispatchEvent(
+                  new CustomEvent('live-broadcast-alert', {
+                    detail: {
+                      id: `shift-${activeEventData.event.id}`,
+                      eventName: activeEventData.event.name,
+                      oldVenue: activeEventData.event.venue,
+                      newVenue: 'Main Amphitheater • Hall A',
+                      reason: `Overcapacity detected: ${activeEventData.event.name} sessions relocated immediately to Main Amphitheater. Walking route synchronized.`,
+                      timestamp: 'Just now (8s ago)',
+                      urgency: 'high'
+                    }
+                  })
+                );
+              }}
+              title="Simulate sudden room shift alert in Dynamic Island"
+            >
+              Simulate Shift
+            </Button>
           </div>
         </section>
       )}
