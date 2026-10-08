@@ -5,7 +5,7 @@
 
 .mascot-container {
   position: fixed;
-  bottom: 84px;
+  bottom: 94px;
   right: 28px;
   z-index: 50;
   display: flex;
@@ -17,21 +17,34 @@
 }
 
 .mascot-container--minimized {
-  bottom: 80px;
+  bottom: 90px;
 }
 
-/* ── Speech Bubble ───────────────────────────────────────────────────────── */
+/* ── Speech Bubble (macOS Frosted Glass Callout) ─────────────────────────── */
 .mascot-bubble {
   position: relative;
   width: 290px;
-  background-color: var(--color-bg-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl, 16px);
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(28px) saturate(210%);
+  -webkit-backdrop-filter: blur(28px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 18px;
   padding: 16px 18px;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.16),
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
   pointer-events: auto;
   animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   transform-origin: bottom right;
+}
+
+:root[data-theme="dark"] .mascot-bubble {
+  background-color: rgba(24, 32, 50, 0.85);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    0 24px 50px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 @keyframes bubblePop {
@@ -123,10 +136,16 @@
   right: 32px;
   width: 16px;
   height: 16px;
-  background-color: var(--color-bg-surface);
-  border-right: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
+  background-color: rgba(255, 255, 255, 0.95);
+  border-right: 1px solid rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.85);
   transform: rotate(45deg);
+}
+
+:root[data-theme="dark"] .mascot-bubble__tail {
+  background-color: rgba(24, 32, 50, 0.95);
+  border-right-color: rgba(255, 255, 255, 0.14);
+  border-bottom-color: rgba(255, 255, 255, 0.14);
 }
 
 /* ── Interactive Mascot Character ────────────────────────────────────────── */
@@ -246,7 +265,7 @@
 /* ── Mobile Viewports ────────────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .mascot-container {
-    bottom: 74px;
+    bottom: 88px;
     right: 14px;
   }
 

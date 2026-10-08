@@ -489,6 +489,14 @@ export const PresentationPage: React.FC = () => {
 
   return (
     <div className="presentation-viewport">
+      {/* macOS Fluid Aurora Mesh Background for dynamic refraction */}
+      <div className="macos-mesh-bg" aria-hidden="true">
+        <div className="macos-mesh-blob macos-mesh-blob--blue" />
+        <div className="macos-mesh-blob macos-mesh-blob--amber" />
+        <div className="macos-mesh-blob macos-mesh-blob--purple" />
+        <div className="macos-mesh-blob macos-mesh-blob--cyan" />
+      </div>
+
       {/* Background Decors */}
       <img
         src={decorTopRight}
@@ -503,18 +511,51 @@ export const PresentationPage: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Top Deck Navigation Bar */}
-      <header className="presentation-header">
-        <div className="presentation-header__brand">
-          <img src={lcIcon} alt="Live Connect" className="pres-logo" />
-          <div className="pres-brand-info">
-            <span className="pres-brand-title">LIVE CONNECT</span>
-            <span className="pres-brand-deck">Product Story & Deck</span>
+      {/* macOS Frosted Glass Titlebar Header */}
+      <header className="presentation-header macos-glass-header">
+        <div className="macos-header-left">
+          {/* macOS Traffic Lights */}
+          <div className="macos-traffic-lights" aria-label="macOS Window Controls">
+            <button
+              type="button"
+              className="macos-traffic-dot macos-traffic-dot--close"
+              onClick={handleClose}
+              title="Close Presentation (Esc)"
+              aria-label="Close Presentation"
+            >
+              <span className="macos-traffic-glyph">✕</span>
+            </button>
+            <button
+              type="button"
+              className="macos-traffic-dot macos-traffic-dot--minimize"
+              onClick={() => setIsAutoplay((prev) => !prev)}
+              title={isAutoplay ? 'Pause Slideshow (Space)' : 'Play Slideshow (Space)'}
+              aria-label="Minimize / Toggle Autoplay"
+            >
+              <span className="macos-traffic-glyph">−</span>
+            </button>
+            <button
+              type="button"
+              className="macos-traffic-dot macos-traffic-dot--zoom"
+              onClick={toggleFullscreen}
+              title={isFullscreen ? 'Exit Fullscreen (F)' : 'Enter Fullscreen (F)'}
+              aria-label="Toggle Fullscreen"
+            >
+              <span className="macos-traffic-glyph">⤢</span>
+            </button>
+          </div>
+
+          <div className="presentation-header__brand">
+            <img src={lcIcon} alt="Live Connect" className="pres-logo" />
+            <div className="pres-brand-info">
+              <span className="pres-brand-title">LIVE CONNECT</span>
+              <span className="pres-brand-deck">Keynote Deck</span>
+            </div>
           </div>
         </div>
 
-        {/* Slide jump tabs */}
-        <nav className="presentation-tabs" aria-label="Slides Index">
+        {/* macOS Segmented Tab Capsule */}
+        <nav className="presentation-tabs macos-segmented-tabs" aria-label="Slides Index">
           {slides.map((s, idx) => (
             <button
               key={s.id}
@@ -533,31 +574,31 @@ export const PresentationPage: React.FC = () => {
         <div className="presentation-header__actions">
           <button
             type="button"
-            className={`pres-action-btn ${isAutoplay ? 'pres-action-btn--autoplay-active' : ''}`}
+            className={`pres-action-btn macos-glass-btn ${isAutoplay ? 'pres-action-btn--autoplay-active' : ''}`}
             onClick={() => setIsAutoplay((prev) => !prev)}
             title={isAutoplay ? 'Pause Slideshow (Space)' : 'Play Slideshow (Space)'}
             aria-label="Toggle Autoplay Slideshow"
           >
-            {isAutoplay ? <Pause size={15} /> : <Play size={15} />}
+            {isAutoplay ? <Pause size={14} /> : <Play size={14} />}
             <span className="autoplay-label">{isAutoplay ? 'Pause' : 'Autoplay'}</span>
           </button>
           <button
             type="button"
-            className="pres-action-btn"
+            className="pres-action-btn macos-glass-btn"
             onClick={toggleFullscreen}
             title={isFullscreen ? 'Exit Fullscreen (F)' : 'Fullscreen Presentation (F)'}
             aria-label="Toggle Fullscreen"
           >
-            {isFullscreen ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
+            {isFullscreen ? <Minimize2 size={15} /> : <Maximize2 size={15} />}
           </button>
           <button
             type="button"
-            className="pres-action-btn pres-action-btn--close"
+            className="pres-action-btn pres-action-btn--close macos-glass-btn macos-glass-btn--close"
             onClick={handleClose}
             title="Exit Presentation (Esc)"
             aria-label="Exit Presentation"
           >
-            <X size={18} />
+            <X size={15} />
             <span className="close-text">Exit</span>
           </button>
         </div>
@@ -567,7 +608,7 @@ export const PresentationPage: React.FC = () => {
       <main className="presentation-stage">
         <div className="stage-spotlight" aria-hidden="true" />
         <div className="slide-card-container">
-          <div className="slide-card" key={currentSlide}>
+          <div className="slide-card slide-card--macos" key={currentSlide}>
             {/* Slide Header */}
             <div className="slide-top-meta">
               <span className="slide-tag-pill">{current.tag}</span>
@@ -600,7 +641,7 @@ export const PresentationPage: React.FC = () => {
       <MascotGuide currentSlide={currentSlide} />
 
       {/* Bottom Controls Bar with Keyboard HUD */}
-      <footer className="presentation-footer">
+      <footer className="presentation-footer macos-glass-dock">
         <div className="pres-footer__left">
           <span className="pres-running-title">
             Live Connect Architecture & Purpose Walkthrough
