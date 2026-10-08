@@ -21,7 +21,7 @@
   max-width: 1040px;
   margin: 0 auto var(--space-4);
   width: calc(100% - 32px);
-  border-radius: 20px;
+  border-radius: 16px;
   background-color: var(--glass-bg-elevated);
   color: var(--color-text-main);
   backdrop-filter: blur(28px) saturate(200%);

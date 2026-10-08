@@ -4,8 +4,8 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl, 24px);
-  box-shadow: 0 12px 32px -6px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  border-radius: var(--radius-xl, 18px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.4);
   overflow: hidden;
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
@@ -25,20 +25,20 @@
 }
 
 .event-card:hover {
-  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
-  border-color: rgba(37, 99, 235, 0.5);
-  box-shadow: 0 20px 48px -10px rgba(37, 99, 235, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.45);
+  box-shadow: 0 10px 24px -6px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 :root[data-theme="dark"] .event-card {
   background-color: var(--glass-bg-base);
   border-color: var(--glass-border);
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 :root[data-theme="dark"] .event-card:hover {
-  border-color: rgba(96, 165, 250, 0.6);
-  box-shadow: 0 24px 56px -10px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 /* Top-Right Favorite / Bookmark Button (Image 1 Inspiration) */
@@ -140,7 +140,7 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl, 20px);
+  border-radius: var(--radius-xl, 16px);
   box-shadow: var(--glass-shadow-sm);
 }
 
@@ -153,7 +153,7 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg, 14px);
+  border-radius: var(--radius-lg, 12px);
   box-shadow: var(--glass-shadow-sm);
   min-width: 56px;
   padding: 8px 10px;
@@ -166,9 +166,15 @@
   border-color: rgba(37, 99, 235, 0.35);
 }
 
+:root[data-theme="dark"] .event-card__compact-date {
+  background-color: var(--color-bg-canvas);
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: var(--neumorph-inset);
+}
+
 :root[data-theme="dark"] .event-card:hover .event-card__compact-date {
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
-  border-color: rgba(96, 165, 250, 0.45);
+  box-shadow: var(--neumorph-inset), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .event-card__compact-info {

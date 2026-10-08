@@ -131,95 +131,107 @@
   --glass-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9);
   --glass-shadow-md: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
   --glass-shadow-lg: 0 20px 48px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+
+  /* Neumorphic Tokens (Light Mode Defaults) */
+  --neumorph-inset: inset 0 1px 2px rgba(0, 0, 0, 0.06), inset 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --neumorph-raised: 0 2px 6px rgba(0, 0, 0, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --neumorph-pill-bg: rgba(0, 0, 0, 0.04);
+  --neumorph-pill-active: #ffffff;
 }
 
 /* ==========================================================================
-   DARK MODE - DEEP VELVET MIDNIGHT OBSIDIAN PALETTE (darkmode.mp4)
-   Deep velvety midnight (#0b0d13) + Ethereal fluid indigo/slate aura (#1d2127) + Crisp white (#ffffff)
+   DARK MODE - SLEEK GRAPHITE OBSIDIAN PALETTE (Reference: Freebuff Ads Dark UI)
+   Deep matte charcoal canvas (#141514 / #171817) + Crisp white (#f5f6f5) + Minimalist hairline borders
    ========================================================================== */
 :root[data-theme="dark"],
 .dark {
   color-scheme: dark;
 
-  /* Primary Brand Colors (Calibrated for dark mode contrast & stage spotlight synergy) */
+  /* Primary Brand Colors */
   --color-primary: #3b82f6;
   --color-primary-hover: #60a5fa;
   --color-primary-active: #2563eb;
-  --color-primary-light: rgba(59, 130, 246, 0.16);
+  --color-primary-light: rgba(59, 130, 246, 0.14);
   --color-primary-text: #ffffff;
 
   /* Secondary & Accent Colors */
-  --color-secondary: #1e2536;
-  --color-secondary-hover: #2a334a;
+  --color-secondary: #222522;
+  --color-secondary-hover: #2a2d2a;
   --color-secondary-text: #ffffff;
   --color-accent: #38bdf8;
-  --color-accent-light: rgba(56, 189, 248, 0.14);
+  --color-accent-light: rgba(56, 189, 248, 0.12);
 
-  /* Background Colors (Deep velvety midnight obsidian canvas from darkmode.mp4) */
-  --color-bg-canvas: #0b0d13;       /* Deep velvety midnight obsidian canvas */
-  --color-bg-surface: #12151f;      /* Elevated dark slate surface */
+  /* Background Colors (Matched to Reference Image #171817 / Freebuff Ads Dark Dashboard) */
+  --color-bg-canvas: #141514;       /* Deep matte charcoal graphite canvas */
+  --color-bg-surface: #1b1d1b;      /* Sleek elevated dark matte surface */
   --color-surface: var(--color-bg-surface);
-  --color-bg-subtle: #191e2b;       /* Interactive / hover background */
+  --color-bg-subtle: #222522;       /* Interactive / hover background */
   --color-surface-subtle: var(--color-bg-subtle);
-  --color-bg-muted: #22293a;        /* Recessed wells / muted pills */
+  --color-bg-muted: #2a2d2a;        /* Recessed wells / muted pills */
 
-  /* Text Colors (Crisp, razor-sharp luminous white & titanium slate from darkmode.mp4) */
-  --color-text-main: #ffffff;       /* Pure luminous white */
-  --color-text-secondary: #94a3b8;  /* Refined silvery slate */
-  --color-text-muted: #64748b;      /* Slate-400 */
-  --color-text-subtle: #475569;     /* Slate-500 */
-  --color-text-inverse: #0b0d13;
+  /* Text Colors (Crisp, razor-sharp readable white & slate gray from reference image) */
+  --color-text-main: #f5f6f5;       /* Crisp high-contrast white */
+  --color-text-secondary: #9ea39e;  /* Refined neutral slate */
+  --color-text-muted: #6f746f;      /* Muted secondary labels */
+  --color-text-subtle: #555a55;     /* Subtle details */
+  --color-text-inverse: #141514;
 
-  /* Border Colors (Delicate translucent white rim highlights) */
-  --color-border: rgba(255, 255, 255, 0.12);
-  --color-border-hover: rgba(255, 255, 255, 0.22);
-  --color-border-focus: #38bdf8;
+  /* Border Colors (Minimalist hairline borders - sleek, not bloated or puffy) */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.16);
+  --color-border-focus: #3b82f6;
 
   /* Semantic Feedback States */
   --color-success: #10b981;
   --color-success-bg: rgba(16, 185, 129, 0.14);
-  --color-success-border: rgba(16, 185, 129, 0.32);
+  --color-success-border: rgba(16, 185, 129, 0.28);
   --color-success-text: #6ee7b7;
 
   --color-warning: #f59e0b;
   --color-warning-bg: rgba(245, 158, 11, 0.14);
-  --color-warning-border: rgba(245, 158, 11, 0.32);
+  --color-warning-border: rgba(245, 158, 11, 0.28);
   --color-warning-text: #fcd34d;
 
   --color-error: #ef4444;
   --color-error-hover: #f87171;
   --color-error-bg: rgba(239, 68, 68, 0.14);
-  --color-error-border: rgba(239, 68, 68, 0.32);
+  --color-error-border: rgba(239, 68, 68, 0.28);
   --color-error-text: #fca5a5;
 
   --color-info: #0ea5e9;
   --color-info-bg: rgba(14, 165, 233, 0.14);
-  --color-info-border: rgba(14, 165, 233, 0.32);
+  --color-info-border: rgba(14, 165, 233, 0.28);
   --color-info-text: #7dd3fc;
 
-  --color-disabled-bg: #141722;
-  --color-disabled-text: #64748b;
-  --color-disabled-border: rgba(255, 255, 255, 0.08);
+  --color-disabled-bg: #181a18;
+  --color-disabled-text: #555a55;
+  --color-disabled-border: rgba(255, 255, 255, 0.06);
 
   /* Focus & Elevation */
-  --focus-ring: 0 0 0 2px #0b0d13, 0 0 0 4px #38bdf8;
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.55);
-  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.65), 0 2px 6px -2px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 14px 28px -4px rgba(0, 0, 0, 0.75), 0 4px 10px -2px rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 2px #141514, 0 0 0 4px #3b82f6;
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 4px 14px -2px rgba(0, 0, 0, 0.55), 0 2px 6px -2px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.65), 0 4px 10px -2px rgba(0, 0, 0, 0.4);
 
-  /* 2026 Tactile Frosted Glass System Tokens (Dark Mode - darkmode.mp4) */
-  --glass-bg-base: rgba(18, 22, 32, 0.78);
-  --glass-bg-elevated: rgba(25, 30, 44, 0.88);
-  --glass-bg-subtle: rgba(18, 22, 32, 0.52);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.06);
-  --glass-border-highlight: rgba(255, 255, 255, 0.24);
-  --glass-blur: blur(20px) saturate(180%);
-  --glass-blur-heavy: blur(36px) saturate(190%);
-  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-  --glass-shadow-sm: 0 4px 16px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  --glass-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  --glass-shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.70), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  /* 2026 Tactile Frosted Glass & Neumorphic Tokens (Dark Mode) */
+  --glass-bg-base: rgba(26, 28, 26, 0.72);
+  --glass-bg-elevated: rgba(32, 35, 32, 0.82);
+  --glass-bg-subtle: rgba(26, 28, 26, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-subtle: rgba(255, 255, 255, 0.05);
+  --glass-border-highlight: rgba(255, 255, 255, 0.14);
+  --glass-blur: blur(20px) saturate(150%);
+  --glass-blur-heavy: blur(32px) saturate(160%);
+  --glass-sheen: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --glass-shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --glass-shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+  --glass-shadow-lg: 0 14px 32px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+
+  /* Neumorphic Inset / Raised Utilities (Dark Mode) */
+  --neumorph-inset: inset 0 1px 2px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --neumorph-raised: 0 2px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --neumorph-pill-bg: #181a18;
+  --neumorph-pill-active: #282a28;
 }
 
 /* Smooth Theme Switching Transitions (Matching 0.3s cubic-bezier) */
@@ -265,14 +277,14 @@ body {
 
 :root[data-theme="dark"] body {
   background-color: var(--color-bg-canvas);
-  background-image: radial-gradient(120% 85% at 50% -10%, #161b28 0%, #0b0d13 55%, #06070a 100%);
+  background-image: radial-gradient(100% 70% at 50% 0%, #1a1c1a 0%, #141514 60%, #111211 100%);
   background-attachment: fixed;
 }
 
 /* ==========================================================================
-   AMBIENT SPATIAL BACKGROUND: darkmode.mp4 Fluid Caustics & Micro-Dots
-   Light: Ice-blue / periwinkle (#bfd1e7) fluid aura
-   Dark: Midnight slate-blue space caustic (#1d2127) with deep cyan/indigo glow
+   AMBIENT SPATIAL BACKGROUND: Sleek Minimalist Matte Canvas
+   Light: Clean airy daylight with ice-blue fluid aura
+   Dark: Calm, sleek #171817 graphite matte surface (Reference: Freebuff Ads Dark UI)
    ========================================================================== */
 
 /* LIGHT MODE: Airy Luminous Canvas with Ice-Blue Fluid Caustic */
@@ -295,23 +307,19 @@ body::before {
   background-attachment: fixed;
 }
 
-/* DARK MODE: Deep Obsidian Midnight Canvas with Ethereal Slate-Blue Fluid Caustic */
+/* DARK MODE: Clean, sleek, minimalist matte background without weird colored blobs */
 :root[data-theme="dark"] body::before {
   background-image:
-    /* Tech luminescent 28px micro-dot matrix */
-    radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    /* Sampled #1d2127 center ethereal midnight space caustic */
-    radial-gradient(ellipse 70% 48% at 50% 25%, rgba(30, 58, 100, 0.35) 0%, rgba(15, 23, 42, 0.12) 50%, transparent 80%),
-    /* Ethereal cyan/sky wash (Top left) */
-    radial-gradient(circle at 15% 15%, rgba(14, 165, 233, 0.12) 0%, transparent 55%),
-    /* Ethereal violet-indigo wash (Top right) */
-    radial-gradient(circle at 85% 18%, rgba(99, 102, 241, 0.10) 0%, transparent 55%);
-  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
+    /* Minimalist 32px micro-dot matrix */
+    radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    /* Subtle calm top ambient glow matching reference image */
+    radial-gradient(ellipse 75% 45% at 50% 5%, rgba(42, 45, 42, 0.22) 0%, transparent 70%);
+  background-size: 32px 32px, 100% 100%;
 }
 
 /* ==========================================================================
-   ATMOSPHERIC AMBIENT DRIFT: Living Organic Depth & Keynote Aura
-   Smooth multi-point breathing animation providing spatial depth
+   ATMOSPHERIC AMBIENT DRIFT
+   Smooth multi-point breathing animation in Light mode (disabled in Dark mode)
    ========================================================================== */
 
 /* LIGHT MODE: Warm Ambient Prism Wash */
@@ -331,15 +339,9 @@ body::after {
   opacity: 0.7;
 }
 
-/* DARK MODE: Deep Midnight Glow with Ethereal Depth */
+/* DARK MODE: Calm, static, clean canvas (no weird moving blob animations) */
 :root[data-theme="dark"] body::after {
-  background:
-    radial-gradient(ellipse 60% 50% at 25% 30%, rgba(30, 58, 100, 0.20) 0%, transparent 65%),
-    radial-gradient(ellipse 55% 45% at 75% 40%, rgba(99, 102, 241, 0.12) 0%, transparent 65%),
-    radial-gradient(ellipse 65% 55% at 50% 50%, rgba(14, 165, 233, 0.10) 0%, transparent 70%);
-  filter: blur(80px);
-  animation: ambientAuroraDrift 24s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite alternate;
-  opacity: 0.85;
+  display: none;
 }
 
 @keyframes ambientAuroraDrift {
@@ -364,8 +366,8 @@ body::after {
 }
 
 /* ==========================================================================
-   FEDERICO PIAN TACTILE NOISE & GLASS OVERLAY (.glass-overlay)
-   Authentic organic film grain & subtle dark mode vignette
+   GLASS OVERLAY (.glass-overlay)
+   Clean matte overlay in dark mode without jittery noise
    ========================================================================== */
 .glass-overlay {
   height: 100%;
@@ -394,21 +396,12 @@ body::after {
 
 :root[data-theme="dark"] .glass-overlay,
 .dark .glass-overlay {
-  background: rgba(0, 0, 0, 0.25);
-}
-
-@media only screen and (min-width: 1024px) {
-  :root[data-theme="dark"] .glass-overlay,
-  .dark .glass-overlay {
-    background: rgba(0, 0, 0, 0.15);
-  }
+  background: transparent;
 }
 
 :root[data-theme="dark"] .glass-overlay::after,
 .dark .glass-overlay::after {
-  opacity: 0.065;
-  animation: noiseGrain 2s steps(3) infinite both;
-  display: block;
+  display: none;
 }
 
 @keyframes noiseGrain {

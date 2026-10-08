@@ -8,7 +8,7 @@
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-xl, 18px);
+  border-radius: var(--radius-xl, 16px);
   overflow: hidden;
   box-shadow: var(--glass-shadow-sm);
   display: flex;
@@ -36,8 +36,8 @@
 }
 
 :root[data-theme="dark"] .card--interactive:hover {
-  border-color: rgba(96, 165, 250, 0.45);
-  box-shadow: var(--glass-shadow-md), 0 0 24px rgba(59, 130, 246, 0.15);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--glass-shadow-md), 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
 .card__header {
