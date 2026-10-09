@@ -22,8 +22,6 @@ export const SignUpPage: React.FC = () => {
     phone: '',
     password: '',
     confirmPassword: '',
-    organization: '',
-    jobTitle: '',
     agreeTerms: false
   });
 
@@ -93,9 +91,7 @@ export const SignUpPage: React.FC = () => {
       updateProfile({
         first_name: formData.firstName.trim(),
         last_name: formData.lastName.trim(),
-        phone: formData.phone.trim() || undefined,
-        organization: formData.organization.trim() || undefined,
-        job_title: formData.jobTitle.trim() || undefined
+        phone: formData.phone.trim() || undefined
       });
       // Flag as a fresh user so the interactive onboarding tour activates
       localStorage.setItem('fresh_signup_tour_pending', 'true');
@@ -239,26 +235,6 @@ export const SignUpPage: React.FC = () => {
 
           {/* Password hint (matches Figma) */}
           <p className="signup-password-hint">Password must be at least 8 characters.</p>
-
-          {/* Row 4: Optional - Organization + Job title */}
-          <div className="signup-optional-header">Optional</div>
-          <div className="signup-grid">
-            <Input
-              label="Organizational/School"
-              name="organization"
-              placeholder=""
-              value={formData.organization}
-              onChange={handleChange}
-              autoComplete="organization"
-            />
-            <Input
-              label="Job title / programme"
-              name="jobTitle"
-              placeholder=""
-              value={formData.jobTitle}
-              onChange={handleChange}
-            />
-          </div>
 
           {/* Terms and Condition Checkbox */}
           <div className="signup-checkbox-group">
