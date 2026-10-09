@@ -25,7 +25,16 @@ function getAudioContext(): AudioContext | null {
   }
 }
 
-export type CodiChirpMood = 'idle' | 'happy' | 'wave' | 'celebrate' | 'thinking' | 'curious' | 'alert';
+export type CodiChirpMood =
+  | 'idle'
+  | 'happy'
+  | 'wave'
+  | 'celebrate'
+  | 'thinking'
+  | 'curious'
+  | 'alert'
+  | 'confused'
+  | 'sleep';
 
 /**
  * Play a cute synthesized melodic cat purr / kitten chirp for Codi
@@ -121,6 +130,45 @@ export function playCodiChirp(mood: CodiChirpMood = 'happy'): void {
           osc.start(tStart);
           osc.stop(tEnd);
         });
+        break;
+      }
+
+      case 'confused': {
+        // Quizzical double chirp: 720Hz -> 540Hz -> 820Hz
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(720, now);
+        osc.frequency.exponentialRampToValueAtTime(540, now + 0.08);
+        osc.frequency.exponentialRampToValueAtTime(860, now + 0.18);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.1, now + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+        break;
+      }
+
+      case 'sleep': {
+        // Soft soothing rhythmic purr: low 110Hz with gentle pulse
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(110, now);
+        osc.frequency.exponentialRampToValueAtTime(85, now + 0.35);
+
+        gain.gain.setValueAtTime(0.001, now);
+        gain.gain.exponentialRampToValueAtTime(0.06, now + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.4);
         break;
       }
 

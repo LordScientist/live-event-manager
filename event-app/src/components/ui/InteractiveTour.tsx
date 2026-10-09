@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Radio,
@@ -16,6 +16,7 @@ import { Button } from './Button';
 import { CodiToyAvatar } from '../presentation/CodiToyAvatar';
 import { triggerConfetti } from '../../utils/confetti';
 import { triggerLiveBroadcastShift } from '../../services/presentationService';
+import { playCodiChirp, type CodiChirpMood } from '../../utils/codiAudio';
 import './InteractiveTour.css';
 
 interface TourStep {
@@ -113,17 +114,6 @@ const TOUR_STEPS: TourStep[] = [
   }
 ];
 
-const getTourMood = (index: number): 'idle' | 'happy' | 'wave' | 'curious' | 'celebrate' | 'thinking' | 'alert' => {
-  switch (index) {
-    case 0: return 'alert';
-    case 1: return 'happy';
-    case 2: return 'curious';
-    case 3: return 'thinking';
-    case 4: return 'celebrate';
-    default: return 'happy';
-  }
-};
-
 export const InteractiveTour: React.FC = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(() => {
@@ -131,9 +121,51 @@ export const InteractiveTour: React.FC = () => {
   });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isWaving, setIsWaving] = useState(false);
+  const [codiMood, setCodiMood] = useState<CodiChirpMood>('wave');
   const [simulatedShiftActive, setSimulatedShiftActive] = useState(false);
 
+  const lastNextClickTimeRef = useRef<number>(0);
+  const moodResetTimerRef = useRef<number | null>(null);
+  const sleepTimerRef = useRef<number | null>(null);
+
+  // Inactivity sleep timer: if staying on a page without interaction for 20s, Codi falls asleep!
+  const resetSleepTimer = useCallback(() => {
+    if (sleepTimerRef.current) window.clearTimeout(sleepTimerRef.current);
+
+    sleepTimerRef.current = window.setTimeout(() => {
+      setCodiMood('sleep');
+      playCodiChirp('sleep');
+    }, 20000); // 20s inactivity
+  }, []);
+
+  const handleUserActivity = useCallback(() => {
+    setCodiMood((prev) => (prev === 'sleep' ? 'idle' : prev));
+    resetSleepTimer();
+  }, [resetSleepTimer]);
+
+  // When onboarding opens: first wave at user, then settle to idle
+  useEffect(() => {
+    if (!isOpen) {
+      if (sleepTimerRef.current) window.clearTimeout(sleepTimerRef.current);
+      if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+      return;
+    }
+
+    const welcomeTimer = window.setTimeout(() => {
+      setCodiMood('idle');
+    }, 2400);
+
+    resetSleepTimer();
+
+    return () => {
+      window.clearTimeout(welcomeTimer);
+      if (sleepTimerRef.current) window.clearTimeout(sleepTimerRef.current);
+      if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+    };
+  }, [isOpen, resetSleepTimer]);
+
   const handleSimulateShift = () => {
+    handleUserActivity();
     setSimulatedShiftActive(true);
     triggerLiveBroadcastShift({
       id: 'tour-shift-sim',
@@ -151,6 +183,9 @@ export const InteractiveTour: React.FC = () => {
     const handleManualOpen = () => {
       setCurrentStepIndex(0);
       setIsOpen(true);
+      setCodiMood('wave');
+      playCodiChirp('wave');
+      setTimeout(() => setCodiMood('idle'), 2400);
     };
 
     window.addEventListener('open-codi-tour', handleManualOpen);
@@ -158,30 +193,70 @@ export const InteractiveTour: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // 2026 Celebration Microinteraction: Trigger confetti on reaching the final step
+    // 2026 Celebration Microinteraction: Trigger confetti and celebrate on reaching the final step
     if (isOpen && currentStepIndex === TOUR_STEPS.length - 1) {
+      playCodiChirp('celebrate');
       triggerConfetti(0.5, 0.45);
     }
   }, [currentStepIndex, isOpen]);
 
   const completeTour = () => {
+    if (sleepTimerRef.current) window.clearTimeout(sleepTimerRef.current);
+    if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
     localStorage.removeItem('fresh_signup_tour_pending');
     localStorage.setItem('has_completed_tour', 'true');
     setIsOpen(false);
   };
 
   const handleNext = () => {
+    handleUserActivity();
+    const now = Date.now();
+    const delta = now - lastNextClickTimeRef.current;
+    lastNextClickTimeRef.current = now;
+
+    // Fast clicking (within 1 second) triggers confused mood
+    const isRapidClick = delta > 0 && delta <= 1000;
+
     if (currentStepIndex < TOUR_STEPS.length - 1) {
-      setCurrentStepIndex((prev) => prev + 1);
+      const nextIndex = currentStepIndex + 1;
+      setCurrentStepIndex(nextIndex);
+
+      if (nextIndex === TOUR_STEPS.length - 1) {
+        // Final step reached -> celebrate!
+        setCodiMood('celebrate');
+        playCodiChirp('celebrate');
+      } else if (isRapidClick) {
+        // Rapid clicks -> confused face!
+        setCodiMood('confused');
+        playCodiChirp('confused');
+        if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+        moodResetTimerRef.current = window.setTimeout(() => {
+          setCodiMood('idle');
+        }, 1600);
+      } else {
+        // Normal pace -> happy mood!
+        setCodiMood('happy');
+        playCodiChirp('happy');
+        if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+        moodResetTimerRef.current = window.setTimeout(() => {
+          setCodiMood('idle');
+        }, 1600);
+      }
     } else {
+      setCodiMood('celebrate');
+      playCodiChirp('celebrate');
       triggerConfetti(0.5, 0.5);
       completeTour();
     }
   };
 
   const handleBack = () => {
+    handleUserActivity();
     if (currentStepIndex > 0) {
       setCurrentStepIndex((prev) => prev - 1);
+      setCodiMood('happy');
+      if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+      moodResetTimerRef.current = window.setTimeout(() => setCodiMood('idle'), 1400);
     }
   };
 
@@ -192,8 +267,14 @@ export const InteractiveTour: React.FC = () => {
   };
 
   const handleMascotClick = () => {
+    handleUserActivity();
     setIsWaving(true);
-    setTimeout(() => setIsWaving(false), 900);
+    setCodiMood('wave');
+    playCodiChirp('wave');
+    setTimeout(() => {
+      setIsWaving(false);
+      setCodiMood('idle');
+    }, 1800);
   };
 
   if (!isOpen) return null;
@@ -207,6 +288,7 @@ export const InteractiveTour: React.FC = () => {
       role="dialog"
       aria-modal="true"
       aria-label="Codi Mascot Onboarding Walkthrough"
+      onPointerMove={handleUserActivity}
     >
       <div className="tour-modal macos-window">
         {/* macOS Aurora Fluid Mesh Background */}
@@ -291,7 +373,7 @@ export const InteractiveTour: React.FC = () => {
             <div className="tour-mascot-avatar-col">
               <CodiToyAvatar
                 size="md"
-                mood={getTourMood(currentStepIndex)}
+                mood={codiMood}
                 isWaving={isWaving}
                 onClick={handleMascotClick}
                 title="I'm Codi! Click me to say hi!"
@@ -366,7 +448,17 @@ export const InteractiveTour: React.FC = () => {
                     ? 'tour-dot--completed'
                     : ''
                 }`}
-                onClick={() => setCurrentStepIndex(i)}
+                onClick={() => {
+                  handleUserActivity();
+                  setCurrentStepIndex(i);
+                  if (i === TOUR_STEPS.length - 1) {
+                    setCodiMood('celebrate');
+                  } else {
+                    setCodiMood('happy');
+                    if (moodResetTimerRef.current) window.clearTimeout(moodResetTimerRef.current);
+                    moodResetTimerRef.current = window.setTimeout(() => setCodiMood('idle'), 1600);
+                  }
+                }}
                 aria-label={`Jump to step ${i + 1}`}
               />
             ))}

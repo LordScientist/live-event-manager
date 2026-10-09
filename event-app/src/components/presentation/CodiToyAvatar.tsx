@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import catWebp from '../../assets/cat.webp';
+import codiIdle from '../../assets/codi/codi-idle.webp';
+import codiWave from '../../assets/codi/codi-wave.webp';
+import codiHappy from '../../assets/codi/codi-happy.webp';
+import codiConfused from '../../assets/codi/codi-confused.webp';
+import codiSleep from '../../assets/codi/codi-sleep.webp';
+import codiCelebrate from '../../assets/codi/codi-celebrate.webp';
 import { playCodiChirp, type CodiChirpMood } from '../../utils/codiAudio';
 import './CodiToyAvatar.css';
 
@@ -7,7 +12,7 @@ export interface CodiToyAvatarProps {
   isWaving?: boolean;
   onClick?: () => void;
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  mood?: 'idle' | 'happy' | 'wave' | 'curious' | 'celebrate' | 'thinking' | 'alert';
+  mood?: CodiChirpMood;
   className?: string;
   title?: string;
   interactive?: boolean;
@@ -15,13 +20,25 @@ export interface CodiToyAvatarProps {
 }
 
 const CODI_QUOTES = [
-  "Purr... I'm Codi, your Live Connect companion! 🐾",
+  "Purr... I'm Codi, your Live Connect companion!",
   "Zero blackouts guaranteed on our campus!",
   "Tip: Dynamic Island broadcasts room shifts in < 10s!",
   "Switch roles freely — Attendee, Speaker, or Volunteer!",
   "All venue routes & accessibility specs verified! Meow!",
   "Tap me anytime for live tips and event perks!"
 ];
+
+const MOOD_ANIMATIONS: Record<CodiChirpMood, string> = {
+  idle: codiIdle,
+  wave: codiWave,
+  happy: codiHappy,
+  confused: codiConfused,
+  curious: codiConfused,
+  thinking: codiConfused,
+  sleep: codiSleep,
+  celebrate: codiCelebrate,
+  alert: codiCelebrate
+};
 
 export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   isWaving = false,
@@ -70,7 +87,7 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
     if (!interactive) return;
 
     setIsReacting(true);
-    const nextMoods: CodiChirpMood[] = ['wave', 'happy', 'celebrate', 'curious'];
+    const nextMoods: CodiChirpMood[] = ['wave', 'happy', 'celebrate', 'curious', 'confused'];
     const nextMood = nextMoods[Math.floor(Math.random() * nextMoods.length)];
     setClickMood(nextMood);
 
@@ -94,7 +111,7 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
     setTimeout(() => {
       setIsReacting(false);
       setClickMood(null);
-    }, 1200);
+    }, 1400);
   };
 
   useEffect(() => {
@@ -104,9 +121,6 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   }, []);
 
   const moodEffective = activeMood;
-  const isHappy = moodEffective === 'happy' || moodEffective === 'celebrate';
-  const isWink = moodEffective === 'wave';
-  const isAlert = moodEffective === 'alert';
 
   return (
     <div
@@ -137,67 +151,27 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
         </div>
       )}
 
-      {/* Celebration Paw / Sparkle Burst on click */}
-      {isReacting && (
-        <div className="codi-sparkles-burst" aria-hidden="true">
-          <span className="codi-sparkle-dot codi-sparkle-dot--1">🐾</span>
-          <span className="codi-sparkle-dot codi-sparkle-dot--2">✨</span>
-          <span className="codi-sparkle-dot codi-sparkle-dot--3">💖</span>
-        </div>
-      )}
-
       {/* Cat Mascot Wrapper */}
-      <div className="codi-cat-stage">
+      <div className={`codi-cat-stage ${moodEffective === 'sleep' ? 'codi-cat-stage--sleep' : ''}`}>
         {/* Ambient Halo behind Cat */}
         <div className="codi-cat-aura" aria-hidden="true" />
 
-        {/* High-Resolution Cat Mascot Image */}
+        {/* High-Resolution Animated Transparent Cat Mascot */}
         <img
-          src={catWebp}
-          alt="Codi the Cat Mascot"
-          className="codi-cat-img"
+          key={moodEffective}
+          src={MOOD_ANIMATIONS[moodEffective] || codiIdle}
+          alt={`Codi the Cat Mascot (${moodEffective})`}
+          className={`codi-cat-img codi-cat-img--${moodEffective}`}
           draggable={false}
           loading="eager"
         />
 
-        {/* Pulsing Live Connect Collar Charm */}
-        <div className="codi-collar-bell-glow" aria-hidden="true">
-          <span className="codi-collar-bell-dot" />
-        </div>
-
-        {/* Expressive Animated Cat Eye Overlays */}
-        <div className="codi-cat-eyes-overlay" aria-hidden="true">
-          {/* Happy Arched Eyes ^ ^ */}
-          {isHappy && (
-            <svg viewBox="0 0 100 40" className="codi-cat-eyes-svg codi-cat-eyes--happy">
-              <path d="M22,26 Q35,8 48,26" fill="none" stroke="#38bdf8" strokeWidth="4.5" strokeLinecap="round" />
-              <path d="M52,26 Q65,8 78,26" fill="none" stroke="#38bdf8" strokeWidth="4.5" strokeLinecap="round" />
-            </svg>
-          )}
-
-          {/* Wink Mode ^ _ ✦ */}
-          {isWink && (
-            <svg viewBox="0 0 100 40" className="codi-cat-eyes-svg codi-cat-eyes--wink">
-              <path d="M22,26 Q35,10 48,26" fill="none" stroke="#38bdf8" strokeWidth="4.5" strokeLinecap="round" />
-              <polygon points="65,10 67,18 75,20 67,22 65,30 63,22 55,20 63,18" fill="#ff7a1a" />
-            </svg>
-          )}
-
-          {/* Alert Eyes ! ! */}
-          {isAlert && (
-            <svg viewBox="0 0 100 40" className="codi-cat-eyes-svg codi-cat-eyes--alert">
-              <circle cx="35" cy="20" r="10" fill="#ff5722" />
-              <circle cx="35" cy="20" r="4.5" fill="#ffffff" />
-              <circle cx="65" cy="20" r="10" fill="#ff5722" />
-              <circle cx="65" cy="20" r="4.5" fill="#ffffff" />
-            </svg>
-          )}
-        </div>
-
-        {/* Magnetic Paw Floating Badge */}
-        <div className={`codi-cat-paw-wave ${moodEffective === 'wave' || isWaving ? 'codi-cat-paw-wave--active' : ''}`} aria-hidden="true">
-          <span className="codi-cat-paw-emoji">🐾</span>
-        </div>
+        {/* Pulsing Live Connect Collar Charm (warm gold / amber) */}
+        {moodEffective !== 'sleep' && (
+          <div className="codi-collar-bell-glow" aria-hidden="true">
+            <span className="codi-collar-bell-dot" />
+          </div>
+        )}
       </div>
     </div>
   );

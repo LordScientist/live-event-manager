@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { CodiToyAvatar } from './CodiToyAvatar';
+import { type CodiChirpMood } from '../../utils/codiAudio';
 import './MascotGuide.css';
 
 interface MascotGuideProps {
@@ -52,7 +53,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({ currentSlide }) => {
 
   const dialogue = MASCOT_DIALOGUES[currentSlide] || MASCOT_DIALOGUES[0];
 
-  const getCodiMood = (moodStr: string): 'idle' | 'happy' | 'wave' | 'curious' | 'celebrate' | 'thinking' | 'alert' => {
+  const getCodiMood = (moodStr: string): CodiChirpMood => {
     switch (moodStr) {
       case 'alert':
         return 'alert';
@@ -63,7 +64,12 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({ currentSlide }) => {
       case 'happy':
         return 'happy';
       case 'caring':
+      case 'curious':
         return 'curious';
+      case 'confused':
+        return 'confused';
+      case 'sleep':
+        return 'sleep';
       default:
         return 'idle';
     }
