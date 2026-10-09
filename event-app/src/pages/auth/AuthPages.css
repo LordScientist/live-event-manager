@@ -16,15 +16,14 @@
 .auth-page--signup {
   justify-content: flex-start;
   padding: 0;
-  background: #090e25;
-  background: radial-gradient(circle at 50% 15%, #12193b 0%, #090e25 60%, #050817 100%);
+  background: transparent;
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
 }
 
 :root[data-theme="dark"] .auth-page--signup {
-  background: radial-gradient(circle at 50% 15%, #12193b 0%, #090e25 60%, #050817 100%);
+  background: transparent;
 }
 
 /* ── Auth card (login / general) ──────────────────────────────────────────── */
@@ -73,7 +72,27 @@
   }
   .auth-card--signup {
     border-radius: 0;
-    padding: 32px 20px 24px;
+    padding: 28px 20px 24px;
+  }
+}
+
+@media (max-width: 380px) {
+  .auth-card--signup {
+    padding: 20px 16px 20px;
+  }
+  .signup-header__title {
+    font-size: 28px;
+  }
+  .auth-card--signup .input {
+    height: 48px;
+    min-height: 48px;
+    font-size: 14px;
+    padding: 0 16px;
+  }
+  .auth-card--signup .signup-submit-btn,
+  .role-confirmed-card .role-confirmed-btn {
+    height: 48px;
+    font-size: 15px !important;
   }
 }
 
@@ -303,8 +322,14 @@
    Palette: Deep Navy #090E25, Vibrant Orange #FF5722, Cobalt Accent #1D4ED8
    ========================================================================== */
 
-/* ── World Map Backdrop ──────────────────────────────────────────────────── */
+/* ── World Map Backdrop (LIGHT MODE ONLY - Dark mode 100% untouched) ───── */
 .signup-map-backdrop {
+  display: none; /* Dark mode untouched: NO map in dark mode */
+}
+
+:root:not([data-theme="dark"]) .signup-map-backdrop,
+:root[data-theme="light"] .signup-map-backdrop {
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
@@ -313,18 +338,11 @@
   overflow: hidden;
   pointer-events: none;
   z-index: 1;
-  opacity: 0.26;
-}
-
-.signup-map-svg {
-  width: 150%;
-  max-width: 900px;
-  height: auto;
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #2e3b72;
+  background-image: url('../../assets/world-map-light.svg');
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: min(1100px, 140vw) auto;
+  opacity: 1;
 }
 
 /* ── Top Navigation Bar: Back Chevron + Theme Toggle ─────────────────────── */
@@ -577,27 +595,46 @@
   width: 100%;
   height: 52px;
   border-radius: 9999px !important;
-  background-color: #ff5722 !important;
+  background: linear-gradient(180deg, #ff6b00 0%, #ff5722 100%) !important;
+  background-image: linear-gradient(180deg, #ff6b00 0%, #ff5722 100%) !important;
   border: none !important;
   color: #ffffff !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  box-shadow: 0 4px 14px rgba(255, 87, 34, 0.38);
+  box-shadow: 0 4px 14px rgba(255, 87, 34, 0.45) !important;
   margin-top: 0;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.auth-card--signup .signup-submit-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76%;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(255, 87, 34, 0.65) 0%, rgba(255, 107, 0, 0.3) 50%, transparent 80%) !important;
+  filter: blur(10px) !important;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.9;
 }
 
 .auth-card--signup .signup-submit-btn:hover:not(:disabled) {
-  background-color: #f44914 !important;
+  background: linear-gradient(180deg, #ff7a1a 0%, #ff6330 100%) !important;
+  background-image: linear-gradient(180deg, #ff7a1a 0%, #ff6330 100%) !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.48);
+  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.55) !important;
 }
 
 .auth-card--signup .signup-submit-btn:active:not(:disabled) {
-  background-color: #e03e0a !important;
+  background: linear-gradient(180deg, #f05000 0%, #e04414 100%) !important;
+  background-image: linear-gradient(180deg, #f05000 0%, #e04414 100%) !important;
   transform: translateY(0);
 }
 
@@ -697,29 +734,46 @@
   width: 100%;
   height: 52px;
   border-radius: 9999px !important;
-  background-color: #ff5722 !important;
+  background: linear-gradient(180deg, #ff6b00 0%, #ff5722 100%) !important;
+  background-image: linear-gradient(180deg, #ff6b00 0%, #ff5722 100%) !important;
   border: none !important;
   color: #ffffff !important;
   font-size: 16px !important;
   font-weight: 700 !important;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  box-shadow: 0 4px 14px rgba(255, 87, 34, 0.38);
+  box-shadow: 0 4px 14px rgba(255, 87, 34, 0.45) !important;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.role-confirmed-btn::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 76%;
+  height: 14px;
+  background: radial-gradient(ellipse at center, rgba(255, 87, 34, 0.65) 0%, rgba(255, 107, 0, 0.3) 50%, transparent 80%) !important;
+  filter: blur(10px) !important;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.9;
 }
 
 .role-confirmed-btn:hover {
-  background-color: #f44914 !important;
+  background: linear-gradient(180deg, #ff7a1a 0%, #ff6330 100%) !important;
+  background-image: linear-gradient(180deg, #ff7a1a 0%, #ff6330 100%) !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.48);
+  box-shadow: 0 6px 20px rgba(255, 87, 34, 0.55) !important;
 }
 
 /* ── Light Mode Adaptations (Signup & Role Confirmed) ─────────────────────── */
 :root:not([data-theme="dark"]) .auth-page--signup,
 :root[data-theme="light"] .auth-page--signup {
-  background: #f3f5f9;
-  background-image: radial-gradient(120% 85% at 50% -10%, #ffffff 0%, #f3f5f9 55%, #e8ecf4 100%);
+  background: transparent;
   color: #0f172a;
 }
 
