@@ -70,8 +70,10 @@
   margin-top: 2px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  word-break: break-word;
+  flex-wrap: wrap;
+  gap: 8px;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .greeting-wave {
@@ -79,12 +81,92 @@
   display: inline-block;
   transform-origin: 70% 70%;
   animation: waveMotion 2.2s infinite ease-in-out;
+  flex-shrink: 0;
 }
 
 @keyframes waveMotion {
   0%, 100% { transform: rotate(0deg); }
   20%, 60% { transform: rotate(14deg); }
   40%, 80% { transform: rotate(-10deg); }
+}
+
+/* Mobile Layout: Accessibility / Quick actions go to the top row, sandwiching greeting & name in the middle */
+@media (max-width: 680px) {
+  .user-home-header {
+    padding: var(--space-4);
+    border-radius: 20px;
+  }
+
+  .user-home-header__top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  /* Accessibility features / quick actions go UP */
+  .user-home-header__quick-actions {
+    order: -1;
+    align-self: flex-end;
+    margin-bottom: 2px;
+  }
+
+  /* Greeting and user name sandwiched in the middle with full width */
+  .user-home-greeting {
+    width: 100%;
+    margin-bottom: 2px;
+  }
+
+  .user-home-greeting__salutation {
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .user-home-greeting__name {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+}
+
+@media (max-width: 420px) {
+  .user-home-header__quick-actions {
+    gap: 6px;
+    padding: 3px 6px;
+  }
+
+  .user-home-pres-btn,
+  .user-home-codi-btn,
+  .user-home-bell-btn,
+  .user-home-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .user-home-avatar__initials {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 350px) {
+  .user-home-header__quick-actions {
+    gap: 4px;
+    padding: 2px 4px;
+  }
+
+  .user-home-pres-btn,
+  .user-home-codi-btn,
+  .user-home-bell-btn,
+  .user-home-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .user-home-bell-btn svg,
+  .user-home-pres-btn svg,
+  .user-home-codi-btn svg {
+    width: 16px;
+    height: 16px;
+  }
 }
 
 .user-home-header__quick-actions {
@@ -800,17 +882,6 @@
 
 /* Narrow mobile devices (320px–375px) */
 @media (max-width: 375px) {
-  .user-home-header__top {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .user-home-header__quick-actions {
-    align-self: flex-start;
-    flex-wrap: wrap;
-  }
-
   .active-event-quicklink {
     padding: 14px 12px;
     border-radius: 16px;
