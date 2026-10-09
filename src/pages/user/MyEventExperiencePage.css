@@ -536,21 +536,12 @@
   border-color: rgba(37, 99, 235, 0.45);
 }
 
-/* Mobile Spatial 3D Response (Touch Devices & Viewports without Mouse) */
+/* Mobile Touch Response: Lightweight, instant, zero layout thrashing */
 @media (hover: none), (pointer: coarse) {
-  .digital-pass-card,
-  .boarding-pass-badge,
-  .digital-pass {
-    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-    transform-style: preserve-3d;
-    will-change: transform;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-  }
-
   .digital-pass-card:active,
   .boarding-pass-badge:active,
   .digital-pass:active {
-    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(-8px) scale(0.985);
+    transform: scale(0.985);
   }
 }
 

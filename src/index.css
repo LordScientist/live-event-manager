@@ -741,3 +741,12 @@ a:hover {
   pointer-events: none;
 }
 
+/* ── Mobile 60-120fps Glass Performance Optimization ─────────────────────── */
+@media (max-width: 768px), (pointer: coarse) {
+  :root,
+  :root[data-theme="dark"] {
+    --glass-blur: blur(12px) saturate(140%);
+    --glass-blur-heavy: blur(16px) saturate(150%);
+  }
+}
+

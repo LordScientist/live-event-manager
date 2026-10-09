@@ -6,7 +6,6 @@ import codiConfused from '../../assets/codi/codi-confused.webp';
 import codiSleep from '../../assets/codi/codi-sleep.webp';
 import codiCelebrate from '../../assets/codi/codi-celebrate.webp';
 import { playCodiChirp, type CodiChirpMood } from '../../utils/codiAudio';
-import { type MobileSpatialTiltDetail } from '../../utils/spotlight';
 import './CodiToyAvatar.css';
 
 export interface CodiToyAvatarProps {
@@ -58,37 +57,12 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   const [activeQuoteIndex, setActiveQuoteIndex] = useState(0);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const speechTimerRef = useRef<number | null>(null);
-  const isHoveringDesktopRef = useRef(false);
 
   const activeMood: CodiChirpMood = clickMood || propMood || (isWaving ? 'wave' : 'idle');
 
-  // Listen to global spatial tilt (mobile gyroscope & scroll parallax)
-  useEffect(() => {
-    const handleSpatialTilt = (e: Event) => {
-      if (isHoveringDesktopRef.current) return;
-      const customEvent = e as CustomEvent<MobileSpatialTiltDetail>;
-      if (!customEvent.detail) return;
-
-      const { tiltX, tiltY } = customEvent.detail;
-      setTilt({
-        rotateX: tiltX * 1.5,
-        rotateY: tiltY * 1.7,
-        scale: 1.02
-      });
-    };
-
-    window.addEventListener('mobile-spatial-tilt', handleSpatialTilt);
-    return () => {
-      window.removeEventListener('mobile-spatial-tilt', handleSpatialTilt);
-    };
-  }, []);
-
-  // Pointer tracking for interactive cat tilt and glance
+  // Desktop pointer tracking for interactive cat tilt and glance
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (!interactive || !containerRef.current) return;
-    if (e.pointerType === 'mouse') {
-      isHoveringDesktopRef.current = true;
-    }
+    if (!interactive || !containerRef.current || e.pointerType !== 'mouse') return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
@@ -105,7 +79,6 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   }, [interactive]);
 
   const handlePointerLeave = useCallback(() => {
-    isHoveringDesktopRef.current = false;
     setTilt({ rotateX: 0, rotateY: 0, scale: 1 });
   }, []);
 
