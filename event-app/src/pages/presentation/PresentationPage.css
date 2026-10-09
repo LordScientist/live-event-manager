@@ -1460,26 +1460,171 @@
 /* ── Mobile presentation adjustments ─────────────────────────────────────── */
 @media (max-width: 640px) {
   .presentation-header {
-    padding: 0 14px;
+    padding: 0 12px;
+    height: 56px;
+    gap: 8px;
   }
   .presentation-tabs {
     display: none;
   }
-  .slide-card {
-    padding: 24px 20px 28px;
-    border-radius: 16px;
+  .pres-brand-deck {
+    display: none;
   }
-  .slide-title {
-    font-size: 22px;
+  .macos-header-left {
+    gap: 8px;
   }
-  .presentation-footer {
-    padding: 0 14px;
+  .presentation-header__brand {
+    gap: 6px;
   }
-  .pres-running-title {
+  .pres-logo {
+    width: 24px;
+  }
+  .pres-brand-title {
+    font-size: 11.5px;
+  }
+  .presentation-header__actions {
+    gap: 6px;
+  }
+  .pres-action-btn {
+    padding: 6px 8px;
+  }
+  .pres-action-btn span {
     display: none;
   }
   .close-text {
     display: none;
+  }
+
+  .presentation-stage {
+    padding: 14px 10px 88px;
+  }
+
+  .slide-card {
+    padding: 20px 16px 22px;
+    border-radius: 18px;
+    min-height: auto;
+  }
+  .slide-header-block {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+  }
+  .slide-title {
+    font-size: 20px;
+    line-height: 1.25;
+  }
+  .slide-subtitle {
+    font-size: 13.5px;
+    line-height: 1.4;
+  }
+  .slide-mascot-comment-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 12px;
+    margin-top: 10px;
+  }
+  .lead-punch {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  .narrative-p {
+    font-size: 13.5px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .voice-pullquote {
+    font-size: 13px;
+    padding: 10px 14px;
+    margin: 12px 0;
+  }
+
+  .presentation-footer {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    height: 48px;
+    padding: 0 10px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+  .pres-running-title {
+    display: none;
+  }
+  .pres-dots {
+    gap: 5px;
+  }
+  .pres-dot {
+    width: 6px;
+    height: 6px;
+  }
+  .pres-dot--active {
+    width: 16px;
+  }
+  .pres-nav-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+    gap: 4px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .pres-island-states-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+  .pres-island-state-tab {
+    padding: 5px 6px;
+    font-size: 10.5px;
+  }
+  .mockup-diff-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .mockup-diff-arrow {
+    transform: rotate(90deg);
+    margin: 2px auto;
+  }
+  .pres-room-diff-showcase-card {
+    padding: 14px 12px;
+    border-radius: 14px;
+  }
+  .pres-diff-node-container {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .pres-diff-arrow-col {
+    flex-direction: row;
+    justify-content: center;
+    margin: 4px auto;
+  }
+  .pres-diff-arrow-icon {
+    transform: rotate(90deg);
+  }
+  .pres-chime-waveform {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .pres-test-trigger-btn {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    font-size: 12px;
+    padding: 10px 12px;
+  }
+  .closing-heading {
+    font-size: 20px;
+  }
+  .closing-sub {
+    font-size: 13.5px;
+  }
+  .outcome-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+  .outcome-card__num {
+    font-size: 32px;
   }
 }
 

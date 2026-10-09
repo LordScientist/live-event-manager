@@ -222,7 +222,7 @@ export const InteractiveTour: React.FC = () => {
             />
           </div>
           <div className="tour-header-meta">
-            <div className="tour-header-meta__left">
+            <div className="tour-header-controls">
               {/* macOS Traffic Lights Controls */}
               <div className="macos-traffic-lights" aria-label="macOS Window Controls">
                 <button
@@ -247,7 +247,9 @@ export const InteractiveTour: React.FC = () => {
                   <span className="macos-traffic-glyph">⤢</span>
                 </button>
               </div>
+            </div>
 
+            <div className="tour-header-badges">
               <span className={`tour-perk-badge tour-perk-badge--${currentStep.perkColor}`}>
                 {currentStep.perkBadge}
               </span>
@@ -256,7 +258,7 @@ export const InteractiveTour: React.FC = () => {
               </span>
             </div>
 
-            <div className="tour-header-meta__right">
+            <div className="tour-header-actions">
               <button
                 type="button"
                 className="tour-deck-shortcut-btn"
@@ -264,7 +266,7 @@ export const InteractiveTour: React.FC = () => {
                 title="Explore Full Presentation Deck"
               >
                 <Presentation size={13} />
-                <span>Full Deck</span>
+                <span className="tour-deck-btn-label">Full Deck</span>
               </button>
               <button
                 type="button"

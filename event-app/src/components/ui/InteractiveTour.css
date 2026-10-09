@@ -8,14 +8,20 @@
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background-color: rgba(10, 15, 29, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(5, 8, 18, 0.85);
+  backdrop-filter: blur(32px) saturate(190%);
+  -webkit-backdrop-filter: blur(32px) saturate(190%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
   animation: tourFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 480px) {
+  .tour-overlay {
+    padding: 10px;
+  }
 }
 
 @keyframes tourFadeIn {
@@ -90,13 +96,15 @@
   position: relative;
   width: 100%;
   max-width: 620px;
-  background-color: rgba(255, 255, 255, 0.76);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 20px);
+  background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(48px) saturate(220%);
   -webkit-backdrop-filter: blur(48px) saturate(220%);
   border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 24px;
+  border-radius: 22px;
   box-shadow:
-    0 32px 84px rgba(0, 0, 0, 0.22),
+    0 32px 84px rgba(0, 0, 0, 0.28),
     0 1px 3px rgba(0, 0, 0, 0.05),
     inset 0 1px 1px rgba(255, 255, 255, 0.95);
   overflow: hidden;
@@ -107,11 +115,11 @@
 }
 
 :root[data-theme="dark"] .tour-modal.macos-window {
-  background-color: rgba(18, 26, 44, 0.78);
+  background-color: rgba(15, 21, 37, 0.96);
   border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
     inset 0 1px 1px rgba(255, 255, 255, 0.18);
 }
 
@@ -129,12 +137,13 @@
 /* ── Window Header & Traffic Lights ──────────────────────────────────────── */
 .tour-modal__header {
   position: relative;
-  padding: 16px 22px 14px;
+  padding: 14px 20px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.45);
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 2;
+  flex-shrink: 0;
 }
 
 :root[data-theme="dark"] .tour-modal__header {
@@ -170,13 +179,18 @@
   gap: 12px;
 }
 
-.tour-header-meta__left {
+.tour-header-controls {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
-.tour-header-meta__right {
+.tour-header-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tour-header-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -368,12 +382,17 @@
 
 /* ── Body Content & Mascot Layout ────────────────────────────────────────── */
 .tour-modal__body {
-  padding: 22px 24px 18px;
+  padding: 20px 22px 16px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
   position: relative;
   z-index: 2;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 /* Codi Avatar + Speech Bubble Container */
@@ -404,10 +423,10 @@
 /* Speech Bubble Delivering the Presentation commentary (Liquid Glass) */
 .tour-speech-bubble {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.65);
+  background-color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(24px) saturate(190%);
   -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   padding: 18px 20px;
   box-shadow:
@@ -417,7 +436,7 @@
 }
 
 :root[data-theme="dark"] .tour-speech-bubble {
-  background-color: rgba(255, 255, 255, 0.06);
+  background-color: rgba(22, 30, 52, 0.88);
   border-color: rgba(255, 255, 255, 0.12);
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.35),
@@ -592,10 +611,10 @@
 
 /* ── Takeaways Card (Frosted glass panel) ─────────────────────────────────── */
 .tour-takeaways-card {
-  background-color: rgba(255, 255, 255, 0.52);
+  background-color: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 14px 18px;
   box-shadow:
@@ -604,7 +623,7 @@
 }
 
 :root[data-theme="dark"] .tour-takeaways-card {
-  background-color: rgba(255, 255, 255, 0.04);
+  background-color: rgba(20, 28, 48, 0.85);
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     0 6px 20px rgba(0, 0, 0, 0.25),
@@ -647,9 +666,9 @@
 
 /* ── Footer & Navigation (Frosted Dock style) ────────────────────────────── */
 .tour-modal__footer {
-  padding: 16px 24px 18px;
+  padding: 14px 22px 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.45);
-  background-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   display: flex;
@@ -658,10 +677,11 @@
   gap: 12px;
   flex-wrap: wrap;
   z-index: 2;
+  flex-shrink: 0;
 }
 
 :root[data-theme="dark"] .tour-modal__footer {
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: rgba(18, 25, 44, 0.88);
   border-top-color: rgba(255, 255, 255, 0.08);
 }
 
@@ -710,45 +730,184 @@
 
 /* ── Mobile Responsive Adjustments ───────────────────────────────────────── */
 @media (max-width: 580px) {
+  .tour-modal.macos-window {
+    max-height: calc(100vh - 16px);
+    max-height: calc(100dvh - 16px);
+    border-radius: 18px;
+  }
+
+  .tour-modal__header {
+    padding: 10px 14px 10px;
+  }
+
+  .tour-header-meta {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    gap: 8px 10px;
+    align-items: center;
+  }
+
+  .tour-header-controls {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .tour-header-actions {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .tour-deck-btn-label {
+    display: none;
+  }
+
+  .tour-deck-shortcut-btn {
+    padding: 5px 8px;
+  }
+
+  .tour-header-badges {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .tour-perk-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .tour-modal__body {
+    padding: 12px 12px 10px;
+    gap: 12px;
+  }
+
   .tour-mascot-section {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 8px;
   }
 
   .tour-mascot-avatar-col {
     flex-direction: row;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
+    padding-top: 0;
+  }
+
+  .tour-mascot-avatar-col .codi-toy-avatar {
+    width: 56px;
+    height: 62px;
+  }
+
+  .tour-speech-bubble {
+    padding: 14px 14px;
+    border-radius: 14px;
   }
 
   .tour-speech-tail {
     top: -7px;
-    left: 40px;
+    left: calc(50% - 7px);
     transform: rotate(135deg);
   }
 
+  .tour-speech-bubble__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+
+  .tour-step-tagline {
+    white-space: normal;
+    line-height: 1.3;
+    font-size: 11px;
+  }
+
+  .tour-speech-title {
+    font-size: 15px;
+    margin-bottom: 5px;
+    line-height: 1.25;
+  }
+
+  .tour-speech-text {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .tour-island-trigger-container {
+    margin-top: 10px;
+    gap: 6px;
+  }
+
+  .tour-island-trigger-btn {
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .tour-island-trigger-hint {
+    font-size: 10.5px;
+    padding: 5px 8px;
+  }
+
+  .tour-takeaways-card {
+    padding: 12px 12px;
+    border-radius: 14px;
+  }
+
+  .tour-takeaways-heading {
+    font-size: 10.5px;
+    margin-bottom: 8px;
+  }
+
+  .tour-takeaway-item {
+    font-size: 11.5px;
+    line-height: 1.35;
+    gap: 7px;
+  }
+
   .tour-modal__footer {
+    padding: 10px 14px 12px;
+    gap: 8px;
     flex-direction: column;
     align-items: stretch;
   }
 
   .tour-step-dots {
     justify-content: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .tour-actions {
-    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
+    gap: 8px;
+  }
+
+  .tour-actions button {
+    flex: 1;
+    min-height: 38px;
+    justify-content: center;
   }
 
   .tour-final-actions {
     flex-direction: column;
     width: 100%;
+    gap: 6px;
   }
 
   .tour-final-actions button {
     width: 100%;
+    min-height: 38px;
     justify-content: center;
   }
 }
