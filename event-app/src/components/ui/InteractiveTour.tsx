@@ -398,7 +398,7 @@ export const InteractiveTour: React.FC = () => {
                 <div className="tour-island-trigger-container">
                   <button
                     type="button"
-                    className="tour-island-trigger-btn luminous-bloom"
+                    className="tour-island-trigger-btn luminous-bloom luminous-bloom--amber"
                     onClick={handleSimulateShift}
                   >
                     <Radio size={14} className="tour-island-btn-icon animate-pulse" />

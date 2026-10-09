@@ -73,8 +73,8 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--color-primary);
-  background-color: var(--color-primary-light);
+  color: #ea580c;
+  background-color: rgba(234, 88, 12, 0.12);
   padding: 3px 10px;
   border-radius: var(--radius-full);
 }
@@ -152,16 +152,26 @@
 .mascot-character-wrapper {
   position: relative;
   pointer-events: auto;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+.mascot-character-wrapper:focus,
+.mascot-character-wrapper:focus-visible,
+.mascot-character-wrapper *:focus,
+.mascot-character-wrapper *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .mascot-character:hover {
   transform: scale(1.08) translateY(-4px);
 }
 
+.mascot-character:focus,
 .mascot-character:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 4px;
-  border-radius: var(--radius-full);
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 @keyframes mascotHover {
@@ -247,7 +257,7 @@
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: var(--color-primary);
+  background-color: #ea580c;
   color: #ffffff;
   border: 2px solid var(--color-bg-surface);
   display: flex;

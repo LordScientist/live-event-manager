@@ -6,6 +6,7 @@ import codiConfused from '../../assets/codi/codi-confused.webp';
 import codiSleep from '../../assets/codi/codi-sleep.webp';
 import codiCelebrate from '../../assets/codi/codi-celebrate.webp';
 import { playCodiChirp, type CodiChirpMood } from '../../utils/codiAudio';
+import { type MobileSpatialTiltDetail } from '../../utils/spotlight';
 import './CodiToyAvatar.css';
 
 export interface CodiToyAvatarProps {
@@ -57,12 +58,38 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   const [activeQuoteIndex, setActiveQuoteIndex] = useState(0);
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const speechTimerRef = useRef<number | null>(null);
+  const isHoveringDesktopRef = useRef(false);
 
   const activeMood: CodiChirpMood = clickMood || propMood || (isWaving ? 'wave' : 'idle');
+
+  // Listen to global spatial tilt (mobile gyroscope & scroll parallax)
+  useEffect(() => {
+    const handleSpatialTilt = (e: Event) => {
+      if (isHoveringDesktopRef.current) return;
+      const customEvent = e as CustomEvent<MobileSpatialTiltDetail>;
+      if (!customEvent.detail) return;
+
+      const { tiltX, tiltY } = customEvent.detail;
+      setTilt({
+        rotateX: tiltX * 1.5,
+        rotateY: tiltY * 1.7,
+        scale: 1.02
+      });
+    };
+
+    window.addEventListener('mobile-spatial-tilt', handleSpatialTilt);
+    return () => {
+      window.removeEventListener('mobile-spatial-tilt', handleSpatialTilt);
+    };
+  }, []);
 
   // Pointer tracking for interactive cat tilt and glance
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!interactive || !containerRef.current) return;
+    if (e.pointerType === 'mouse') {
+      isHoveringDesktopRef.current = true;
+    }
+
     const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -78,13 +105,33 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
   }, [interactive]);
 
   const handlePointerLeave = useCallback(() => {
+    isHoveringDesktopRef.current = false;
     setTilt({ rotateX: 0, rotateY: 0, scale: 1 });
   }, []);
+
+  const handlePointerDown = useCallback(() => {
+    if (!interactive) return;
+    setTilt((prev) => ({ ...prev, scale: 0.94 }));
+  }, [interactive]);
+
+  const handlePointerUp = useCallback(() => {
+    if (!interactive) return;
+    setTilt((prev) => ({ ...prev, scale: 1.02 }));
+  }, [interactive]);
 
   // Click interaction: audio chirp + celebration hop + personality speech tip
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!interactive) return;
+
+    // Mobile tactile haptic vibration
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      try {
+        navigator.vibrate(10);
+      } catch {
+        // Fallback silently if not supported
+      }
+    }
 
     setIsReacting(true);
     const nextMoods: CodiChirpMood[] = ['wave', 'happy', 'celebrate', 'curious', 'confused'];
@@ -129,6 +176,8 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
       onClick={handleClick}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
+      onPointerDown={handlePointerDown}
+      onPointerUp={handlePointerUp}
       role={interactive ? 'button' : undefined}
       tabIndex={interactive ? 0 : undefined}
       title={title}
@@ -165,13 +214,6 @@ export const CodiToyAvatar: React.FC<CodiToyAvatarProps> = ({
           draggable={false}
           loading="eager"
         />
-
-        {/* Pulsing Live Connect Collar Charm (warm gold / amber) */}
-        {moodEffective !== 'sleep' && (
-          <div className="codi-collar-bell-glow" aria-hidden="true">
-            <span className="codi-collar-bell-dot" />
-          </div>
-        )}
       </div>
     </div>
   );

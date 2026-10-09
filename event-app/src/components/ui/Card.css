@@ -35,6 +35,20 @@
   border-color: rgba(37, 99, 235, 0.4);
 }
 
+/* Mobile Spatial 3D Response (Touch Devices & Viewports without Mouse) */
+@media (hover: none), (pointer: coarse) {
+  .card--interactive {
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  }
+
+  .card--interactive:active {
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(-8px) scale(0.985);
+  }
+}
+
 :root[data-theme="dark"] .card--interactive:hover {
   border-color: rgba(255, 255, 255, 0.16);
   box-shadow: var(--glass-shadow-md), 0 0 0 1px rgba(255, 255, 255, 0.06);

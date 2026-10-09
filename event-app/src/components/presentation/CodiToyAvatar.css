@@ -10,7 +10,11 @@
   align-items: center;
   justify-content: center;
   user-select: none;
+  -webkit-user-select: none;
   touch-action: manipulation;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none;
   transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
   transform-style: preserve-3d;
   will-change: transform;
@@ -18,6 +22,8 @@
 
 .codi-cat-avatar[role="button"] {
   cursor: pointer;
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
 .codi-cat-avatar[role="button"]:hover {
@@ -27,12 +33,14 @@
 
 .codi-cat-avatar[role="button"]:active {
   transform: scale(0.96) translateY(2px);
+  outline: none !important;
+  box-shadow: none !important;
 }
 
+.codi-cat-avatar:focus,
 .codi-cat-avatar:focus-visible {
-  outline: 3px solid #ff5722;
-  outline-offset: 6px;
-  border-radius: 9999px;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Sizing Tokens */
@@ -64,15 +72,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: codiCatBreathe 3.4s ease-in-out infinite;
+  transform-style: preserve-3d;
+  animation: codiCatBreathe 4.8s ease-in-out infinite;
 }
 
 @keyframes codiCatBreathe {
-  0%, 100% {
-    transform: translateY(0) scaleY(1);
+  0% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0px) scaleY(1);
+  }
+  25% {
+    transform: translateY(-4px) rotateX(-2deg) rotateY(2.5deg) translateZ(6px) scaleY(1.01);
   }
   50% {
-    transform: translateY(-6px) scaleY(1.02);
+    transform: translateY(-7px) rotateX(1.8deg) rotateY(-2.2deg) translateZ(10px) scaleY(1.02);
+  }
+  75% {
+    transform: translateY(-3px) rotateX(-1deg) rotateY(1.8deg) translateZ(5px) scaleY(1.01);
+  }
+  100% {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg) translateZ(0px) scaleY(1);
   }
 }
 
@@ -113,43 +131,6 @@
   100% { transform: translateX(-50%) scale(1.15); opacity: 0.9; }
 }
 
-/* ── Collar Bell Glowing Charm ────────────────────────────────────────────── */
-.codi-collar-bell-glow {
-  position: absolute;
-  top: 41.5%;
-  left: 49.5%;
-  transform: translate(-50%, -50%);
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.codi-collar-bell-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background-color: #ff5722;
-  box-shadow: 0 0 8px #ff7a1a, 0 0 16px rgba(255, 87, 34, 0.8);
-  animation: codiBellGlowPulse 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes codiBellGlowPulse {
-  0% {
-    transform: scale(0.85);
-    background-color: #ff9800;
-    box-shadow: 0 0 6px #ff9800, 0 0 12px rgba(255, 152, 0, 0.6);
-  }
-  100% {
-    transform: scale(1.2);
-    background-color: #ff5722;
-    box-shadow: 0 0 10px #ff7a1a, 0 0 20px rgba(255, 87, 34, 0.9);
-  }
-}
 
 /* Sleep Mode: Low profile resting posture */
 .codi-cat-stage--sleep {

@@ -42,3 +42,15 @@
 - For any non-trivial project or feature, load `build-software` first.
 - If a task matches a skill, load it before acting. Say which skill you loaded.
 - AGENTS.md rules override any skill.
+
+## Mobile Spatial & UI Invariants
+- **Mobile 3D & Touch**: Never restrict 3D perspective or tilt effects exclusively to `:hover`. Always pair desktop pointer tracking with mobile-native spatial behaviors:
+  - Scroll-driven viewport pitch & velocity tilt
+  - Device orientation gyroscope tracking (`DeviceOrientationEvent`) with smooth lerping
+  - Tactile touch compression on `:active` (`translateZ(-8px) scale(0.985)`)
+- **Interactive Element Cleanliness**: On interactive avatars, custom cards, and mascot triggers:
+  - Explicitly set `-webkit-tap-highlight-color: transparent !important;`
+  - Suppress browser default blue focus/click rings (`outline: none !important;`)
+  - Never place artificial positional overlays or pseudo-elements over mascot facial graphics.
+- **Brand Accents**: Codi the mascot companion and live interactive broadcast triggers must strictly use warm brand amber/orange (`#ea580c` / `#f97316`), never blue or mismatched theme accents.
+- **Theme Isolation**: When modifying light mode backgrounds or surfaces, verify that Dark Mode (`:root[data-theme="dark"]`) remains strictly isolated and untouched.

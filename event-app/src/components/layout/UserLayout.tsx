@@ -138,7 +138,7 @@ export const UserLayout: React.FC = () => {
         {/* Center 3D Floating Action Button (Image 1 Inspiration) */}
         <button
           type="button"
-          className="mobile-nav-center-btn luminous-bloom"
+          className="mobile-nav-center-btn luminous-bloom luminous-bloom--amber"
           onClick={() => window.dispatchEvent(new CustomEvent('open-codi-tour'))}
           aria-label="Codi Mascot Companion & Guide"
           title="Meet Codi Mascot Companion"

@@ -30,6 +30,23 @@
   box-shadow: 0 10px 24px -6px rgba(37, 99, 235, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
+/* Mobile Spatial 3D Response (Touch Devices & Viewports without Mouse) */
+@media (hover: none), (pointer: coarse) {
+  .event-card {
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    transform-style: preserve-3d;
+    will-change: transform;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.2s ease;
+  }
+
+  .event-card:active {
+    transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateZ(-8px) scale(0.985);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+}
+
 :root[data-theme="dark"] .event-card {
   background-color: var(--glass-bg-base);
   border-color: var(--glass-border);

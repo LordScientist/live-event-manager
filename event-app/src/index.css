@@ -712,6 +712,14 @@ a:hover {
   filter: blur(14px);
 }
 
+/* Amber radiant bloom for Codi Mascot components */
+.luminous-bloom--amber::before {
+  background: radial-gradient(ellipse at center, rgba(234, 88, 12, 0.65) 0%, rgba(249, 115, 22, 0.35) 45%, transparent 75%);
+}
+:root[data-theme="dark"] .luminous-bloom--amber::before {
+  background: radial-gradient(ellipse at center, rgba(251, 146, 60, 0.75) 0%, rgba(234, 88, 12, 0.45) 45%, transparent 75%);
+}
+
 /* ── 3D Stacked Deck Effect (Layered depth inspired by Image 2) ──────────── */
 .card-stacked-deck {
   position: relative;
