@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import { CodiToyAvatar } from './CodiToyAvatar';
 import './MascotGuide.css';
@@ -49,14 +49,25 @@ const MASCOT_DIALOGUES = [
 export const MascotGuide: React.FC<MascotGuideProps> = ({ currentSlide }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isWaving, setIsWaving] = useState(false);
-  const [dialogueKey, setDialogueKey] = useState(0);
 
   const dialogue = MASCOT_DIALOGUES[currentSlide] || MASCOT_DIALOGUES[0];
 
-  useEffect(() => {
-    // Re-trigger dialogue bubble pop-in on slide change
-    setDialogueKey((prev) => prev + 1);
-  }, [currentSlide]);
+  const getCodiMood = (moodStr: string): 'idle' | 'happy' | 'wave' | 'curious' | 'celebrate' | 'thinking' | 'alert' => {
+    switch (moodStr) {
+      case 'alert':
+        return 'alert';
+      case 'celebrate':
+      case 'excited':
+        return 'celebrate';
+      case 'confident':
+      case 'happy':
+        return 'happy';
+      case 'caring':
+        return 'curious';
+      default:
+        return 'idle';
+    }
+  };
 
   const handleMascotClick = () => {
     setIsWaving(true);
@@ -67,7 +78,7 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({ currentSlide }) => {
     <aside className={`mascot-container ${isMinimized ? 'mascot-container--minimized' : ''}`} aria-label="Codi Mascot Guide">
       {/* Speech Bubble */}
       {!isMinimized && (
-        <div key={dialogueKey} className="mascot-bubble" role="status" aria-live="polite">
+        <div key={currentSlide} className="mascot-bubble" role="status" aria-live="polite">
           <div className="mascot-bubble__header">
             <span className="mascot-tag">
               <Sparkles size={12} className="mascot-sparkle" />
@@ -96,9 +107,10 @@ export const MascotGuide: React.FC<MascotGuideProps> = ({ currentSlide }) => {
       <div className="mascot-character-wrapper">
         <CodiToyAvatar
           isWaving={isWaving}
+          mood={isWaving ? 'wave' : getCodiMood(dialogue.mood)}
           onClick={handleMascotClick}
           size="md"
-          title="Hi! I'm Codi, your Live Connect guide. Click me to say hi!"
+          title="Hi! I'm Codi the Cat, your Live Connect guide. Click me to say hi!"
         />
 
         {isMinimized && (

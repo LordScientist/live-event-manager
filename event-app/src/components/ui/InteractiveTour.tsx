@@ -113,12 +113,24 @@ const TOUR_STEPS: TourStep[] = [
   }
 ];
 
+const getTourMood = (index: number): 'idle' | 'happy' | 'wave' | 'curious' | 'celebrate' | 'thinking' | 'alert' => {
+  switch (index) {
+    case 0: return 'alert';
+    case 1: return 'happy';
+    case 2: return 'curious';
+    case 3: return 'thinking';
+    case 4: return 'celebrate';
+    default: return 'happy';
+  }
+};
+
 export const InteractiveTour: React.FC = () => {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(() => {
+    return typeof window !== 'undefined' && localStorage.getItem('fresh_signup_tour_pending') === 'true';
+  });
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [isWaving, setIsWaving] = useState(false);
-  const [commentaryKey, setCommentaryKey] = useState(0);
   const [simulatedShiftActive, setSimulatedShiftActive] = useState(false);
 
   const handleSimulateShift = () => {
@@ -135,12 +147,6 @@ export const InteractiveTour: React.FC = () => {
   };
 
   useEffect(() => {
-    // Only activate for fresh users who registered and haven't finished the tour
-    const isPending = localStorage.getItem('fresh_signup_tour_pending') === 'true';
-    if (isPending) {
-      setIsOpen(true);
-    }
-
     // Support manual trigger from UI or console
     const handleManualOpen = () => {
       setCurrentStepIndex(0);
@@ -152,9 +158,6 @@ export const InteractiveTour: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    // Re-trigger bubble pop animation when step changes
-    setCommentaryKey((prev) => prev + 1);
-
     // 2026 Celebration Microinteraction: Trigger confetti on reaching the final step
     if (isOpen && currentStepIndex === TOUR_STEPS.length - 1) {
       triggerConfetti(0.5, 0.45);
@@ -288,6 +291,7 @@ export const InteractiveTour: React.FC = () => {
             <div className="tour-mascot-avatar-col">
               <CodiToyAvatar
                 size="md"
+                mood={getTourMood(currentStepIndex)}
                 isWaving={isWaving}
                 onClick={handleMascotClick}
                 title="I'm Codi! Click me to say hi!"
@@ -296,7 +300,7 @@ export const InteractiveTour: React.FC = () => {
             </div>
 
             {/* Mascot Speech Bubble delivering the Presentation commentary */}
-            <div key={commentaryKey} className="tour-speech-bubble">
+            <div key={currentStepIndex} className="tour-speech-bubble">
               <div className="tour-speech-bubble__header">
                 <span className="tour-speech-tag">
                   <Sparkles size={13} className="tour-sparkle-icon" />

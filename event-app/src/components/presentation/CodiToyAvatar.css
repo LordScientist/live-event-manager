@@ -1,150 +1,338 @@
 /* ==========================================================================
-   CODI TOY ROBOT AVATAR: REUSABLE ANIMATED CHARACTER
+   CODI THE CAT COMPANION - Interactive Mascot (cat.webp)
+   Beloved black cat companion with floating physics, pulsing collar bell,
+   expressive eye overlays, and interactive sound & celebration microinteractions
    ========================================================================== */
 
-.codi-toy-avatar {
+.codi-cat-avatar {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
-  animation: codiFloat 3.2s ease-in-out infinite;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease;
-  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.16));
+  touch-action: manipulation;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-.codi-toy-avatar[role="button"] {
+.codi-cat-avatar[role="button"] {
   cursor: pointer;
 }
 
-.codi-toy-avatar[role="button"]:hover {
-  transform: scale(1.08) translateY(-4px);
-  filter: drop-shadow(0 14px 24px rgba(37, 99, 235, 0.3));
+.codi-cat-avatar[role="button"]:hover {
+  transform: scale(1.09) translateY(-6px);
+  filter: drop-shadow(0 14px 28px rgba(6, 182, 212, 0.35)) drop-shadow(0 4px 14px rgba(255, 87, 34, 0.25));
 }
 
-.codi-toy-avatar[role="button"]:focus-visible {
-  outline: 2px solid var(--color-primary, #2563eb);
-  outline-offset: 4px;
+.codi-cat-avatar[role="button"]:active {
+  transform: scale(0.96) translateY(2px);
+}
+
+.codi-cat-avatar:focus-visible {
+  outline: 3px solid #ff5722;
+  outline-offset: 6px;
   border-radius: 9999px;
 }
 
-/* Sizing options */
-.codi-toy-avatar--sm {
+/* Sizing Tokens */
+.codi-cat-avatar--sm {
   width: 58px;
-  height: 64px;
+  height: 82px;
 }
 
-.codi-toy-avatar--md {
+.codi-cat-avatar--md {
   width: 82px;
-  height: 90px;
+  height: 118px;
 }
 
-.codi-toy-avatar--lg {
-  width: 104px;
-  height: 114px;
+.codi-cat-avatar--lg {
+  width: 110px;
+  height: 158px;
 }
 
-.codi-svg {
+.codi-cat-avatar--xl {
+  width: 145px;
+  height: 208px;
+}
+
+/* ── Cat Stage & Hover Physics ───────────────────────────────────────────── */
+.codi-cat-stage {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: codiCatBreathe 3.4s ease-in-out infinite;
 }
 
-/* Floating Physics */
-@keyframes codiFloat {
+@keyframes codiCatBreathe {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) scaleY(1);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px) scaleY(1.02);
   }
 }
 
-/* Thruster Glow */
-.codi-thruster-glow {
-  animation: codiThrusterPulse 1.6s ease-in-out infinite alternate;
-  transform-origin: center;
+/* ── Cat Image Styling ───────────────────────────────────────────────────── */
+.codi-cat-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
+  transition: filter 0.25s ease;
 }
 
-@keyframes codiThrusterPulse {
+/* Dark mode: Give the sleek black cat a glowing aura and specular rim light so it pops on graphite/obsidian! */
+:root[data-theme="dark"] .codi-cat-img {
+  filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.25)) drop-shadow(0 12px 24px rgba(0, 0, 0, 0.65));
+}
+
+/* Ambient Backlight Aura */
+.codi-cat-aura {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 70%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.16) 0%, rgba(255, 87, 34, 0.12) 60%, transparent 80%);
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: -1;
+  animation: codiAuraPulse 3s ease-in-out infinite alternate;
+}
+
+@keyframes codiAuraPulse {
+  0% { transform: translateX(-50%) scale(0.9); opacity: 0.5; }
+  100% { transform: translateX(-50%) scale(1.15); opacity: 0.9; }
+}
+
+/* ── Collar Bell Glowing Charm ────────────────────────────────────────────── */
+.codi-collar-bell-glow {
+  position: absolute;
+  top: 41.5%;
+  left: 49.5%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codi-collar-bell-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #ff5722;
+  box-shadow: 0 0 8px #ff7a1a, 0 0 16px rgba(255, 87, 34, 0.8);
+  animation: codiBellGlowPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes codiBellGlowPulse {
   0% {
-    opacity: 0.25;
-    rx: 20px;
-  }
-  100% {
-    opacity: 0.85;
-    rx: 30px;
-  }
-}
-
-/* Reactor Core Pulse */
-.codi-core {
-  animation: codiCorePulse 2s ease-in-out infinite alternate;
-  transform-origin: 60px 83px;
-}
-
-@keyframes codiCorePulse {
-  0% {
-    transform: scale(0.92);
-    opacity: 0.75;
-  }
-  100% {
-    transform: scale(1.1);
-    opacity: 1;
-  }
-}
-
-/* Eye Blinking */
-.codi-eye {
-  animation: codiEyeBlink 4.2s infinite;
-  transform-origin: center;
-}
-
-@keyframes codiEyeBlink {
-  0%, 90%, 100% {
-    transform: scaleY(1);
-  }
-  95% {
-    transform: scaleY(0.08);
-  }
-}
-
-/* Antenna Radio Waves */
-.codi-antenna-wave {
-  animation: codiAntennaPulse 1.8s ease-out infinite;
-  transform-origin: 60px 14px;
-}
-
-.codi-antenna-wave--2 {
-  animation-delay: 0.6s;
-}
-
-@keyframes codiAntennaPulse {
-  0% {
-    opacity: 0.85;
     transform: scale(0.85);
+    background-color: #38bdf8;
+    box-shadow: 0 0 6px #38bdf8, 0 0 12px rgba(56, 189, 248, 0.6);
+  }
+  100% {
+    transform: scale(1.2);
+    background-color: #ff5722;
+    box-shadow: 0 0 10px #ff7a1a, 0 0 20px rgba(255, 87, 34, 0.9);
+  }
+}
+
+/* ── Expressive Eyes Overlay ─────────────────────────────────────────────── */
+.codi-cat-eyes-overlay {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 58%;
+  height: 22%;
+  pointer-events: none;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.codi-cat-eyes-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8));
+}
+
+.codi-cat-eyes--happy {
+  animation: codiHappyEyesBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes codiHappyEyesBounce {
+  0% { transform: scaleY(1); }
+  100% { transform: scaleY(1.22); }
+}
+
+.codi-cat-eyes--wink polygon {
+  animation: codiWinkTwinkle 1.6s ease-in-out infinite;
+  transform-origin: 65px 20px;
+}
+
+@keyframes codiWinkTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.3) rotate(30deg); }
+}
+
+/* ── Magnetic Floating Paw Wave ──────────────────────────────────────────── */
+.codi-cat-paw-wave {
+  position: absolute;
+  bottom: 22%;
+  right: 2%;
+  font-size: 18px;
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0;
+  transform: translateY(6px) scale(0.6);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.codi-cat-paw-wave--active {
+  opacity: 1;
+  transform: translateY(0) scale(1.2);
+  animation: codiPawWaveAnim 0.8s ease-in-out;
+}
+
+@keyframes codiPawWaveAnim {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-22deg); }
+  50% { transform: translateY(-4px) rotate(14deg); }
+  75% { transform: translateY(-6px) rotate(-16deg); }
+}
+
+/* ── Celebration Hop Reaction on Click ───────────────────────────────────── */
+.codi-cat-avatar--reacting .codi-cat-stage {
+  animation: codiCatHappyHop 0.9s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes codiCatHappyHop {
+  0% { transform: translateY(0) scale(1); }
+  35% { transform: translateY(-16px) scale(1.1) rotate(3deg); }
+  65% { transform: translateY(-6px) scale(1.04) rotate(-2deg); }
+  100% { transform: translateY(0) scale(1) rotate(0deg); }
+}
+
+/* ── Sparkle & Paw Particles Burst ───────────────────────────────────────── */
+.codi-sparkles-burst {
+  position: absolute;
+  inset: -12px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.codi-sparkle-dot {
+  position: absolute;
+  font-size: 15px;
+  animation: codiSparkleFly 0.85s ease-out forwards;
+}
+
+.codi-sparkle-dot--1 {
+  top: 15%;
+  left: 8%;
+  animation-delay: 0.04s;
+}
+
+.codi-sparkle-dot--2 {
+  top: -4px;
+  right: 12%;
+  animation-delay: 0.1s;
+}
+
+.codi-sparkle-dot--3 {
+  bottom: 20%;
+  left: 6%;
+  animation-delay: 0.16s;
+}
+
+@keyframes codiSparkleFly {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-14px);
   }
   100% {
     opacity: 0;
-    transform: scale(1.35);
+    transform: scale(0.8) translateY(-28px);
   }
 }
 
-/* Waving Arm on Click */
-.codi-toy-avatar--wave .codi-arm--right {
-  animation: codiWaveArm 0.8s ease-in-out;
-  transform-origin: 90px 70px;
+/* ── Interactive Speech Popup Bubble ─────────────────────────────────────── */
+.codi-speech-popup {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 250px;
+  padding: 10px 14px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 18px rgba(6, 182, 212, 0.25);
+  color: #ffffff;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  z-index: 100;
+  pointer-events: none;
+  animation: codiPopupBounce 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-@keyframes codiWaveArm {
-  0%, 100% {
-    transform: rotate(0deg);
+:root:not([data-theme="dark"]) .codi-speech-popup,
+:root[data-theme="light"] .codi-speech-popup {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(15, 23, 42, 0.12);
+  color: #0f172a;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.15), 0 0 16px rgba(6, 182, 212, 0.18);
+}
+
+.codi-speech-popup__arrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: rgba(15, 23, 42, 0.92) transparent transparent transparent;
+}
+
+:root:not([data-theme="dark"]) .codi-speech-popup__arrow,
+:root[data-theme="light"] .codi-speech-popup__arrow {
+  border-color: rgba(255, 255, 255, 0.95) transparent transparent transparent;
+}
+
+@keyframes codiPopupBounce {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(8px) scale(0.92);
   }
-  25% {
-    transform: rotate(-35deg);
-  }
-  50% {
-    transform: rotate(-10deg);
-  }
-  75% {
-    transform: rotate(-30deg);
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }

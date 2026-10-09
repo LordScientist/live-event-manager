@@ -799,9 +799,10 @@
     padding-top: 0;
   }
 
+  .tour-mascot-avatar-col .codi-cat-avatar,
   .tour-mascot-avatar-col .codi-toy-avatar {
-    width: 56px;
-    height: 62px;
+    width: 62px;
+    height: 88px;
   }
 
   .tour-speech-bubble {

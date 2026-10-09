@@ -274,8 +274,9 @@
     padding: 12px 14px;
   }
 
-  .mascot-character {
+  .mascot-character,
+  .mascot-character-wrapper .codi-cat-avatar {
     width: 68px;
-    height: 76px;
+    height: 98px;
   }
 }
