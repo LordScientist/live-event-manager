@@ -307,6 +307,42 @@ body::before {
   background-attachment: fixed;
 }
 
+/* LIGHT MODE ONLY: World Map Silhouette from Reference Design */
+:root:not([data-theme="dark"]) body::before,
+:root[data-theme="light"] body::before {
+  background-image:
+    /* World Map continent silhouettes with delicate slate-indigo tint */
+    url('./assets/world-map-light.svg'),
+    /* Subtle 28px micro-dot matrix grid */
+    radial-gradient(circle, rgba(15, 23, 42, 0.035) 1px, transparent 1px),
+    /* Sampled center ice-blue glow */
+    radial-gradient(ellipse 70% 45% at 50% 30%, rgba(191, 209, 231, 0.45) 0%, rgba(224, 236, 255, 0.18) 45%, transparent 75%),
+    /* Soft daylight sky wash (Top left) */
+    radial-gradient(circle at 12% 14%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+    /* Soft periwinkle wash (Top right) */
+    radial-gradient(circle at 88% 16%, rgba(165, 180, 252, 0.08) 0%, transparent 50%);
+  background-position:
+    center 15%,
+    0 0,
+    center,
+    center,
+    center;
+  background-size:
+    min(1500px, 130vw) auto,
+    28px 28px,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-repeat:
+    no-repeat,
+    repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat;
+  background-attachment: fixed;
+}
+
+
 /* DARK MODE: Clean, sleek, minimalist matte background without weird colored blobs */
 :root[data-theme="dark"] body::before {
   background-image:

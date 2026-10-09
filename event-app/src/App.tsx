@@ -20,20 +20,22 @@ import { CreateEventPage } from './pages/manager/CreateEventPage';
 import { EventManagementHubPage } from './pages/manager/EventManagementHubPage';
 import { SignUpPage } from './pages/auth/SignUpPage';
 import { LoginPage } from './pages/auth/LoginPage';
+import { GetStartedPage } from './pages/auth/GetStartedPage';
+import { RoleConfirmedPage } from './pages/auth/RoleConfirmedPage';
 import { OnboardingPage } from './pages/auth/OnboardingPage';
 import { SplashScreen } from './pages/auth/SplashScreen';
 import { PresentationPage } from './pages/presentation/PresentationPage';
 import { initCardSpotlights } from './utils/spotlight';
 
 /**
- * Route protection: Unauthenticated visitors are routed to /signup
+ * Route protection: Unauthenticated visitors are routed to /get-started
  */
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/signup" state={{ from: location }} replace />;
+    return <Navigate to="/get-started" state={{ from: location }} replace />;
   }
 
   return <>{children}</>;
@@ -62,8 +64,23 @@ export const App: React.FC = () => {
       <AuthProvider>
         <BrowserRouter>
         <Routes>
-          {/* Welcome / Splash Screen (Public) */}
-          <Route path="/welcome" element={<SplashScreen standalone />} />
+          {/* Welcome / Get Started / Splash Screens (Public) */}
+          <Route
+            path="/get-started"
+            element={
+              <PublicOnlyRoute>
+                <GetStartedPage />
+              </PublicOnlyRoute>
+            }
+          />
+          <Route
+            path="/welcome"
+            element={
+              <PublicOnlyRoute>
+                <GetStartedPage />
+              </PublicOnlyRoute>
+            }
+          />
           <Route path="/splash" element={<SplashScreen standalone />} />
 
           {/* Authentication Screens (Public only) */}
@@ -74,6 +91,10 @@ export const App: React.FC = () => {
                 <SignUpPage />
               </PublicOnlyRoute>
             }
+          />
+          <Route
+            path="/role-confirmed"
+            element={<RoleConfirmedPage />}
           />
           <Route
             path="/login"

@@ -76,6 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signup = (userData: Partial<UserProfile>) => {
+    const roleType = userData.account_type || 'user';
     const newUser: UserProfile = {
       id: `usr-${Date.now()}`,
       email: userData.email || 'user@example.com',
@@ -84,14 +85,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       phone: userData.phone || '',
       organization: userData.organization || 'General Community',
       job_title: userData.job_title || 'Attendee',
-      account_type: 'user',
+      account_type: roleType,
       created_at: new Date().toISOString()
     };
 
     setIsAuthenticated(true);
     setCurrentUser(newUser);
     localStorage.setItem('is_authenticated', 'true');
-    localStorage.setItem('active_account_type', 'user');
+    localStorage.setItem('active_account_type', roleType);
     localStorage.setItem('current_user_profile', JSON.stringify(newUser));
   };
 

@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
+import { ChevronsLeft, Users, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
 import { Alert } from '../../components/ui/Alert';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
-import lcIcon from '../../assets/lc-icon.png';
 import { SplashScreen } from './SplashScreen';
 import './AuthPages.css';
 
 export const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
   const { signup, updateProfile } = useAuth();
-  const [showSplash, setShowSplash] = useState(true);
 
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    agreeTerms: false
+  const [showSplash, setShowSplash] = useState(() => {
+    return !sessionStorage.getItem('has_seen_splash') && !sessionStorage.getItem('lc_get_started_splash_seen');
   });
 
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+  });
+
+  const [selectedRole, setSelectedRole] = useState<'Attendee' | 'Speaker' | 'Volunteer' | 'Event Manager'>('Attendee');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -32,10 +32,10 @@ export const SignUpPage: React.FC = () => {
   const [generalError, setGeneralError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: value
     }));
 
     if (errors[name]) {
@@ -46,11 +46,8 @@ export const SignUpPage: React.FC = () => {
   const validate = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
-    }
-    if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required';
     }
     if (!formData.email.trim()) {
       newErrors.email = 'Email address is required';
@@ -67,9 +64,6 @@ export const SignUpPage: React.FC = () => {
     } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match';
     }
-    if (!formData.agreeTerms) {
-      newErrors.agreeTerms = 'You must agree to the Terms and Condition';
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -84,20 +78,25 @@ export const SignUpPage: React.FC = () => {
     setIsSubmitting(true);
 
     setTimeout(() => {
+      const isManager = selectedRole === 'Event Manager';
       signup({
-        email: formData.email,
-        account_type: 'user'
+        email: formData.email.trim(),
+        account_type: isManager ? 'manager' : 'user',
+        job_title: selectedRole
       });
       updateProfile({
-        first_name: formData.firstName.trim(),
-        last_name: formData.lastName.trim(),
-        phone: formData.phone.trim() || undefined
+        first_name: formData.username.trim(),
+        last_name: '',
+        job_title: selectedRole
       });
-      // Flag as a fresh user so the interactive onboarding tour activates
+
+      // Flag fresh signup tour for interactive onboarding tour
       localStorage.setItem('fresh_signup_tour_pending', 'true');
       localStorage.removeItem('has_completed_tour');
+      localStorage.setItem('selected_signup_role', selectedRole);
+
       setIsSubmitting(false);
-      navigate('/');
+      navigate('/role-confirmed', { state: { role: selectedRole } });
     }, 400);
   };
 
@@ -106,99 +105,114 @@ export const SignUpPage: React.FC = () => {
       {showSplash && (
         <SplashScreen
           duration={2200}
-          onComplete={() => setShowSplash(false)}
+          onComplete={() => {
+            setShowSplash(false);
+            sessionStorage.setItem('has_seen_splash', 'true');
+          }}
         />
       )}
+
       <div className="auth-page auth-page--signup">
-      <div className="auth-card auth-card--signup">
-        <div className="auth-card__theme-toggle">
-          <ThemeToggle size="sm" />
-        </div>
-
-        {/* LC Logo - Top Left */}
-        <div className="signup-logo">
-          <img src={lcIcon} alt="Live Connect" className="signup-logo__icon-img" />
-          <span className="signup-logo__text">
-            <span className="signup-logo__live">LIVE</span>{' '}
-            <span className="signup-logo__connect">CONNECT</span>
-          </span>
-        </div>
-
-        {/* Left-aligned heading + subtitle */}
-        <div className="signup-header">
-          <h1 className="signup-header__title">Create your Account</h1>
-          <p className="signup-header__subtitle">
-            Join events, get updates and be part{'\n'}of something great
-          </p>
-        </div>
-
-        {generalError && (
-          <Alert type="error" title="Registration Error">
-            {generalError}
-          </Alert>
-        )}
-
-        <form onSubmit={handleSubmit} noValidate>
-          {/* Row 1: First name + Last name */}
-          <div className="signup-grid">
-            <Input
-              label="First name"
-              name="firstName"
-              placeholder=""
-              value={formData.firstName}
-              onChange={handleChange}
-              error={errors.firstName}
-              required
-              autoComplete="given-name"
+        {/* World Map Background Graphic matching create account.jpg */}
+        <div className="signup-map-backdrop" aria-hidden="true">
+          <svg
+            className="signup-map-svg"
+            viewBox="0 0 1000 700"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M175,120 C185,100 220,95 240,115 C260,135 250,165 240,185 C220,195 200,210 180,200 C160,190 150,150 175,120 Z"
+              fill="currentColor"
             />
-            <Input
-              label="Last name"
-              name="lastName"
-              placeholder=""
-              value={formData.lastName}
-              onChange={handleChange}
-              error={errors.lastName}
-              required
-              autoComplete="family-name"
+            <path
+              d="M190,225 C230,230 260,280 240,320 C225,350 205,385 195,430 C180,450 160,430 165,390 C170,350 160,300 175,250 Z"
+              fill="currentColor"
             />
+            <path
+              d="M480,95 C510,80 540,90 565,115 C580,130 575,155 550,170 C520,180 500,160 480,140 Z"
+              fill="currentColor"
+            />
+            <path
+              d="M475,210 C520,200 560,220 570,265 C580,315 570,370 545,430 C530,470 500,480 480,450 C465,420 460,370 455,320 C450,265 455,225 475,210 Z"
+              fill="currentColor"
+            />
+            <path
+              d="M590,110 C650,90 730,105 780,140 C830,175 870,220 860,270 C840,320 800,325 760,310 C720,295 680,260 640,240 C600,220 580,160 590,110 Z"
+              fill="currentColor"
+            />
+            <path
+              d="M740,410 C780,390 830,410 840,450 C850,490 820,530 780,540 C745,550 720,520 720,480 C720,440 725,420 740,410 Z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+
+        <div className="auth-card auth-card--signup">
+          {/* Top navigation row: Double chevron back on left, ThemeToggle on right */}
+          <div className="signup-top-nav">
+            <button
+              type="button"
+              className="signup-back-btn"
+              onClick={() => navigate(-1)}
+              aria-label="Go back"
+            >
+              <ChevronsLeft size={28} className="signup-back-icon" />
+            </button>
+            <div className="signup-top-actions">
+              <ThemeToggle size="sm" />
+            </div>
           </div>
 
-          {/* Row 2: Your Email + Phone number */}
-          <div className="signup-grid">
+          {/* Title Header: "Create an" (white) + "Account!" (orange) */}
+          <div className="signup-header">
+            <h1 className="signup-header__title">
+              <span className="signup-header__title-white">Create an</span>
+              <span className="signup-header__title-orange">Account!</span>
+            </h1>
+          </div>
+
+          {generalError && (
+            <Alert type="error" title="Registration Error">
+              {generalError}
+            </Alert>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate className="signup-form">
+            {/* Field 1: Username */}
             <Input
-              label="Your Email"
-              type="email"
+              name="username"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              error={errors.username}
+              leftElement={<Users size={20} />}
+              required
+              autoComplete="username"
+            />
+
+            {/* Field 2: Email Address */}
+            <Input
               name="email"
-              placeholder=""
+              type="email"
+              placeholder="Email Adress"
               value={formData.email}
               onChange={handleChange}
               error={errors.email}
+              leftElement={<Mail size={20} />}
               required
               autoComplete="email"
             />
-            <Input
-              label="Phone number"
-              type="tel"
-              name="phone"
-              placeholder=""
-              value={formData.phone}
-              onChange={handleChange}
-              autoComplete="tel"
-            />
-          </div>
 
-          {/* Row 3: Create a Password + Confirm Password */}
-          <div className="signup-grid">
+            {/* Field 3: Password with Lock icon + Eye toggle */}
             <Input
-              label="Create a Password"
-              type={showPassword ? 'text' : 'password'}
               name="password"
-              placeholder=""
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Password"
               value={formData.password}
               onChange={handleChange}
               error={errors.password}
-              required
-              autoComplete="new-password"
+              leftElement={<Lock size={20} />}
               rightElement={
                 <button
                   type="button"
@@ -206,20 +220,22 @@ export const SignUpPage: React.FC = () => {
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               }
+              required
+              autoComplete="new-password"
             />
+
+            {/* Field 4: Confirm Password with Lock icon + Eye toggle */}
             <Input
-              label="Confirm Password"
-              type={showConfirmPassword ? 'text' : 'password'}
               name="confirmPassword"
-              placeholder=""
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={handleChange}
               error={errors.confirmPassword}
-              required
-              autoComplete="new-password"
+              leftElement={<Lock size={20} />}
               rightElement={
                 <button
                   type="button"
@@ -227,52 +243,57 @@ export const SignUpPage: React.FC = () => {
                   onClick={() => setShowConfirmPassword((prev) => !prev)}
                   aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               }
+              required
+              autoComplete="new-password"
             />
+
+            {/* Role Radio Group: "I am a:" */}
+            <div className="signup-role-section">
+              <span className="signup-role-title">I am a:</span>
+              <div className="signup-role-options" role="radiogroup" aria-label="I am a">
+                {(['Attendee', 'Speaker', 'Volunteer', 'Event Manager'] as const).map((role) => (
+                  <label key={role} className="signup-role-option">
+                    <input
+                      type="radio"
+                      name="selectedRole"
+                      value={role}
+                      checked={selectedRole === role}
+                      onChange={() => setSelectedRole(role)}
+                      className="signup-role-radio"
+                    />
+                    <span className="signup-role-custom-radio" aria-hidden="true">
+                      <span className="signup-role-radio-dot" />
+                    </span>
+                    <span className="signup-role-label">{role}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Submit Button: Pill shaped orange LOG IN */}
+            <Button
+              type="submit"
+              variant="primary"
+              size="lg"
+              isLoading={isSubmitting}
+              className="signup-submit-btn"
+            >
+              LOG IN
+            </Button>
+          </form>
+
+          {/* Footer: "Already have an account? Sign in" */}
+          <div className="signup-footer">
+            <span className="signup-footer__text">Already have an account?</span>{' '}
+            <Link to="/login" className="signup-footer__link">
+              Sign in
+            </Link>
           </div>
-
-          {/* Password hint (matches Figma) */}
-          <p className="signup-password-hint">Password must be at least 8 characters.</p>
-
-          {/* Terms and Condition Checkbox */}
-          <div className="signup-checkbox-group">
-            <input
-              type="checkbox"
-              id="agreeTerms"
-              name="agreeTerms"
-              checked={formData.agreeTerms}
-              onChange={handleChange}
-              aria-invalid={errors.agreeTerms ? 'true' : 'false'}
-            />
-            <label htmlFor="agreeTerms" className="signup-checkbox-label">
-              I agree to the <strong>Teams and Condition</strong>
-            </label>
-          </div>
-          {errors.agreeTerms && (
-            <p className="form-field__error" style={{ marginTop: '-8px', marginBottom: '16px' }} role="alert">
-              {errors.agreeTerms}
-            </p>
-          )}
-
-          {/* Orange pill Create account button */}
-          <Button
-            type="submit"
-            variant="primary"
-            size="lg"
-            isLoading={isSubmitting}
-            className="signup-submit-btn"
-          >
-            Create account
-          </Button>
-        </form>
-
-        <div className="signup-footer">
-          Already Have an Account? <Link to="/login"><strong>Enter</strong></Link>
         </div>
       </div>
-    </div>
     </>
   );
 };

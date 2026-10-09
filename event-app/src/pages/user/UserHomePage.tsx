@@ -26,8 +26,7 @@ import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../../components/ui/ThemeToggle';
 import './UserHomePage.css';
 
-const CATEGORIES = ['All', 'Conference', 'Workshop', 'Seminar', 'Career', 'Community'] as const;
-type Category = typeof CATEGORIES[number];
+type Category = 'All' | 'Conference' | 'Workshop' | 'Seminar' | 'Career' | 'Community';
 
 interface CategoryConfig {
   id: Category;

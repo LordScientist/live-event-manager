@@ -34,6 +34,10 @@
   padding-right: 44px;
 }
 
+.input--with-left {
+  padding-left: 44px;
+}
+
 .form-field__right-element {
   position: absolute;
   right: 8px;
@@ -43,6 +47,19 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
+}
+
+.form-field__left-element {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  color: var(--color-text-muted);
+  pointer-events: none;
 }
 
 /* Translucent Frosted Field Primitives */

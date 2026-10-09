@@ -28,7 +28,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({
       if (onComplete) {
         onComplete();
       } else if (standalone) {
-        navigate('/signup');
+        navigate('/get-started');
       }
     }, 420);
   }, [isExiting, onComplete, standalone, navigate]);

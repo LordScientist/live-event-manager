@@ -1,0 +1,482 @@
+/* ==========================================================================
+   GET STARTED LANDING SCREEN ("Let's Get Started!")
+   Accurately matched to reference design aftersplashscreen.jpg
+   Palette: Deep Midnight Navy #0A0322, Vibrant Orange #FF6400, Crisp White #FFFFFF, Muted Lavender #8889A8
+   ========================================================================== */
+
+/* ── Fullscreen Outer Canvas ─────────────────────────────────────────────── */
+.get-started-page {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  background-color: #0a0322;
+  background-image: radial-gradient(circle at 50% 30%, #150a38 0%, #0a0322 70%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #ffffff;
+  font-family: var(--font-sans, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  animation: getStartedFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes getStartedFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ── Top-Right Theme Toggle ──────────────────────────────────────────────── */
+.get-started-theme-toggle {
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 20;
+  opacity: 0.75;
+  transition: opacity 0.2s ease;
+}
+
+.get-started-theme-toggle:hover {
+  opacity: 1;
+}
+
+/* ── Mobile Viewport Frame (440px standard mobile container) ─────────────── */
+.get-started-frame {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 56px 28px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 2;
+  overflow: hidden;
+}
+
+/* ── Background World Map Silhouette ─────────────────────────────────────── */
+.get-started-map-layer {
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 135%;
+  max-width: 580px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+  user-select: none;
+  filter: drop-shadow(0 0 16px rgba(120, 90, 240, 0.08));
+}
+
+.get-started-map-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.get-started-map-img--light {
+  display: none;
+}
+
+.get-started-map-img--dark {
+  display: block;
+}
+
+
+/* ── Top Brand Header & Logo ─────────────────────────────────────────────── */
+.get-started-header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-top: 8px;
+}
+
+.get-started-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  user-select: none;
+}
+
+.get-started-brand__logo {
+  width: 40px;
+  height: 38px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.get-started-brand__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.15;
+}
+
+.get-started-brand__live,
+.get-started-brand__connect {
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+/* ── Center Content Area ─────────────────────────────────────────────────── */
+.get-started-center-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: 1;
+  padding: 24px 0 32px;
+}
+
+/* ── "Let's Get Started!" Typography ─────────────────────────────────────── */
+.get-started-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 0 52px;
+  line-height: 1.12;
+}
+
+.get-started-headline__light {
+  font-size: 42px;
+  font-weight: 300;
+  color: #ffffff;
+  letter-spacing: -0.4px;
+}
+
+.get-started-headline__bold {
+  font-size: 48px;
+  font-weight: 800;
+  color: #ff6400;
+  letter-spacing: -0.4px;
+  margin-top: 4px;
+  text-shadow: 0 4px 20px rgba(255, 100, 0, 0.28);
+}
+
+/* ── Action Box ──────────────────────────────────────────────────────────── */
+.get-started-action-box {
+  width: 100%;
+  max-width: 324px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── SIGN IN Pill Button ─────────────────────────────────────────────────── */
+.get-started-btn-signin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 56px;
+  border-radius: 9999px;
+  background-color: #ff6400;
+  background-image: linear-gradient(135deg, #ff6a00 0%, #ff5200 100%);
+  color: #ffffff;
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px -2px rgba(255, 100, 0, 0.42);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.2s ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+.get-started-btn-signin:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 100, 0, 0.55);
+  filter: brightness(1.06);
+}
+
+.get-started-btn-signin:active {
+  transform: translateY(1px);
+  box-shadow: 0 4px 12px rgba(255, 100, 0, 0.35);
+}
+
+.get-started-btn-signin:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* ── Divider Text: OR SIGN IN WITH ───────────────────────────────────────── */
+.get-started-divider-text {
+  margin-top: 30px;
+  margin-bottom: 22px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #8889a8;
+  letter-spacing: 2.4px;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+/* ── Social / Alternative Auth Circular Buttons ──────────────────────────── */
+.get-started-auth-methods {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+}
+
+.get-started-circle-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              filter 0.2s ease;
+  user-select: none;
+}
+
+/* Mail circle with blue -> orange/pink sunset gradient */
+.get-started-circle-btn--mail {
+  background: linear-gradient(135deg, #5b6eb8 0%, #b8677b 52%, #c9663d 100%);
+  box-shadow: 0 4px 16px rgba(91, 110, 184, 0.4);
+}
+
+/* Phone circle with orange -> magenta gradient */
+.get-started-circle-btn--phone {
+  background: linear-gradient(135deg, #ff6618 0%, #eb3636 55%, #b5133e 100%);
+  box-shadow: 0 4px 16px rgba(255, 102, 24, 0.4);
+}
+
+.get-started-circle-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  filter: brightness(1.12);
+}
+
+.get-started-circle-btn:active {
+  transform: translateY(1px) scale(0.96);
+}
+
+.get-started-circle-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.get-started-circle-icon {
+  color: #ffffff;
+  pointer-events: none;
+}
+
+/* ── Bottom Section: Divider & Sign Up Prompt ────────────────────────────── */
+.get-started-footer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 6px;
+}
+
+.get-started-line-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.16);
+  margin-bottom: 26px;
+}
+
+.get-started-signup-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.get-started-signup-question {
+  font-size: 12px;
+  font-weight: 500;
+  color: #8889a8;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.get-started-signup-link {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ff6400;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.get-started-signup-link:hover {
+  color: #ff781e;
+  text-shadow: 0 0 12px rgba(255, 100, 0, 0.5);
+  transform: translateY(-1px);
+}
+
+.get-started-signup-link:focus-visible {
+  outline: 2px solid #ff6400;
+  outline-offset: 2px;
+}
+
+/* ── Mobile Responsiveness & Small Screen Adjustments ─────────────────────── */
+@media (max-width: 400px) {
+  .get-started-frame {
+    padding: 48px 20px 28px;
+  }
+
+  .get-started-headline {
+    margin-bottom: 42px;
+  }
+
+  .get-started-headline__light {
+    font-size: 36px;
+  }
+
+  .get-started-headline__bold {
+    font-size: 42px;
+  }
+
+  .get-started-btn-signin {
+    height: 52px;
+    font-size: 15px;
+  }
+
+  .get-started-circle-btn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (max-height: 720px) {
+  .get-started-frame {
+    padding-top: 36px;
+    padding-bottom: 24px;
+  }
+
+  .get-started-headline {
+    margin-bottom: 32px;
+  }
+
+  .get-started-divider-text {
+    margin-top: 22px;
+    margin-bottom: 16px;
+  }
+
+  .get-started-line-divider {
+    margin-bottom: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .get-started-page {
+    animation: none;
+  }
+
+  .get-started-btn-signin,
+  .get-started-circle-btn,
+  .get-started-signup-link {
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   LIGHT MODE ONLY ADAPTATIONS
+   Dark mode remains 100% untouched using default .get-started-* styles
+   ========================================================================== */
+:root:not([data-theme="dark"]) .get-started-page,
+:root[data-theme="light"] .get-started-page {
+  background-color: #f3f5f9;
+  background-image: radial-gradient(120% 85% at 50% -10%, #ffffff 0%, #f3f5f9 55%, #e8ecf4 100%);
+  color: #0f172a;
+}
+
+:root:not([data-theme="dark"]) .get-started-map-layer,
+:root[data-theme="light"] .get-started-map-layer {
+  opacity: 0.95;
+  filter: none;
+}
+
+:root:not([data-theme="dark"]) .get-started-map-img--dark,
+:root[data-theme="light"] .get-started-map-img--dark {
+  display: none;
+}
+
+:root:not([data-theme="dark"]) .get-started-map-img--light,
+:root[data-theme="light"] .get-started-map-img--light {
+  display: block;
+}
+
+:root:not([data-theme="dark"]) .get-started-brand__logo,
+:root[data-theme="light"] .get-started-brand__logo {
+  filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.12));
+}
+
+:root:not([data-theme="dark"]) .get-started-brand__live,
+:root:not([data-theme="dark"]) .get-started-brand__connect,
+:root[data-theme="light"] .get-started-brand__live,
+:root[data-theme="light"] .get-started-brand__connect {
+  color: #0f172a;
+}
+
+:root:not([data-theme="dark"]) .get-started-headline__light,
+:root[data-theme="light"] .get-started-headline__light {
+  color: #0f172a;
+}
+
+:root:not([data-theme="dark"]) .get-started-headline__bold,
+:root[data-theme="light"] .get-started-headline__bold {
+  color: #ff6400;
+  text-shadow: 0 4px 20px rgba(255, 100, 0, 0.2);
+}
+
+:root:not([data-theme="dark"]) .get-started-divider-text,
+:root[data-theme="light"] .get-started-divider-text {
+  color: #64748b;
+}
+
+:root:not([data-theme="dark"]) .get-started-line-divider,
+:root[data-theme="light"] .get-started-line-divider {
+  background-color: rgba(15, 23, 42, 0.12);
+}
+
+:root:not([data-theme="dark"]) .get-started-signup-question,
+:root[data-theme="light"] .get-started-signup-question {
+  color: #64748b;
+}
+
+:root:not([data-theme="dark"]) .get-started-signup-link,
+:root[data-theme="light"] .get-started-signup-link {
+  color: #ff6400;
+}
+
