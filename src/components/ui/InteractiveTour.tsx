@@ -37,15 +37,13 @@ const TOUR_STEPS: TourStep[] = [
     perkBadge: 'Perk 01: Zero Blackouts',
     perkColor: 'blue',
     icon: <Radio size={22} />,
-    title: 'The Campus Spark: Zero Blackouts',
-    subtitle: 'Dynamic Island HUD alerts venue shifts in under 10 seconds',
-    codiHeadline: 'The WhatsApp Nightmare Ends Here!',
+    title: 'Zero Blackouts',
+    subtitle: 'Sub-10s venue shift alerts',
+    codiHeadline: 'No More Lost Crowds',
     codiComment:
-      "Ever tried moving 300 students when a room changes 20 minutes before kickoff through 6 muted group chats? Pure chaos! In Live Connect, the floating Dynamic Island Live Broadcast HUD alerts participants to sudden room & venue shifts in under 10 seconds with audio-visual spring physics and before/after venue diffs. Traditional campus group chats (WhatsApp, Telegram) and buried emails fail during live events when an auditorium changes 20 minutes before kickoff—the Dynamic Island provides a single shared source of live truth!",
+      'When an auditorium shifts right before kickoff, the Dynamic Island HUD broadcasts the change in under 10 seconds with audio chimes and visual room diffs.',
     codiTakeaways: [
-      'WHAT IT DOES: Floating real-time broadcast HUD that alerts participants to sudden room & venue shifts in under 10 seconds with audio-visual spring physics and before/after venue diffs.',
-      'WHY IT IS THERE: Traditional campus group chats (WhatsApp, Telegram) and buried emails fail during live events when an auditorium changes 20 minutes before kickoff. The Dynamic Island provides a single shared source of live truth.',
-      'Instant sub-10s sync with zero-lag synthetic Web Audio chime and automatic room diff comparison.'
+      'One real-time source of truth eliminates chaotic group chats and missed sessions.'
     ]
   },
   {
@@ -54,14 +52,12 @@ const TOUR_STEPS: TourStep[] = [
     perkColor: 'purple',
     icon: <Layers size={22} />,
     title: 'One Account, Any Role',
-    subtitle: 'Your account is who you are, your role is what you do',
-    codiHeadline: 'You Are Who You Are, Not Just One Rigid Role!',
+    subtitle: 'One login, endless flexibility',
+    codiHeadline: 'Flexible Roles, One Profile',
     codiComment:
-      'Most campus platforms lock you down into a rigid account type. Not us! Your login is simply you. You can speak on Friday, volunteer on Saturday, and attend on Sunday—all from one single account without ever creating multiple logins!',
+      'Speak on Friday, volunteer on Saturday, and attend on Sunday from a single account without multiple logins.',
     codiTakeaways: [
-      'Your role belongs to each event pass, never your login identity',
-      'One-click switch to Manager mode to organize your own events',
-      'Pre-filled profile saves your details across all registrations'
+      'Your identity stays unified while your role adapts freely per event.'
     ]
   },
   {
@@ -70,14 +66,12 @@ const TOUR_STEPS: TourStep[] = [
     perkColor: 'amber',
     icon: <Clock size={22} />,
     title: 'Day-Of Radar',
-    subtitle: 'The 3 critical questions answered in seconds',
-    codiHeadline: 'Your Live Radar on Event Day!',
+    subtitle: 'Live status at a glance',
+    codiHeadline: 'Ditch 10-Page PDF Schedules',
     codiComment:
-      "On event day, nobody has time to dig through 10-page PDF schedules. Your Live Companion hub answers the only three things you care about: 1) What's live right now? 2) Where do I need to be? 3) Did anything shift? Instant answers without scrolling!",
+      'Instantly see what is live right now, where to go next, and flash your digital check-in badge at a glance.',
     codiTakeaways: [
-      'Pulsing live indicators for current sessions in progress',
-      'Automatic room comparison diffs if an auditorium shifts',
-      'One-tap digital badge ready at the check-in door'
+      'Instant live radar delivers stage status, room directions, and your pass in seconds.'
     ]
   },
   {
@@ -86,14 +80,12 @@ const TOUR_STEPS: TourStep[] = [
     perkColor: 'emerald',
     icon: <Accessibility size={22} />,
     title: 'Inclusivity by Design',
-    subtitle: 'Public venue clarity, private personal dignity',
-    codiHeadline: 'Dignity for Every Single Participant!',
+    subtitle: 'Transparent venues, private dignity',
+    codiHeadline: 'Dignified Accessibility',
     codiComment:
-      'Nobody should ever have to broadcast private medical or accessibility needs in a giant group chat just to get a ramp or dietary meal. We publish venue accessibility specs upfront and handle your personal accommodations confidentially.',
+      'View verified ramp and audio specs upfront, while dietary and mobility accommodations stay strictly confidential.',
     codiTakeaways: [
-      'Verified wheelchair ramps and audio accessibility specs',
-      'Confidential intake for sensory, mobility, and ASL requests',
-      'Dietary tags routed straight to event catering'
+      'Full venue accessibility clarity without ever broadcasting personal needs publicly.'
     ]
   },
   {
@@ -102,14 +94,12 @@ const TOUR_STEPS: TourStep[] = [
     perkColor: 'orange',
     icon: <Sparkles size={22} />,
     title: "You're All Set!",
-    subtitle: 'Join Codi in the complete presentation deck',
-    codiHeadline: 'Want the Full Architectural Story?',
+    subtitle: 'Ready to explore or pitch',
+    codiHeadline: 'Ready to Roll!',
     codiComment:
-      "You now know the core magic of Live Connect! If you'd like to explore our full interactive presentation deck, battle-tested design decisions, and deep product architecture, come join me in our cinematic pitch deck!",
+      'Explore live events now, or dive into our interactive 6-part pitch deck for the complete product story.',
     codiTakeaways: [
-      'Interactive 6-part presentation with animated slide deck',
-      'Explore university and community events right now',
-      'Switch to Manager mode anytime to host your own events'
+      'Instant access to campus events or the full interactive architectural pitch.'
     ]
   }
 ];
